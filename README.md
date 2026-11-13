@@ -12,6 +12,8 @@ Use OpenX6 Desktop to build and verify an SD update with the built-in features o
 
 [中文使用说明](README.zh.md) · [Module author guide](sdk/README.md)
 
+[![OpenX6 1.0 launch poster with video modes, bitrate, panoramic RAW photos and SSD recording](docs/images/openx6-launch.png)](docs/images/openx6-launch.png)
+
 The [component source audit](release/component-review.md) covers all 743 inputs. The checkout supplies 691 entries and generates 52 from the verified official image.
 
 ## New recording modes

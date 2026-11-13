@@ -12,6 +12,8 @@
 
 [English](README.md) · [模块开发说明](sdk/README.zh.md)
 
+[![OpenX6 1.0 首发海报：录像档位、可调码率、全景 RAW 照片与外置 SSD 录制](docs/images/openx6-launch.png)](docs/images/openx6-launch.png)
+
 [组件来源审查](release/component-review.zh.md)覆盖全部 743 项。其中 691 项来自仓库，52 项从已核验的官方镜像生成。
 
 桌面工具首次启动默认显示英文。在菜单栏选择 **Language → 简体中文** 即可切换，之后也可以通过 **语言 → English** 切回。应用会在本机记住选择。
