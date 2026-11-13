@@ -1,0 +1,32 @@
+{
+  "schema": "openx6.choice.v1",
+  "id": "recording_budget",
+  "title": "Storage estimate",
+  "setting": {
+    "id": "rate",
+    "label": "Planned video rate",
+    "default": "standard",
+    "options": [
+      {
+        "id": "standard",
+        "label": "180 Mbps",
+        "note": "Estimate video storage at this rate"
+      },
+      {
+        "id": "high",
+        "label": "220 Mbps",
+        "note": "Estimate video storage at this rate"
+      },
+      {
+        "id": "max",
+        "label": "260 Mbps",
+        "note": "Estimate video storage at this rate"
+      }
+    ]
+  },
+  "program": {
+    "api": "openx6.python.choice.v1",
+    "source": "budget.py",
+    "sha256": "c7312d8f3e8508b4862f059741d8edb868b1d2e0f648effd3ff70f25e04186c3"
+  }
+}

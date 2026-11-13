@@ -1,0 +1,2 @@
+[Service]
+BindReadOnlyPaths=/data/x6-holder-v1/adb_keys:/adb_keys

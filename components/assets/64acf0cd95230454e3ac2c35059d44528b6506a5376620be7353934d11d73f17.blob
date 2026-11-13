@@ -1,0 +1,3 @@
+[Unit]
+Wants=x6-owner-auth.service usb.service
+After=x6-owner-auth.service usb.service

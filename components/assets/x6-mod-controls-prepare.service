@@ -1,0 +1,13 @@
+[Unit]
+Description=OpenX6 compact stereo and video controls preparation
+DefaultDependencies=no
+Requires=data.mount x6-vr180-prepare.service
+After=data.mount etc.mount x6-vr180-prepare.service
+Before=qmmf-server.service ins_mediad.service ins_gui.service
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/x6-mod-controls-prepare
+RemainAfterExit=yes
+TimeoutStartSec=120
+[Install]
+WantedBy=multi-user.target

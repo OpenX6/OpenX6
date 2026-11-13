@@ -1,0 +1,12 @@
+{
+  "AutomaticEnabled": false,
+  "Files": {
+    "/sbin/abctl": [
+      "5ed92c123863f89697ff65da6a23684f524c8607dbb80dcc38ec0b6c7a799bf8"
+    ],
+    "/lib/ld-linux-aarch64.so.1": [
+      "db99ec55797558a1cca13b56e8a62ee5bde11df23eb31bcdf1e570996dd41c77"
+    ]
+  },
+  "OwnerTrust": {}
+}

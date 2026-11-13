@@ -1,0 +1,15 @@
+[Unit]
+Description=Prepare verified owner VR180 settings and saved sync policy
+DefaultDependencies=no
+Requires=data.mount etc.mount
+After=data.mount etc.mount
+Before=qmmf-server.service ins_gui.service x6-owner-gui-auth.service
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/x6-vr180-control prepare
+RemainAfterExit=yes
+TimeoutStartSec=60
+StandardOutput=append:/data/x6-owner-features/vr180-v1/prepare.log
+StandardError=inherit
+[Install]
+WantedBy=multi-user.target

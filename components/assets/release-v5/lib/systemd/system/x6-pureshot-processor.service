@@ -1,0 +1,22 @@
+[Unit]
+Description=X6 owner PureShot post-processing (120MP passthrough -> native DNG, in place)
+RequiresMountsFor=/data
+After=x6-runtime-prepare.service ins_config.service ins_mediad.service ins_storaged.service
+# No PrivateTmp / ProtectSystem: an fd held in a private mount namespace would pin a media superblock and
+# turn an EBUSY unmount into a real dual-access USB export (INT-5). This daemon must share PID 1's namespace.
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 -B /usr/local/sbin/x6-pureshot-processor
+Restart=on-failure
+RestartSec=5
+UMask=0077
+KillMode=mixed
+# Above 2x the slowest admitted critical section (§5.5 bound) so `systemctl stop` can never SIGKILL inside
+# the in-place overwrite (step 8). Sized for the slowest supported medium.
+TimeoutStopSec=60
+Nice=10
+IOSchedulingClass=idle
+OOMScoreAdjust=800
+StandardOutput=null
+StandardError=null

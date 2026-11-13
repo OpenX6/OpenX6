@@ -1,0 +1,11 @@
+[Unit]
+Description=OpenX6 interval shutter ceiling and fixed cadence preferences
+RequiresMountsFor=/data
+After=ins_config.service ins_mediad.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /usr/local/sbin/x6-interval-controller
+Restart=on-failure
+RestartSec=3
+UMask=0077

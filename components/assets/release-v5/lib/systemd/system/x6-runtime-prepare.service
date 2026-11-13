@@ -1,0 +1,17 @@
+[Unit]
+Description=OpenX6 initialize absent runtime preferences without replacing saved data
+DefaultDependencies=no
+Requires=data.mount etc.mount
+# The feature namespace must be published by the first-boot seed before any
+# runtime preference directory is created inside it (fresh-install race seen
+# on 2026-11-02). Wants= only orders and pulls; a seed failure never blocks this.
+Wants=x6-firstboot-seed.service
+After=data.mount etc.mount x6-firstboot-seed.service
+Before=ins_gui.service x6-stats-control.service x6-preview-control.service x6-ssd-prepare.service
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/sbin/x6-runtime-prepare
+RemainAfterExit=yes
+TimeoutStartSec=30
+StandardOutput=null
+StandardError=null

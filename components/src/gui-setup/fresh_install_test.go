@@ -1,0 +1,3 @@
+package main
+import("testing";"bytes";"os")
+func TestFreshInstallDistinctGUIIdentities(t *testing.T){a,b:=fixture(t),fixture(t);if e:=a.identity();e!=nil{t.Fatal(e)};if e:=b.identity();e!=nil{t.Fatal(e)};ap,_:=os.ReadFile(a.path("/data/x6-owner-gui/server_ed25519.pub"));bp,_:=os.ReadFile(b.path("/data/x6-owner-gui/server_ed25519.pub"));if bytes.Equal(ap,bp){t.Fatal("identities cloned")};if e:=a.identity();e!=nil{t.Fatal(e)};again,_:=os.ReadFile(a.path("/data/x6-owner-gui/server_ed25519.pub"));if !bytes.Equal(ap,again){t.Fatal("rotated")};t.Log("two fresh roots get distinct identities; restart preserves identity")}

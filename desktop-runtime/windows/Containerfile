@@ -1,0 +1,16 @@
+# Supply a clean local Linux/amd64 build-environment image by immutable image ID.
+# It contains the Linux counterparts of the toolchain in macos/package.py.
+ARG TOOLCHAIN_IMAGE
+FROM ${TOOLCHAIN_IMAGE}
+ARG WORKER_VERSION
+COPY app /opt/openx6
+COPY app/desktop-runtime/windows/worker.sh /opt/openx6-run
+ENV PATH=/opt/toolchain/bin:/opt/toolchain/go/bin:/usr/local/bin:/usr/sbin:/usr/bin:/bin
+RUN set -eu; test "$(uname -m)" = x86_64; \
+    python3 -c 'import sys; assert sys.version_info >= (3,11)'; \
+    go version | grep -F 'go1.27.3'; zig version | grep -x '0.17.0'; \
+    clang --version | grep -F '22.1.4'; llvm-strip --version; lld -flavor gnu --version; \
+    command -v debugfs; command -v e2fsck; command -v ssh-keygen; openssl version | grep -F 'OpenSSL 3.'; \
+    chmod 755 /opt/openx6-run; useradd --create-home --shell /bin/sh openx6; \
+    chmod 700 /home/openx6; printf '%s\n' "$WORKER_VERSION" >/opt/openx6-worker-version
+RUN printf '[automount]\nenabled=true\nroot=/mnt/\n[interop]\nappendWindowsPath=false\n' > /etc/wsl.conf

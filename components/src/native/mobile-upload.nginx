@@ -1,0 +1,18 @@
+    location = /upload_fw {
+        if ($request_method != POST) { return 405; }
+        set $access_blocked 0;
+        if ($trusted_iface = 0) { set $access_blocked 1; }
+        if (-f /var/log/nginx/http_access_allow.lock) { set $access_blocked 0; }
+        if ($access_blocked) { return 403; }
+        auth_request /auth_check;
+        client_max_body_size 8g;
+        proxy_http_version 1.1;
+        proxy_request_buffering off;
+        proxy_buffering off;
+        proxy_next_upstream off;
+        proxy_read_timeout 20m;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_pass http://unix:/run/openx6-phone-ota/upload.sock:/receive;
+    }
+    location /upload_fw { return 403; }
+

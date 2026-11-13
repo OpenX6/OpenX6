@@ -1,0 +1,8 @@
+{
+  "schema": "openx6.menu.v1",
+  "id": "capture_stats",
+  "title": "Capture statistics",
+  "settings": [
+    {"id": "enabled", "label": "Show recording stats", "type": "toggle", "binding": "stats.overlay.enabled", "default": false}
+  ]
+}

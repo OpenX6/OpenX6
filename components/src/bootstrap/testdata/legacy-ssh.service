@@ -1,0 +1,16 @@
+[Unit]
+Description=X6 owner key-only root maintenance
+Requires=data.mount
+After=local-fs.target data.mount network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+User=root
+Group=root
+UMask=0077
+ExecStart=/data/x6-owner-maintenance/ssh --authorized-keys /data/x6-owner-maintenance/owner.pub --host-key /data/x6-owner-ssh/host_ed25519
+Restart=on-failure
+RestartSec=3
+KillMode=control-group
+[Install]
+WantedBy=multi-user.target

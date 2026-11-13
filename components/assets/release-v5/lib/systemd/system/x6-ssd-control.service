@@ -1,0 +1,15 @@
+[Unit]
+Description=OpenX6 external SSD attachment and selection
+After=x6-ssd-prepare.service ins_config.service ins_storaged.service ins_bla.service
+Wants=x6-ssd-prepare.service
+ConditionPathExists=/run/x6-ssd/prepared
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /usr/local/sbin/x6-ssd-coordinator run
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=10
+
+[Install]
+WantedBy=ins_phase3.target

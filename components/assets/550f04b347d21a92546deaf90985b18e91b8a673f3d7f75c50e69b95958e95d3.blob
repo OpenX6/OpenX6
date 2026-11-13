@@ -1,0 +1,18 @@
+[Unit]
+Description=X6 owner key-only root maintenance
+# SSH is the floor: start even if the shared /data or /etc overlay does not
+# mount. A missing host key falls back to a temporary in-memory key.
+Wants=data.mount etc.mount
+After=local-fs.target data.mount etc.mount network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+User=root
+Group=root
+UMask=0077
+ExecStart=/usr/local/sbin/x6-owner-maintenance --host-key /data/x6-owner-ssh/host_ed25519
+Restart=on-failure
+RestartSec=3
+KillMode=control-group
+[Install]
+WantedBy=multi-user.target

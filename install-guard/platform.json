@@ -1,0 +1,343 @@
+{
+  "AbctlSHA256": "5ed92c123863f89697ff65da6a23684f524c8607dbb80dcc38ec0b6c7a799bf8",
+  "Sources": [
+    {
+      "Version": "0.8.825",
+      "OTASHA256": "ba6001f68643c5c2bf4d9c86c72b3925e71583c9a123b112186b05b9e4a7688e",
+      "Mode": "first-install"
+    },
+    {
+      "Version": "1.2.36",
+      "OTASHA256": "7a66e650cd7c64000b63a3a971f633cd7ea91fd5205460133527aff5103466ec",
+      "Mode": "maintenance"
+    },
+    {
+      "Version": "0.8.827",
+      "OTASHA256": "d2ef51479725950986b9ad45a82ed2a7c60a8accafeef58a46f795b8f770531b",
+      "Mode": "first-install"
+    }
+  ],
+  "Parts": [
+    {
+      "Label": "abl_a",
+      "Device": "/dev/sde10",
+      "Bytes": 1048576
+    },
+    {
+      "Label": "abl_b",
+      "Device": "/dev/sde38",
+      "Bytes": 1048576
+    },
+    {
+      "Label": "aop_a",
+      "Device": "/dev/sde2",
+      "Bytes": 524288
+    },
+    {
+      "Label": "aop_b",
+      "Device": "/dev/sde30",
+      "Bytes": 524288
+    },
+    {
+      "Label": "aop_config_a",
+      "Device": "/dev/sde3",
+      "Bytes": 524288
+    },
+    {
+      "Label": "aop_config_b",
+      "Device": "/dev/sde31",
+      "Bytes": 524288
+    },
+    {
+      "Label": "bluetooth_a",
+      "Device": "/dev/sde7",
+      "Bytes": 4194304
+    },
+    {
+      "Label": "bluetooth_b",
+      "Device": "/dev/sde35",
+      "Bytes": 4194304
+    },
+    {
+      "Label": "boot_a",
+      "Device": "/dev/sde13",
+      "Bytes": 100663296
+    },
+    {
+      "Label": "boot_b",
+      "Device": "/dev/sde41",
+      "Bytes": 100663296
+    },
+    {
+      "Label": "cpucp_a",
+      "Device": "/dev/sde21",
+      "Bytes": 1048576
+    },
+    {
+      "Label": "cpucp_b",
+      "Device": "/dev/sde49",
+      "Bytes": 1048576
+    },
+    {
+      "Label": "cpucp_dtb_a",
+      "Device": "/dev/sde26",
+      "Bytes": 65536
+    },
+    {
+      "Label": "cpucp_dtb_b",
+      "Device": "/dev/sde53",
+      "Bytes": 65536
+    },
+    {
+      "Label": "devcfg_a",
+      "Device": "/dev/sde14",
+      "Bytes": 131072
+    },
+    {
+      "Label": "devcfg_b",
+      "Device": "/dev/sde42",
+      "Bytes": 131072
+    },
+    {
+      "Label": "dsp_a",
+      "Device": "/dev/sde11",
+      "Bytes": 67108864
+    },
+    {
+      "Label": "dsp_b",
+      "Device": "/dev/sde39",
+      "Bytes": 67108864
+    },
+    {
+      "Label": "dtbo_a",
+      "Device": "/dev/sde16",
+      "Bytes": 25165824
+    },
+    {
+      "Label": "dtbo_b",
+      "Device": "/dev/sde44",
+      "Bytes": 25165824
+    },
+    {
+      "Label": "featenabler_a",
+      "Device": "/dev/sde22",
+      "Bytes": 131072
+    },
+    {
+      "Label": "featenabler_b",
+      "Device": "/dev/sde50",
+      "Bytes": 131072
+    },
+    {
+      "Label": "hyp_a",
+      "Device": "/dev/sde5",
+      "Bytes": 8388608
+    },
+    {
+      "Label": "hyp_b",
+      "Device": "/dev/sde33",
+      "Bytes": 8388608
+    },
+    {
+      "Label": "imagefv_a",
+      "Device": "/dev/sde18",
+      "Bytes": 2097152
+    },
+    {
+      "Label": "imagefv_b",
+      "Device": "/dev/sde46",
+      "Bytes": 2097152
+    },
+    {
+      "Label": "keymaster_a",
+      "Device": "/dev/sde12",
+      "Bytes": 524288
+    },
+    {
+      "Label": "keymaster_b",
+      "Device": "/dev/sde40",
+      "Bytes": 524288
+    },
+    {
+      "Label": "mdtp_a",
+      "Device": "/dev/sde9",
+      "Bytes": 33554432
+    },
+    {
+      "Label": "mdtp_b",
+      "Device": "/dev/sde37",
+      "Bytes": 33554432
+    },
+    {
+      "Label": "mdtpsecapp_a",
+      "Device": "/dev/sde8",
+      "Bytes": 4194304
+    },
+    {
+      "Label": "mdtpsecapp_b",
+      "Device": "/dev/sde36",
+      "Bytes": 4194304
+    },
+    {
+      "Label": "modem_a",
+      "Device": "/dev/sde6",
+      "Bytes": 471859200
+    },
+    {
+      "Label": "modem_b",
+      "Device": "/dev/sde34",
+      "Bytes": 471859200
+    },
+    {
+      "Label": "multiimgoem_a",
+      "Device": "/dev/sdb4",
+      "Bytes": 32768
+    },
+    {
+      "Label": "multiimgoem_b",
+      "Device": "/dev/sdc4",
+      "Bytes": 32768
+    },
+    {
+      "Label": "multiimgqti_a",
+      "Device": "/dev/sdb3",
+      "Bytes": 32768
+    },
+    {
+      "Label": "multiimgqti_b",
+      "Device": "/dev/sdc3",
+      "Bytes": 32768
+    },
+    {
+      "Label": "qupfw_a",
+      "Device": "/dev/sde15",
+      "Bytes": 81920
+    },
+    {
+      "Label": "qupfw_b",
+      "Device": "/dev/sde43",
+      "Bytes": 81920
+    },
+    {
+      "Label": "qweslicstore_a",
+      "Device": "/dev/sde24",
+      "Bytes": 262144
+    },
+    {
+      "Label": "qweslicstore_b",
+      "Device": "/dev/sde51",
+      "Bytes": 262144
+    },
+    {
+      "Label": "rticmpdata_a",
+      "Device": "/dev/sde28",
+      "Bytes": 53248
+    },
+    {
+      "Label": "rticmpdata_b",
+      "Device": "/dev/sde55",
+      "Bytes": 53248
+    },
+    {
+      "Label": "shrm_a",
+      "Device": "/dev/sde19",
+      "Bytes": 262144
+    },
+    {
+      "Label": "shrm_b",
+      "Device": "/dev/sde47",
+      "Bytes": 262144
+    },
+    {
+      "Label": "spuservice_a",
+      "Device": "/dev/sde27",
+      "Bytes": 131072
+    },
+    {
+      "Label": "spuservice_b",
+      "Device": "/dev/sde54",
+      "Bytes": 131072
+    },
+    {
+      "Label": "system_a",
+      "Device": "/dev/sda17",
+      "Bytes": 3221225472
+    },
+    {
+      "Label": "system_b",
+      "Device": "/dev/sda18",
+      "Bytes": 3221225472
+    },
+    {
+      "Label": "tz_a",
+      "Device": "/dev/sde4",
+      "Bytes": 4194304
+    },
+    {
+      "Label": "tz_b",
+      "Device": "/dev/sde32",
+      "Bytes": 4194304
+    },
+    {
+      "Label": "uefi_a",
+      "Device": "/dev/sde1",
+      "Bytes": 5242880
+    },
+    {
+      "Label": "uefi_b",
+      "Device": "/dev/sde29",
+      "Bytes": 5242880
+    },
+    {
+      "Label": "uefisecapp_a",
+      "Device": "/dev/sde17",
+      "Bytes": 2097152
+    },
+    {
+      "Label": "uefisecapp_b",
+      "Device": "/dev/sde45",
+      "Bytes": 2097152
+    },
+    {
+      "Label": "vm-bootsys_a",
+      "Device": "/dev/sde20",
+      "Bytes": 563200000
+    },
+    {
+      "Label": "vm-bootsys_b",
+      "Device": "/dev/sde48",
+      "Bytes": 563200000
+    },
+    {
+      "Label": "xbl_a",
+      "Device": "/dev/sdb1",
+      "Bytes": 3670016
+    },
+    {
+      "Label": "xbl_b",
+      "Device": "/dev/sdc1",
+      "Bytes": 3670016
+    },
+    {
+      "Label": "xbl_config_a",
+      "Device": "/dev/sdb2",
+      "Bytes": 245760
+    },
+    {
+      "Label": "xbl_config_b",
+      "Device": "/dev/sdc2",
+      "Bytes": 245760
+    },
+    {
+      "Label": "xbl_ramdump_a",
+      "Device": "/dev/sde25",
+      "Bytes": 2097152
+    },
+    {
+      "Label": "xbl_ramdump_b",
+      "Device": "/dev/sde52",
+      "Bytes": 2097152
+    }
+  ],
+  "UpdaterScriptSHA256": "12b36dc0b8dba1213c1f77a8a0df67f3d0a73a7d9853a76818c7f4616489e3a4"
+}

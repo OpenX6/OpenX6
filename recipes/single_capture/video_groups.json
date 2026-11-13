@@ -1,0 +1,717 @@
+{
+  "streams": [
+    {
+      "list": [
+        "stream_profile",
+        "video_stream_groups"
+      ],
+      "index": 1103,
+      "clone": 595,
+      "set": [
+        [
+          [
+            "group_id"
+          ],
+          "SATAngle_FreeFrameVideo_4K_4x3_120"
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "height"
+          ],
+          3008
+        ]
+      ]
+    },
+    {
+      "list": [
+        "stream_profile",
+        "video_stream_groups"
+      ],
+      "index": 1104,
+      "clone": 486,
+      "set": [
+        [
+          [
+            "group_id"
+          ],
+          "SATAngle_FreeFrameVideo_4K_4x3_120_lowpower"
+        ]
+      ]
+    },
+    {
+      "list": [
+        "stream_profile",
+        "video_stream_groups"
+      ],
+      "index": 1105,
+      "clone": 517,
+      "set": [
+        [
+          [
+            "group_id"
+          ],
+          "SATAngle_FreeFrameVideo_4K_1x1_100"
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "fps",
+            0
+          ],
+          90
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "fps",
+            1
+          ],
+          1
+        ],
+        [
+          [
+            "group_param"
+          ],
+          {
+            "camera_id": 3,
+            "op_mode": "0x800b",
+            "sensormode": -1,
+            "fd_enable": "on",
+            "viull_enable": "off",
+            "shdr_enable": "off",
+            "lowpower_sensormode": 20,
+            "pre_isp_mode": 5,
+            "hdr_mode": 0
+          }
+        ]
+      ]
+    },
+    {
+      "list": [
+        "stream_profile",
+        "video_stream_groups"
+      ],
+      "index": 1106,
+      "clone": 518,
+      "set": [
+        [
+          [
+            "group_id"
+          ],
+          "SATAngle_FreeFrameVideo_4K_1x1_100_lowpower"
+        ]
+      ]
+    },
+    {
+      "list": [
+        "stream_profile",
+        "video_stream_groups"
+      ],
+      "index": 1107,
+      "clone": 481,
+      "set": [
+        [
+          [
+            "group_id"
+          ],
+          "SATAngle_FreeFrameVideo_8K_1x1_30_lowpower"
+        ]
+      ]
+    },
+    {
+      "list": [
+        "stream_profile",
+        "video_stream_groups"
+      ],
+      "index": 1108,
+      "clone": 469,
+      "set": [
+        [
+          [
+            "group_id"
+          ],
+          "Back_FreeFrameVideo_8K_1x1_30"
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "width"
+          ],
+          7680
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "height"
+          ],
+          7680
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "export_width"
+          ],
+          7680
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "export_height"
+          ],
+          7680
+        ],
+        [
+          [
+            "group_param",
+            "sensormode"
+          ],
+          5
+        ]
+      ]
+    },
+    {
+      "list": [
+        "stream_profile",
+        "video_stream_groups"
+      ],
+      "index": 1109,
+      "clone": 379,
+      "set": [
+        [
+          [
+            "group_id"
+          ],
+          "Front_FreeFrameVideo_8K_1x1_30"
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "width"
+          ],
+          7680
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "height"
+          ],
+          7680
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "export_width"
+          ],
+          7680
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "export_height"
+          ],
+          7680
+        ],
+        [
+          [
+            "group_param",
+            "sensormode"
+          ],
+          5
+        ]
+      ]
+    },
+    {
+      "list": [
+        "stream_profile",
+        "video_stream_groups"
+      ],
+      "index": 1110,
+      "clone": 481,
+      "set": [
+        [
+          [
+            "group_id"
+          ],
+          "SATAngle_FreeFrameVideo_5K_1x1_30_lowpower"
+        ]
+      ]
+    },
+    {
+      "list": [
+        "stream_profile",
+        "video_stream_groups"
+      ],
+      "index": 1111,
+      "clone": 469,
+      "set": [
+        [
+          [
+            "group_id"
+          ],
+          "Back_FreeFrameVideo_5K_1x1_30"
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "width"
+          ],
+          7296
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "height"
+          ],
+          7296
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "export_width"
+          ],
+          7296
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "export_height"
+          ],
+          7296
+        ],
+        [
+          [
+            "group_param",
+            "sensormode"
+          ],
+          5
+        ]
+      ]
+    },
+    {
+      "list": [
+        "stream_profile",
+        "video_stream_groups"
+      ],
+      "index": 1112,
+      "clone": 379,
+      "set": [
+        [
+          [
+            "group_id"
+          ],
+          "Front_FreeFrameVideo_5K_1x1_30"
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "width"
+          ],
+          7296
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "height"
+          ],
+          7296
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "export_width"
+          ],
+          7296
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "export_height"
+          ],
+          7296
+        ],
+        [
+          [
+            "group_param",
+            "sensormode"
+          ],
+          5
+        ]
+      ]
+    },
+    {
+      "list": [
+        "stream_profile",
+        "video_stream_groups"
+      ],
+      "index": 1113,
+      "clone": 481,
+      "set": [
+        [
+          [
+            "group_id"
+          ],
+          "SATAngle_FreeFrameVideo_3K_1x1_30_lowpower"
+        ]
+      ]
+    },
+    {
+      "list": [
+        "stream_profile",
+        "video_stream_groups"
+      ],
+      "index": 1114,
+      "clone": 469,
+      "set": [
+        [
+          [
+            "group_id"
+          ],
+          "Back_FreeFrameVideo_3K_1x1_30"
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "width"
+          ],
+          6656
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "height"
+          ],
+          6656
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "export_width"
+          ],
+          6656
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "export_height"
+          ],
+          6656
+        ],
+        [
+          [
+            "group_param",
+            "sensormode"
+          ],
+          5
+        ]
+      ]
+    },
+    {
+      "list": [
+        "stream_profile",
+        "video_stream_groups"
+      ],
+      "index": 1115,
+      "clone": 379,
+      "set": [
+        [
+          [
+            "group_id"
+          ],
+          "Front_FreeFrameVideo_3K_1x1_30"
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "width"
+          ],
+          6656
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "height"
+          ],
+          6656
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "export_width"
+          ],
+          6656
+        ],
+        [
+          [
+            "stream_param",
+            1,
+            "export_height"
+          ],
+          6656
+        ],
+        [
+          [
+            "group_param",
+            "sensormode"
+          ],
+          5
+        ]
+      ]
+    }
+  ],
+  "fov": [
+    {
+      "list": [
+        "fov_profiles",
+        "fov_groups",
+        80,
+        "group_id"
+      ],
+      "index": 4,
+      "append": "SATAngle_FreeFrameVideo_4K_4x3_120"
+    },
+    {
+      "list": [
+        "fov_profiles",
+        "fov_groups",
+        80,
+        "group_id"
+      ],
+      "index": 5,
+      "append": "SATAngle_FreeFrameVideo_4K_4x3_120_lowpower"
+    },
+    {
+      "list": [
+        "fov_profiles",
+        "fov_groups",
+        83,
+        "group_id"
+      ],
+      "index": 8,
+      "append": "SATAngle_FreeFrameVideo_8K_1x1_30"
+    },
+    {
+      "list": [
+        "fov_profiles",
+        "fov_groups",
+        83,
+        "group_id"
+      ],
+      "index": 9,
+      "append": "SATAngle_FreeFrameVideo_8K_1x1_30_lowpower"
+    },
+    {
+      "list": [
+        "fov_profiles",
+        "fov_groups",
+        83,
+        "group_id"
+      ],
+      "index": 10,
+      "append": "SATAngle_FreeFrameVideo_5K_1x1_30_lowpower"
+    },
+    {
+      "list": [
+        "fov_profiles",
+        "fov_groups",
+        83,
+        "group_id"
+      ],
+      "index": 11,
+      "append": "SATAngle_FreeFrameVideo_3K_1x1_30_lowpower"
+    },
+    {
+      "list": [
+        "fov_profiles",
+        "fov_groups",
+        84,
+        "group_id"
+      ],
+      "index": 4,
+      "append": "SATAngle_FreeFrameVideo_4K_1x1_100"
+    },
+    {
+      "list": [
+        "fov_profiles",
+        "fov_groups",
+        84,
+        "group_id"
+      ],
+      "index": 5,
+      "append": "SATAngle_FreeFrameVideo_4K_1x1_100_lowpower"
+    },
+    {
+      "list": [
+        "fov_profiles",
+        "fov_groups",
+        128,
+        "group_id"
+      ],
+      "index": 2,
+      "append": "Front_FreeFrameVideo_8K_1x1_30"
+    },
+    {
+      "list": [
+        "fov_profiles",
+        "fov_groups",
+        128,
+        "group_id"
+      ],
+      "index": 3,
+      "append": "Front_FreeFrameVideo_5K_1x1_30"
+    },
+    {
+      "list": [
+        "fov_profiles",
+        "fov_groups",
+        128,
+        "group_id"
+      ],
+      "index": 4,
+      "append": "Front_FreeFrameVideo_3K_1x1_30"
+    },
+    {
+      "list": [
+        "fov_profiles",
+        "fov_groups",
+        156,
+        "group_id"
+      ],
+      "index": 2,
+      "append": "Back_FreeFrameVideo_8K_1x1_30"
+    },
+    {
+      "list": [
+        "fov_profiles",
+        "fov_groups",
+        156,
+        "group_id"
+      ],
+      "index": 3,
+      "append": "Back_FreeFrameVideo_5K_1x1_30"
+    },
+    {
+      "list": [
+        "fov_profiles",
+        "fov_groups",
+        156,
+        "group_id"
+      ],
+      "index": 4,
+      "append": "Back_FreeFrameVideo_3K_1x1_30"
+    }
+  ],
+  "caps": [
+    {
+      "list": [
+        "capability",
+        7,
+        "specs"
+      ],
+      "index": 0,
+      "clone": 0,
+      "set": [
+        [
+          [
+            "VideoFPS"
+          ],
+          "k120"
+        ]
+      ]
+    },
+    {
+      "list": [
+        "capability",
+        7,
+        "specs"
+      ],
+      "index": 5,
+      "clone": 4,
+      "set": [
+        [
+          [
+            "VideoFPS"
+          ],
+          "k100"
+        ]
+      ]
+    },
+    {
+      "list": [
+        "capability",
+        10,
+        "specs"
+      ],
+      "index": 6,
+      "clone": 4,
+      "set": [
+        [
+          [
+            "VideoRes"
+          ],
+          "kRes8K"
+        ]
+      ]
+    },
+    {
+      "list": [
+        "capability",
+        10,
+        "specs"
+      ],
+      "index": 7,
+      "clone": 4,
+      "set": [
+        [
+          [
+            "VideoRes"
+          ],
+          "kRes5K"
+        ]
+      ]
+    },
+    {
+      "list": [
+        "capability",
+        10,
+        "specs"
+      ],
+      "index": 8,
+      "clone": 4,
+      "set": [
+        [
+          [
+            "VideoRes"
+          ],
+          "kRes3K"
+        ]
+      ]
+    }
+  ]
+}

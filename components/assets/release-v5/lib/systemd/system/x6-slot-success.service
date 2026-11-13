@@ -1,0 +1,19 @@
+[Unit]
+Description=OpenX6 mark the running slot successful after a local root command channel passes
+Requires=data.mount etc.mount
+Wants=x6-owner-late-start.service
+After=data.mount etc.mount x6-owner-late-start.service
+[Service]
+Type=oneshot
+User=root
+Group=root
+UMask=0077
+ExecStart=/usr/local/sbin/x6-slot-success
+# Poll during this boot while the maintenance endpoint starts.
+TimeoutStartSec=400
+Restart=no
+StandardOutput=null
+StandardError=null
+SELinuxContext=system_u:system_r:unconfined_t:s0-s15:c0.c1023
+[Install]
+WantedBy=multi-user.target

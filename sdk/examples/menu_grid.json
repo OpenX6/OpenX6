@@ -1,0 +1,9 @@
+{
+  "schema": "openx6.menu.preview.v1",
+  "id": "grid_guide",
+  "title": "Grid guide",
+  "settings": [
+    {"id": "enabled", "label": "Show grid", "type": "toggle", "default": false},
+    {"id": "style", "label": "Grid style", "type": "choice", "choices": ["Thirds", "Center"], "default": "Thirds"}
+  ]
+}

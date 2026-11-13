@@ -1,0 +1,15 @@
+[Unit]
+Description=Check X6 GUI owner files after persistent overlays are visible
+Requires=data.mount etc.mount
+After=local-fs.target data.mount etc.mount
+[Service]
+Type=oneshot
+User=root
+Group=root
+UMask=0077
+SELinuxContext=system_u:system_r:unconfined_t:s0-s15:c0.c1023
+TimeoutStartSec=45
+ExecStart=/usr/local/sbin/x6-owner-gui-setup late-start
+RemainAfterExit=yes
+[Install]
+WantedBy=multi-user.target

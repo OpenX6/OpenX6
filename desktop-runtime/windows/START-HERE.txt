@@ -1,0 +1,64 @@
+OpenX6 Desktop — Windows 11 x64 验收版 / acceptance build
+
+首次安装 OpenX6 只支持机身当前运行原厂 0.8.825 或 0.8.827 的 X6。
+首装前请保留机身的早期固件。官方 1.2.36 只用于在电脑上构建 OpenX6。不要把 Insta360 官方固件包拷入 SD 卡。
+装好 OpenX6 后，请勿通过 Insta360 App 或 SD 卡刷回官方固件。
+刷回后，目前没有已知可靠的方法重新安装 OpenX6。后续更新请使用兼容的 OpenX6 卡刷包。
+
+You can install OpenX6 for the first time only on an X6 currently running stock 0.8.825 or 0.8.827.
+Keep the camera on its early firmware until you install OpenX6. Use the official 1.2.36 download only as a build input on your computer. Do not copy the official Insta360 firmware package to the SD card.
+After installing OpenX6, do not install official firmware through the Insta360 app or from an SD card.
+There is currently no known reliable way to reinstall OpenX6 after returning to stock firmware. Use a compatible OpenX6 SD package for future updates.
+
+1. 将整个 ZIP 解压到本地磁盘。确认 WSL 2 已就绪，在 PowerShell 运行
+   wsl --status
+   如果电脑尚未启用 WSL，管理员可先运行 wsl --install --no-distribution，然后按系统提示重启。
+   WSL 本身的初次安装可能需要网络。OpenX6 随包提供专用构建环境，构建时可离线。
+2. 双击 OpenX6.exe，在主窗口选择官方 1.2.36。连接 X6 热点，点「在我的 X6 上解包」，核对机身序列号后六位，按提示在机身点允许。原厂 0.8.825 已实测，0.8.827 已离线验证。
+3. 已有缓存时会自动选中；其他目录从 File → 选择已保存的模块目录打开。点「生成卡刷包」后选择本地输出位置，在窗口查看进度。系统盘建议预留 30 GiB，输出盘至少 2 GiB。
+4. 输出目录是 OpenX6 SD Build。可将 Insta360X6FW.bin 的 SHA-256 与 SHA256SUMS 第一行比较：
+   Get-FileHash -Algorithm SHA256 -LiteralPath '.\OpenX6 SD Build\Insta360X6FW.bin'
+   完成后可打开目录、选择 Deploy to SD via Wi-Fi 或结束。无线写卡保留本机成品；机身空闲、接好电源，SD 卡根目录不能有升级包。核对序列号后六位并按提示授权。读回整包通过后才发布文件；原厂 0.8.825 会收到立即扫卡请求。升级中不要断电，若仍空闲可留卡正常重启；在充电页短按电源。不要把 Insta360 官方固件包拷入 SD 卡。
+   用于安装时，只把通过校验的 OpenX6 SD Build\Insta360X6FW.bin 拷到 SD 卡根目录。
+5. 如需备份本次构建的持有者身份，可在 Windows 资源管理器中打开
+   \\wsl.localhost\OpenX6-Builder-v1\home\openx6\.local\share\OpenX6
+   将整个 Holder 目录妥善私下备份。重装电脑或移除这个 WSL 发行版前务必备份。
+   Holder 用于管理自己的改装机，另一个用户的 Holder 会生成不同的签名和包摘要。
+
+默认缓存：%LOCALAPPDATA%\OpenX6\Camera\X6-1.2.36-modules。可在另一台电脑上选择同一份完整缓存，无需再次连接相机。
+
+兼容范围
+   构建输入仅接受固定摘要的官方 1.2.36；1.3.59 会被识别并停止。
+   首装支持出厂 v0.8.825 和 v0.8.827，分别匹配原厂升级器摘要和分区布局。后续更新适用于具备兼容维护入口、
+   信任相应身份的已改装 X6。下载官方 1.2.36 仅决定输入，不能判断相机是否支持首装。
+
+English
+   Extract the full ZIP on a Windows 11 x64 PC with WSL 2 and virtualization enabled.
+   Check wsl --status. To set up WSL, use an administrator terminal:
+   wsl --install --no-distribution
+   Reboot if prompted. First-time WSL installation may need Internet access.
+   Open OpenX6.exe, choose official 1.2.36 and click Unpack on my X6. Match the serial suffix and tap Allow on the camera. Stock 0.8.827 export awaits hardware verification. A cached folder is selected automatically; use File → Choose saved module folder for another folder. Click Build SD package and choose a local destination. Allow 30 GiB on the
+   system drive and 2 GiB on the destination. The worker and all build tools are bundled.
+   Wait for Verified. Compare the output file with SHA256SUMS using Get-FileHash above.
+   First installs support stock v0.8.825 and v0.8.827 with their matching updater and partition layout.
+   Choose Open output folder, Deploy to SD via Wi-Fi, or close the window. The local file stays on this PC.
+   For Wi-Fi deployment confirm the serial suffix, use an idle powered camera and insert a card with no update file.
+   The tool verifies the entire card copy before publishing it. Stock 0.8.825 also receives a scan request.
+   Allow an update in progress to finish. If still idle, restart with the card inserted; press Power once at a charging screen. Do not copy the official Insta360 firmware package to the SD card.
+   For installation, copy only the verified OpenX6 SD Build\Insta360X6FW.bin to the SD card root.
+   Back up the private Holder
+   directory listed above before removing the WSL distribution.
+   The default Windows cache is %LOCALAPPDATA%\OpenX6\Camera\X6-1.2.36-modules.
+
+从旧版升级 / Updating an existing installation
+   退出旧版，将整份新版 ZIP 解压到本地新目录，用原来的 Windows 用户打开 OpenX6.exe。
+   照常选择官方包、模块目录和新的输出位置。程序直接从原 OpenX6-Builder-v1 的 Holder 签发。
+   请保留同目录的 OpenX6-app.zip 和 OpenX6-runtime.tar。遇到缺失身份或未知 WSL 基础版本时，
+   请保留原发行版和 Holder 备份，按错误提示检查。删除 WSL 发行版会删除其中的本机身份。
+   Quit the old app, extract the full new ZIP to a separate local folder, then open OpenX6.exe
+   under the same Windows account. Choose the firmware, module folder and a fresh output folder.
+   This release recognizes both initial consumer WSL bases. It reads Holder in its existing
+   location. Keep both bundled archives beside the launcher. If an identity or base check
+   fails, preserve the registered distribution and the original Holder backup.
+
+After you confirm the camera, OpenX6 disables auto power-off and Wi-Fi auto-off and verifies both before transferring. These preferences are saved on the camera. If disconnected, reconnect and retry. Cached builds work offline.

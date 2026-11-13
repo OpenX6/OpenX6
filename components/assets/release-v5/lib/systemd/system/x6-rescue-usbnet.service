@@ -1,0 +1,26 @@
+[Unit]
+Description=OpenX6 rescue level: owner SSH over USB (CDC-NCM) beside the Wi-Fi AP
+# Only on a boot the breaker put at level 2. On level 0/1 the condition fails and
+# the vendor USB stack (usbd) keeps the gadget. No Conflicts= here on purpose: a
+# conflict would stop usbd on every boot, condition or not. The script stops usbd
+# itself, after it has checked the marker.
+ConditionPathExists=/run/x6-boot/rescue
+DefaultDependencies=no
+# ins_hald links the vendor USB functions (UDisk / phone control) and starts later than usbd;
+# ordering after it means our link is added to its initial configuration instead of racing it.
+After=x6-boot-guard.service sys-kernel-config.mount usbd.service usb.service ins_hald.service x6-owner-maintenance.service
+StartLimitIntervalSec=300
+StartLimitBurst=5
+[Service]
+Type=simple
+User=root
+Group=root
+UMask=0077
+ExecStart=/usr/local/sbin/x6-rescue-usbnet start
+ExecStopPost=/usr/local/sbin/x6-rescue-usbnet stop
+Restart=on-failure
+RestartSec=15
+TimeoutStartSec=60
+SELinuxContext=system_u:system_r:unconfined_t:s0-s15:c0.c1023
+[Install]
+WantedBy=multi-user.target

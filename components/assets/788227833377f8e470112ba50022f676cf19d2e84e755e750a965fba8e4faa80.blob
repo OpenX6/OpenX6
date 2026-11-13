@@ -1,0 +1,4 @@
+[Service]
+# Owner-authenticated full administration only; keep the vendor policy unchanged.
+# Applies also to the verified legacy /etc unit if it survives an update.
+SELinuxContext=system_u:system_r:unconfined_t:s0-s15:c0.c1023

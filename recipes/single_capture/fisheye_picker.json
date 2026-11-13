@@ -1,0 +1,58 @@
+{
+  "symbols": {
+    "option_text": 5766512,
+    "imgbase": 0,
+    "new_object": 5092272,
+    "auto_object": 5093280,
+    "new_utf8": 5128208,
+    "notify": 5122016,
+    "refresh_desc": 5514048,
+    "set_stock": 8866064,
+    "set_title": 9804128,
+    "set_body": 9811344,
+    "set_frame": 9798320,
+    "set_bitmap": 9798272,
+    "resource_set": 8479424,
+    "make_bitmap": 4961744,
+    "lock_bitmap": 4963472,
+    "unlock_bitmap": 4964240,
+    "free_bitmap": 4961376,
+    "lock_obj": 5094384,
+    "unlock_obj": 5094704,
+    "after_model": 5547448,
+    "after_row": 5509356,
+    "default_row": 5509324,
+    "got_page": 118919168,
+    "default_desc": 5514552,
+    "yes_visibility": 6145276,
+    "default_visibility": 6145164,
+    "after_update_eye": 6814268,
+    "after_set_eye": 6814020
+  },
+  "hooks": [
+    [
+      "0x54a5b4",
+      "e10300aa"
+    ],
+    [
+      "0x5410c8",
+      "e103002a"
+    ],
+    [
+      "0x542534",
+      "2e6103f0"
+    ],
+    [
+      "0x5dc488",
+      "05f055b9"
+    ],
+    [
+      "0x67fa38",
+      "643200b9"
+    ],
+    [
+      "0x67f940",
+      "623200b9"
+    ]
+  ]
+}

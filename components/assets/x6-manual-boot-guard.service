@@ -1,0 +1,16 @@
+[Unit]
+Description=OpenX6 select the requested mode before loading features
+# Not ordered before owner SSH or the GUI root channel: those never wait on it.
+DefaultDependencies=no
+Wants=data.mount
+After=data.mount
+Before=x6-runtime-prepare.service x6-ssd-prepare.service x6-vr180-prepare.service x6-raw-nr-prepare.service x6-mod-controls-prepare.service x6-firstboot-seed.service
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+TimeoutStartSec=20
+UMask=0077
+ExecStartPre=-/usr/bin/python3 -B /usr/local/sbin/x6-sd-boot --once
+ExecStart=/usr/local/sbin/x6-boot-guard enter
+[Install]
+WantedBy=ins_phase2.target

@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/bin/timeout -s TERM -k 1 16 /usr/local/sbin/x6-owner-usb stop-ins-usb

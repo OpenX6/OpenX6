@@ -1,0 +1,11 @@
+[Unit]
+Description=OpenX6 boot health check: clear the breaker after a healthy boot
+Wants=data.mount
+After=data.mount x6-boot-guard.service
+[Service]
+Type=simple
+UMask=0077
+# Waits internally until the boot has settled; never stops or reboots anything.
+ExecStart=/usr/local/sbin/x6-boot-guard health
+[Install]
+WantedBy=multi-user.target

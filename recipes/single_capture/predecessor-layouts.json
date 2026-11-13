@@ -1,0 +1,182 @@
+[
+  {
+    "entries": {
+      "raw-nr-v1/low.so": "9122b444e77c5087daef7aa32dd706b2216689ee594e2fdd2a06cdffa8b67175",
+      "raw-nr-v1/medium.so": "50efa43512fbbd97ec698043daa731dc20aa18e42ea507c94d8a28bd2017241a",
+      "raw-nr-v1/minimal.so": "ee80f0e9094b5f3f823473f11b8e4d7f8c6661439a28d5a613fd14d1ee728a68",
+      "vr180-v1/backup/gui": "da87668122982f01e62f62d36b2f4a6e6b1143187b6eab3d41a15da58b857d43",
+      "vr180-v1/backup/setup": "a15faa4ab7a979d36a8ce642cb38eba1136cc8fd63c2774b55ea70445128818e",
+      "vr180-v1/backup/sync.so": "c7a4c9c1088e53ef37dc6a952ce9f95edcf9f7c6d24c1bf50bb55b16749c681b",
+      "vr180-v1/gui": "d7c500c2cf62ee7093e48afbc5ba19d4d5e479f30b12f2f85872ae53324c625c",
+      "vr180-v1/setup": "546a201555c30ac196072cc466b048ef7de7cabe706921af178b7d3ea66b0f5e",
+      "vr180-v1/sync.so": "afb2a8fbd6d9f89b3dc9c22654fba10ca6ac0c46cb7ae5c0a903836efd818e69"
+    },
+    "program_bytes": 290138809,
+    "ssh_bytes": 6591567
+  },
+  {
+    "entries": {
+      "raw-nr-v1/low.so": "9122b444e77c5087daef7aa32dd706b2216689ee594e2fdd2a06cdffa8b67175",
+      "raw-nr-v1/medium.so": "50efa43512fbbd97ec698043daa731dc20aa18e42ea507c94d8a28bd2017241a",
+      "raw-nr-v1/minimal.so": "ee80f0e9094b5f3f823473f11b8e4d7f8c6661439a28d5a613fd14d1ee728a68",
+      "vr180-v1/backup/gui": "5beacae50fcbb35e5a898e01b44cdfeba3cc333e6752d2930ffd9edb97599ad2",
+      "vr180-v1/backup/setup": "c4b47c3b29785b8d069ed37bb5c47e869d567ce1d13b5834c645fa5ac624038e",
+      "vr180-v1/backup/sync.so": "c7a4c9c1088e53ef37dc6a952ce9f95edcf9f7c6d24c1bf50bb55b16749c681b",
+      "vr180-v1/gui": "18b0839ac93274b8d8d2dd73142d7758fb3496d7fe3b085ce648aa823cfa3510",
+      "vr180-v1/setup": "743343e5df3726a1ecf8cd1936971fa15d9f3d6c1688c37f941cf1bccb52c91f",
+      "vr180-v1/sync.so": "afb2a8fbd6d9f89b3dc9c22654fba10ca6ac0c46cb7ae5c0a903836efd818e69"
+    },
+    "program_bytes": 289697732,
+    "ssh_bytes": 5177468
+  },
+  {
+    "entries": {
+      "raw-nr-v1/low.so": "9122b444e77c5087daef7aa32dd706b2216689ee594e2fdd2a06cdffa8b67175",
+      "raw-nr-v1/medium.so": "50efa43512fbbd97ec698043daa731dc20aa18e42ea507c94d8a28bd2017241a",
+      "raw-nr-v1/minimal.so": "ee80f0e9094b5f3f823473f11b8e4d7f8c6661439a28d5a613fd14d1ee728a68",
+      "vr180-v1/backup/gui": "da87668122982f01e62f62d36b2f4a6e6b1143187b6eab3d41a15da58b857d43",
+      "vr180-v1/backup/setup": "b0208fcf29255ea2edd10e6cd09fa443f22fe2b1c534ef6c09b2de50879ef807",
+      "vr180-v1/backup/sync.so": "c7a4c9c1088e53ef37dc6a952ce9f95edcf9f7c6d24c1bf50bb55b16749c681b",
+      "vr180-v1/gui": "b658432ebbd64e4ff82e4f381c9117a49158af23475dafb1b23120c83026b391",
+      "vr180-v1/setup": "b53ffa05571054e4364990005a18aafb4602d68050af10de396397583b999ca4",
+      "vr180-v1/sync.so": "afb2a8fbd6d9f89b3dc9c22654fba10ca6ac0c46cb7ae5c0a903836efd818e69"
+    },
+    "program_bytes": 287957287,
+    "ssh_bytes": 4456572
+  },
+  {
+    "entries": {
+      "raw-nr-v1/low.so": "9122b444e77c5087daef7aa32dd706b2216689ee594e2fdd2a06cdffa8b67175",
+      "raw-nr-v1/medium.so": "50efa43512fbbd97ec698043daa731dc20aa18e42ea507c94d8a28bd2017241a",
+      "raw-nr-v1/minimal.so": "ee80f0e9094b5f3f823473f11b8e4d7f8c6661439a28d5a613fd14d1ee728a68",
+      "vr180-v1/backup/gui": "c2e40c2a857e2ed33d71078947604a2c2ec499f93ba413a6e7d911361a452708",
+      "vr180-v1/backup/setup": "d224121f140615d794dc7fc4fb5903e5ef4cca5ae0c9204463f4c18e6ce6d96d",
+      "vr180-v1/backup/sync.so": "c7a4c9c1088e53ef37dc6a952ce9f95edcf9f7c6d24c1bf50bb55b16749c681b",
+      "vr180-v1/gui": "dc8d2feda77499e2d7c8141b8faef069a136bb2c932251c0f1891623a0c78bc8",
+      "vr180-v1/setup": "186306e3cb3b476516d1c3906763e1e04f8307bbc3e8aabcefe1940c06b86c6a",
+      "vr180-v1/sync.so": "afb2a8fbd6d9f89b3dc9c22654fba10ca6ac0c46cb7ae5c0a903836efd818e69"
+    },
+    "program_bytes": 289703812,
+    "ssh_bytes": 5177468
+  },
+  {
+    "entries": {
+      "raw-nr-v1/low.so": "9122b444e77c5087daef7aa32dd706b2216689ee594e2fdd2a06cdffa8b67175",
+      "raw-nr-v1/medium.so": "50efa43512fbbd97ec698043daa731dc20aa18e42ea507c94d8a28bd2017241a",
+      "raw-nr-v1/minimal.so": "ee80f0e9094b5f3f823473f11b8e4d7f8c6661439a28d5a613fd14d1ee728a68",
+      "vr180-v1/backup/gui": "da87668122982f01e62f62d36b2f4a6e6b1143187b6eab3d41a15da58b857d43",
+      "vr180-v1/backup/setup": "ef3978c85af0986331862bb65c7f556480d39dd19755954069ed3f66141338f1",
+      "vr180-v1/backup/sync.so": "c7a4c9c1088e53ef37dc6a952ce9f95edcf9f7c6d24c1bf50bb55b16749c681b",
+      "vr180-v1/gui": "e122a8cbcc47b950f9c6553294c925d727f5ef5a9b448f6b77fd402e79a2a56f",
+      "vr180-v1/setup": "d6cf3146039ba7d0fbc15e7e5ec7a816321926fb5087085a42e901ce3db6b065",
+      "vr180-v1/sync.so": "afb2a8fbd6d9f89b3dc9c22654fba10ca6ac0c46cb7ae5c0a903836efd818e69"
+    },
+    "program_bytes": 287957287,
+    "ssh_bytes": 4456572
+  },
+  {
+    "entries": {
+      "raw-nr-v1/low.so": "9122b444e77c5087daef7aa32dd706b2216689ee594e2fdd2a06cdffa8b67175",
+      "raw-nr-v1/medium.so": "50efa43512fbbd97ec698043daa731dc20aa18e42ea507c94d8a28bd2017241a",
+      "raw-nr-v1/minimal.so": "ee80f0e9094b5f3f823473f11b8e4d7f8c6661439a28d5a613fd14d1ee728a68",
+      "vr180-v1/backup/gui": "01528fd74a3d338da9a5e9398372038ff036bb21a971c379fdf2c483e06dcce2",
+      "vr180-v1/backup/setup": "25ff65178f1da8c6ae3b9282821c654011c3f82787f74ca350bf073ce9ee79f0",
+      "vr180-v1/backup/sync.so": "c7a4c9c1088e53ef37dc6a952ce9f95edcf9f7c6d24c1bf50bb55b16749c681b",
+      "vr180-v1/gui": "9179a629c3ee93cdc9857ffb2689a79997558df3de1399226762ad40b9d541b7",
+      "vr180-v1/setup": "364b4ad19b0ad6547db1672eb6d0d125463b7a7058b88d3e905d492d4774f3d5",
+      "vr180-v1/sync.so": "afb2a8fbd6d9f89b3dc9c22654fba10ca6ac0c46cb7ae5c0a903836efd818e69"
+    },
+    "program_bytes": 289694604,
+    "ssh_bytes": 5177468
+  },
+  {
+    "entries": {
+      "raw-nr-v1/low.so": "9122b444e77c5087daef7aa32dd706b2216689ee594e2fdd2a06cdffa8b67175",
+      "raw-nr-v1/medium.so": "50efa43512fbbd97ec698043daa731dc20aa18e42ea507c94d8a28bd2017241a",
+      "raw-nr-v1/minimal.so": "ee80f0e9094b5f3f823473f11b8e4d7f8c6661439a28d5a613fd14d1ee728a68",
+      "vr180-v1/backup/gui": "da87668122982f01e62f62d36b2f4a6e6b1143187b6eab3d41a15da58b857d43",
+      "vr180-v1/backup/setup": "0ab64a1d8cbc4d59eae75daf0e614a8b89de2a70bf4a3cd26960ab4b7b39932e",
+      "vr180-v1/backup/sync.so": "c7a4c9c1088e53ef37dc6a952ce9f95edcf9f7c6d24c1bf50bb55b16749c681b",
+      "vr180-v1/gui": "d7c500c2cf62ee7093e48afbc5ba19d4d5e479f30b12f2f85872ae53324c625c",
+      "vr180-v1/setup": "5bad078045b0b1505d7d7a02ff7637c09e396cc33f7fbcf0acb55912261d8401",
+      "vr180-v1/sync.so": "afb2a8fbd6d9f89b3dc9c22654fba10ca6ac0c46cb7ae5c0a903836efd818e69"
+    },
+    "program_bytes": 287945711,
+    "ssh_bytes": 4456572
+  },
+  {
+    "entries": {
+      "raw-nr-v1/low.so": "9122b444e77c5087daef7aa32dd706b2216689ee594e2fdd2a06cdffa8b67175",
+      "raw-nr-v1/medium.so": "50efa43512fbbd97ec698043daa731dc20aa18e42ea507c94d8a28bd2017241a",
+      "raw-nr-v1/minimal.so": "ee80f0e9094b5f3f823473f11b8e4d7f8c6661439a28d5a613fd14d1ee728a68",
+      "vr180-v1/backup/gui": "da87668122982f01e62f62d36b2f4a6e6b1143187b6eab3d41a15da58b857d43",
+      "vr180-v1/backup/setup": "b0208fcf29255ea2edd10e6cd09fa443f22fe2b1c534ef6c09b2de50879ef807",
+      "vr180-v1/backup/sync.so": "c7a4c9c1088e53ef37dc6a952ce9f95edcf9f7c6d24c1bf50bb55b16749c681b",
+      "vr180-v1/gui": "171a2515cba2122a0d68c8eecea2cf11f5f11ac37709735c35bd5abb0a49f0a4",
+      "vr180-v1/setup": "c26b66a34efb1c86b3d5da494726b7b29c0b8e42eacadcfa4bac998b9cedf494",
+      "vr180-v1/sync.so": "afb2a8fbd6d9f89b3dc9c22654fba10ca6ac0c46cb7ae5c0a903836efd818e69"
+    },
+    "program_bytes": 287957600,
+    "ssh_bytes": 4456572
+  },
+  {
+    "entries": {
+      "raw-nr-v1/low.so": "9122b444e77c5087daef7aa32dd706b2216689ee594e2fdd2a06cdffa8b67175",
+      "raw-nr-v1/medium.so": "50efa43512fbbd97ec698043daa731dc20aa18e42ea507c94d8a28bd2017241a",
+      "raw-nr-v1/minimal.so": "ee80f0e9094b5f3f823473f11b8e4d7f8c6661439a28d5a613fd14d1ee728a68",
+      "vr180-v1/backup/gui": "da87668122982f01e62f62d36b2f4a6e6b1143187b6eab3d41a15da58b857d43",
+      "vr180-v1/backup/setup": "ef3978c85af0986331862bb65c7f556480d39dd19755954069ed3f66141338f1",
+      "vr180-v1/backup/sync.so": "c7a4c9c1088e53ef37dc6a952ce9f95edcf9f7c6d24c1bf50bb55b16749c681b",
+      "vr180-v1/gui": "b658432ebbd64e4ff82e4f381c9117a49158af23475dafb1b23120c83026b391",
+      "vr180-v1/setup": "d3ab1f526aaeacff2d256377754ff8c30875e6aa17488896f5ebded3ede1a6e9",
+      "vr180-v1/sync.so": "afb2a8fbd6d9f89b3dc9c22654fba10ca6ac0c46cb7ae5c0a903836efd818e69"
+    },
+    "program_bytes": 287957287,
+    "ssh_bytes": 4456572
+  },
+  {
+    "entries": {
+      "raw-nr-v1/low.so": "9122b444e77c5087daef7aa32dd706b2216689ee594e2fdd2a06cdffa8b67175",
+      "raw-nr-v1/medium.so": "50efa43512fbbd97ec698043daa731dc20aa18e42ea507c94d8a28bd2017241a",
+      "raw-nr-v1/minimal.so": "ee80f0e9094b5f3f823473f11b8e4d7f8c6661439a28d5a613fd14d1ee728a68",
+      "vr180-v1/backup/gui": "da87668122982f01e62f62d36b2f4a6e6b1143187b6eab3d41a15da58b857d43",
+      "vr180-v1/backup/setup": "b0208fcf29255ea2edd10e6cd09fa443f22fe2b1c534ef6c09b2de50879ef807",
+      "vr180-v1/backup/sync.so": "c7a4c9c1088e53ef37dc6a952ce9f95edcf9f7c6d24c1bf50bb55b16749c681b",
+      "vr180-v1/gui": "ea7468bbb04eb5ed3289caededf8a0aec5030297950e0d7945b02e9a24d40f6b",
+      "vr180-v1/setup": "69121c703468dbf1399635fa172eb6cc111652fbe195988391e1043ee30ad055",
+      "vr180-v1/sync.so": "afb2a8fbd6d9f89b3dc9c22654fba10ca6ac0c46cb7ae5c0a903836efd818e69"
+    },
+    "program_bytes": 287966031,
+    "ssh_bytes": 4456572
+  },
+  {
+    "entries": {
+      "raw-nr-v1/low.so": "9122b444e77c5087daef7aa32dd706b2216689ee594e2fdd2a06cdffa8b67175",
+      "raw-nr-v1/medium.so": "50efa43512fbbd97ec698043daa731dc20aa18e42ea507c94d8a28bd2017241a",
+      "raw-nr-v1/minimal.so": "ee80f0e9094b5f3f823473f11b8e4d7f8c6661439a28d5a613fd14d1ee728a68",
+      "vr180-v1/backup/gui": "da87668122982f01e62f62d36b2f4a6e6b1143187b6eab3d41a15da58b857d43",
+      "vr180-v1/backup/setup": "0ab64a1d8cbc4d59eae75daf0e614a8b89de2a70bf4a3cd26960ab4b7b39932e",
+      "vr180-v1/backup/sync.so": "c7a4c9c1088e53ef37dc6a952ce9f95edcf9f7c6d24c1bf50bb55b16749c681b",
+      "vr180-v1/gui": "9dc9b311ac7bcddae1515e68c8e1172ad840b9a92f0f9824a24d6fde82dd79a8",
+      "vr180-v1/setup": "798011ac416c19637f5709361bfff8a4b77e7e326c2a406b176807c7370421f2",
+      "vr180-v1/sync.so": "afb2a8fbd6d9f89b3dc9c22654fba10ca6ac0c46cb7ae5c0a903836efd818e69"
+    },
+    "program_bytes": 287948574,
+    "ssh_bytes": 4456572
+  },
+  {
+    "entries": {
+      "raw-nr-v1/low.so": "9122b444e77c5087daef7aa32dd706b2216689ee594e2fdd2a06cdffa8b67175",
+      "raw-nr-v1/medium.so": "50efa43512fbbd97ec698043daa731dc20aa18e42ea507c94d8a28bd2017241a",
+      "raw-nr-v1/minimal.so": "ee80f0e9094b5f3f823473f11b8e4d7f8c6661439a28d5a613fd14d1ee728a68",
+      "vr180-v1/backup/gui": "24ea4511db99e00ddbb52d976307d08a09f3e4237d71b1a6642e1d99c8f2f94e",
+      "vr180-v1/backup/setup": "4dfeb3fefcf0c0e379c9cac72928ca665b1c14a9820a15b94be086fa5c6665dd",
+      "vr180-v1/backup/sync.so": "c7a4c9c1088e53ef37dc6a952ce9f95edcf9f7c6d24c1bf50bb55b16749c681b",
+      "vr180-v1/gui": "98f516281ac4543c0fb9b506898bfc66403a38db1c54ff52f3583a8cddc54e27",
+      "vr180-v1/setup": "e295027e13794b90fecc5837e661410e981c2a19d2b9a914e996af74605a18eb",
+      "vr180-v1/sync.so": "afb2a8fbd6d9f89b3dc9c22654fba10ca6ac0c46cb7ae5c0a903836efd818e69"
+    },
+    "program_bytes": 289702008,
+    "ssh_bytes": 5177468
+  }
+]

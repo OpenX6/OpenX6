@@ -1,0 +1,6 @@
+X6 transport adapted from the insta360-x6-research project's devices/x6/x6_root.py.
+Original protocol documentation by derrickyau9 and contributors:
+https://github.com/derrickyau9/insta360-luna-ultra-reverse-engineering
+Upstream revision 92f5e7afadb6693054f0547031aa90dc54cb08ed.
+Licensed under the included Apache License 2.0. OpenX6 extracted the bounded
+X6 transport and adapted it for camera commands.

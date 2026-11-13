@@ -1,0 +1,784 @@
+{
+  "assets/release-v5/etc/udev/scripts/automountquickreader.openx6-native.sh": {
+    "op": "copy",
+    "path": "/etc/udev/scripts/automountquickreader.sh",
+    "base_sha256": "dcd2699f1cd2e16a3ab99300dfef6287309999c5c1448987479ba3b9147d494e"
+  },
+  "assets/release-v5/ins/etc/ins_logd/ins_logd_config.json": {
+    "op": "log-limits",
+    "path": "/ins/etc/ins_logd/ins_logd_config.json",
+    "base_sha256": "8ace77e4af941276197a20fe405ebd8a1f7754f8d36c4ea14deb4281bb9b3201"
+  },
+  "assets/release-v5/usr/share/openx6/ssd/automountquickreader.original.sh": {
+    "op": "copy",
+    "path": "/etc/udev/scripts/automountquickreader.sh",
+    "base_sha256": "dcd2699f1cd2e16a3ab99300dfef6287309999c5c1448987479ba3b9147d494e"
+  },
+  "assets/release-v5/usr/share/openx6/ssd/hooks.json": {
+    "op": "ssd-hooks"
+  },
+  "assets/release-v5/usr/share/openx6/ssd/storaged.original.json": {
+    "op": "copy",
+    "path": "/ins/etc/storaged.json",
+    "base_sha256": "c217a2c7e6ffb0059e4aeea83782e12b868ee15fda81c1979a882cda1d7edd8b"
+  },
+  "recipes/13b2f0b09c03ea412102cd69d3b08addaa697bb189f37ba4936aa14de466f6b5.json": {
+    "op": "launcher",
+    "base_sha256": "01ca1f910c9ce4356c5bf031a22cc0fbf728b3ce8bee0311609bc2994ac29fed",
+    "path": "/sbin/usb/compositions/C001"
+  },
+  "recipes/2b68f5c6e957d97e89f451fa66e84cbe984131dd0e17242f905495b9b34624d1.json": {
+    "op": "base-gui",
+    "path": "/usr/bin/ins_gui",
+    "base_sha256": "cde843276f3debaab3e1ea23e8670310b385e1a9000f2fe7ea831acabd88d286"
+  },
+  "recipes/3822dea4149da31ccf9d0df42bf757b4d8d79c28d512d11416c1d6cd22d5d300.json": {
+    "op": "hardware-service",
+    "base_sha256": "a230348f68e0a5a12b2ba6a91818c3ac0218a7e690984d49d587c990e799170c",
+    "path": "/usr/bin/ins_hald"
+  },
+  "recipes/821be2b3eff7abe7a107660a791629eb6a600ec1771145d3eb61102531ad0468.json": {
+    "op": "maintenance-updater",
+    "base_sha256": "07c188c47badd4061eea6d005a526e7244d514d593495d246252fff989b63a4e",
+    "path": "/usr/bin/ins_otad"
+  },
+  "recipes/957b1a32ed9589d8e67c23a7b7c04261b7d78dd05137cae21f7b48cdc9e9c603.json": {
+    "op": "usb-receiver",
+    "base_sha256": "5ef3080c04ab647ee692309e375fdb9dda784a2e4284cb5f21e2fe0871a86bb2",
+    "path": "/usr/bin/ins_usb"
+  },
+  "recipes/a1f4294411a14a7655e38b978419b0a0f6c8b96f411305d0da731d3b06a15610.json": {
+    "op": "owner-adb",
+    "path": "/sbin/adbd",
+    "base_sha256": "522837413c39515ce1f8694f4ac22825b5f95747ef591140c0db85fe0c9a01eb"
+  },
+  "recipes/a6d43ea78327dd30ba621096bcfbd9c364b679a49230aec2472634f78ad93df6.json": {
+    "op": "factory-api",
+    "base_sha256": "0186a9db8860d06615011e6c4389958fd351c5482345ab229128a7a3fe3a6fa5",
+    "path": "/usr/lib/libins_factory_api.so"
+  },
+  "recipes/a704b45825d5867bb327753794b9a7f754086bd0ad4133f3ba961b78124138a7.json": {
+    "op": "launcher",
+    "base_sha256": "b67f27de3c2c0b722c167e0e851bc84d4ad98433c7105002e5fa9c6960611de5",
+    "path": "/sbin/launch_adbd"
+  },
+  "recipes/b28e1de9bae4582d2e711f838c2ebca228d3c93ca4dbfc7b79e42f5594da3ecb.json": {
+    "op": "launcher",
+    "base_sha256": "1a9186967a223826c621e10f71ac7df6000bd0ce54b7858fc6f542a1cb2ceb37",
+    "path": "/sbin/usb/compositions/901D"
+  },
+  "recipes/b2d91a5218ffbe88cd61c5190a993629e738885f0235a39c5819ca5b9eb697f2.json": {
+    "op": "owner-adb",
+    "path": "/lib/systemd/system/adbd.service",
+    "base_sha256": "977f85fa244110b1981e859a46bb29a7d11bba0fe17f2006f665843cb77ea934"
+  },
+  "recipes/b4414d3fbdd2efdb9de5f30ccf457dbd787f92824ad63c7f3d8a92865312e7f2.json": {
+    "op": "start-usb",
+    "base_sha256": "cbd52164a8b6b9101b69856505e0cbc6cc959a7684a2203ad93c2ee634ac2430",
+    "path": "/sbin/start_usb"
+  },
+  "recipes/be8814d1b39485feb9be8f0fd1280da5a541165662eda2b21007d2fe88c4dc22.json": {
+    "op": "camera-hal",
+    "path": "/usr/lib/hw/camera.qcom.so",
+    "base_sha256": "d0b00bdd8e5bc11786c69cab7531920072852084c078b7d9c3b5bc7662968225"
+  },
+  "recipes/faf8fbd5808fcb3f28694036c8ac0b741459782e6ee4b98199891f6a4516019c.json": {
+    "op": "owner-adb",
+    "path": "/usr/lib/libadbd.so.0.0.0",
+    "base_sha256": "dc443b870bef5885d76fc181b65036b452cdf8501da92a5969e6db8201410671"
+  },
+  "recipes/feature-gui-interval-custom.json": {
+    "op": "feature-menu",
+    "path": "/usr/bin/ins_gui",
+    "base_sha256": "cde843276f3debaab3e1ea23e8670310b385e1a9000f2fe7ea831acabd88d286",
+    "recipe_base_sha256": "da87668122982f01e62f62d36b2f4a6e6b1143187b6eab3d41a15da58b857d43",
+    "indent": 1
+  },
+  "recipes/interval-8k-fast-v2-binopureshot.json": {
+    "op": "fast-capture",
+    "path": "/usr/lib/iis/node/com.insta.iis.node.binopureshot.so",
+    "base_sha256": "41514f83aa3fea363d1d583f859de5fe2384935dbd2f8376b3b4093e2d9ed6ea"
+  },
+  "recipes/mod-com.insta.stats.ae_params_imx01f.so.linked.json": {
+    "op": "set-bytes",
+    "writes": [
+      [
+        121192,
+        "00"
+      ],
+      [
+        221648,
+        "00"
+      ],
+      [
+        422560,
+        "00"
+      ],
+      [
+        1600344,
+        "00"
+      ]
+    ],
+    "base_sha256": "cd5833e5a469542a97747e98bd2cc567866448a855925735e2db26f28a69c803",
+    "path": "/usr/lib/camera/components/com.insta.stats.ae_params_imx01f.so",
+    "compact": true
+  },
+  "recipes/mod-com.insta.stats.ae_params_imx01f_csi2.so.linked.json": {
+    "op": "set-bytes",
+    "writes": [
+      [
+        121192,
+        "00"
+      ],
+      [
+        221648,
+        "00"
+      ],
+      [
+        422560,
+        "00"
+      ],
+      [
+        1600344,
+        "00"
+      ]
+    ],
+    "base_sha256": "29a5b07b7c3fa402b8fa1528ed2d0706d4a63fe298da54c916d2bb5df3b90fc2",
+    "path": "/usr/lib/camera/components/com.insta.stats.ae_params_imx01f_csi2.so",
+    "compact": true
+  },
+  "recipes/mod-instasettings.config.linked.json": {
+    "op": "set-bytes",
+    "writes": [
+      [
+        37177,
+        "30"
+      ]
+    ],
+    "base_sha256": "5a28a4a6b0e0e16e9d26cd98421764b2ed4148237d1cf3b13b3ed211651836d0",
+    "path": "/usr/lib/camera/instasettings.config",
+    "compact": true
+  },
+  "recipes/mod-vnr-low.so.json": {
+    "op": "video-nr",
+    "gain": 0.33,
+    "compact": true,
+    "path": "/usr/lib/libinsiqsetting.so",
+    "base_sha256": "977d6e28c5cc45ceb600e8b01cc4a7b7c967baac68594b009360820cae693d1f"
+  },
+  "recipes/mod-vnr-medium.so.json": {
+    "op": "video-nr",
+    "gain": 0.66,
+    "compact": true,
+    "path": "/usr/lib/libinsiqsetting.so",
+    "base_sha256": "977d6e28c5cc45ceb600e8b01cc4a7b7c967baac68594b009360820cae693d1f"
+  },
+  "recipes/mod-vnr-minimal.so.json": {
+    "op": "video-nr",
+    "gain": 0.0,
+    "compact": true,
+    "path": "/usr/lib/libinsiqsetting.so",
+    "base_sha256": "977d6e28c5cc45ceb600e8b01cc4a7b7c967baac68594b009360820cae693d1f"
+  },
+  "recipes/mod-vnr-native.so.json": {
+    "op": "video-nr",
+    "gain": 1.0,
+    "compact": true,
+    "path": "/usr/lib/libinsiqsetting.so",
+    "base_sha256": "977d6e28c5cc45ceb600e8b01cc4a7b7c967baac68594b009360820cae693d1f",
+    "video_iq": "iq"
+  },
+  "recipes/release-v5-0fc014e58a6ee20b.json": {
+    "op": "interval-wait",
+    "path": "/usr/lib/com.qti.feature2.rtmcx.so",
+    "base_sha256": "5bb4ca77fe78834238dd19ce08e39c14eca09373fc96ea05a1de8260a7c59386"
+  },
+  "recipes/release-v5-1f9de7e78a5b5fa2.json": {
+    "op": "set-bytes",
+    "writes": [
+      [
+        793689,
+        "0c"
+      ]
+    ],
+    "base_sha256": "86589c03bd408ec300ad510afdcff96122a7237e905c738cdf325f29f921661d",
+    "path": "/usr/lib/libins_config_definitions.so"
+  },
+  "recipes/release-v5-3a11e52415d1e41f.json": {
+    "op": "ssd-gate",
+    "path": "/usr/bin/ins_bla",
+    "base_sha256": "d80e4b3ccc7e7b588d691ba50ffd81c61324dd33560b7d0566a479a375af53f5"
+  },
+  "recipes/release-v5-7db471cf27c16094.json": {
+    "op": "interval-ae",
+    "path": "/usr/lib/camera/components/com.insta.stats.aec.so",
+    "base_sha256": "7c07c5396e0b5d03f617ee148dd1432943f01148c18467937a7644c5a9151095"
+  },
+  "recipes/release-v5-c622aff3249689be.json": {
+    "op": "set-bytes",
+    "writes": [
+      [
+        3131673,
+        "0c"
+      ]
+    ],
+    "base_sha256": "a3f7f8705d4f2d548ed92d56aa1012537c58d46030fb47a5ba73a45eacedfb0a",
+    "path": "/usr/lib/libins_ibus.so"
+  },
+  "recipes/release-v5-de13e9ed3d60e51c.json": {
+    "op": "gui-wrapper",
+    "path": "/usr/lib/libins_gui_wrap.so",
+    "base_sha256": "766b1632de37082e1fb0fc60c0d6e2b06b0cabb5bc01f4164a42f8e66a06edf5"
+  },
+  "recipes/release-v5-hnr-native.json": {
+    "op": "camera-hal-runtime",
+    "path": "/usr/lib/hw/camera.qcom.so",
+    "base_sha256": "d0b00bdd8e5bc11786c69cab7531920072852084c078b7d9c3b5bc7662968225",
+    "variant": "native",
+    "video_iq": "cam"
+  },
+  "recipes/release-v5-hnr-off.json": {
+    "op": "camera-hal-runtime",
+    "path": "/usr/lib/hw/camera.qcom.so",
+    "base_sha256": "d0b00bdd8e5bc11786c69cab7531920072852084c078b7d9c3b5bc7662968225",
+    "variant": "off"
+  },
+  "recipes/seed-87d6e65a73ab8cacd855a97d5feff2ffe7a0e44e14c7168c9fd9dd75a92957a9.json": {
+    "op": "raw-nr",
+    "gain": 0.0,
+    "base_sha256": "866700ee31b4f23d21d1d8591bb38c9845069ab97b91e1fa32eb8c8345ba1618",
+    "path": "/usr/lib/libbva_camera.so"
+  },
+  "recipes/seed-8976829794bbb66ef1a91e2092eebd0c7ae1038caf64b880aa393efa8bc13c97.json": {
+    "op": "raw-nr",
+    "gain": 0.66,
+    "base_sha256": "866700ee31b4f23d21d1d8591bb38c9845069ab97b91e1fa32eb8c8345ba1618",
+    "path": "/usr/lib/libbva_camera.so"
+  },
+  "recipes/seed-9feedf97c2e8235668afd57fa2c8fd020f56aa361040066cb5a0bc24c4e5e622.json": {
+    "op": "raw-nr",
+    "gain": 0.33,
+    "base_sha256": "866700ee31b4f23d21d1d8591bb38c9845069ab97b91e1fa32eb8c8345ba1618",
+    "path": "/usr/lib/libbva_camera.so"
+  },
+  "src/pureshot/ps2native/stock_tuning.h": {
+    "op": "snapshot-tuning",
+    "path": "/usr/lib/libinsispparam.so",
+    "base_sha256": "12eefdd40aa2019b7efedc45264f9fbccd3b19324a01dc1258a54b4ddb468ec7"
+  },
+  "recipes/capture-encoder.json": {
+    "op": "single-capture",
+    "path": "/usr/bin/ins_mediad",
+    "base_sha256": "b41f38a7a4886a4f32cebdd517dddca9e62d214b18ad41b40cae9a916d97324b",
+    "variant": "encoder",
+    "groups_sha256": "3d71d2d5d5f9be1def71061a41fe601b0492444e459ed025f163152ad8577601"
+  },
+  "recipes/capture-config.json": {
+    "op": "single-capture",
+    "path": "/usr/bin/ins_configd",
+    "base_sha256": "7a0543005b29075f2f22260c9171da50146275a31320d6685c611e151833413d",
+    "variant": "config"
+  },
+  "recipes/capture-streams.json": {
+    "op": "single-capture",
+    "path": "/ins/etc/ins_mediad/ins_media_stream_prd.json",
+    "base_sha256": "3d71d2d5d5f9be1def71061a41fe601b0492444e459ed025f163152ad8577601",
+    "variant": "streams"
+  },
+  "recipes/capture-caps.json": {
+    "op": "single-capture",
+    "path": "/ins/etc/bll_spec_configs/bll_spec_cap.json",
+    "base_sha256": "290770a473d923163b25fa7f2085db3b8e81803bc5433a78e4501445916a2986",
+    "variant": "caps"
+  },
+  "recipes/capture-fov.json": {
+    "op": "single-capture",
+    "path": "/ins/etc/ins_mediad/ins_media_fov_prd.json",
+    "base_sha256": "d698f5f229eced7bd7944ded8d6bc9341b2c1dd4ac386a4123f6a6464b894220",
+    "variant": "fov"
+  },
+  "recipes/capture-sensor.json": {
+    "op": "single-capture",
+    "path": "/usr/lib/camera/com.qti.sensormodule.sunny_imx01f.bin",
+    "base_sha256": "b4ae2ae32ddd379cb2159a388c9a3ba95a53dc6d63988ea21336cb43079cd184",
+    "variant": "sensor"
+  },
+  "recipes/capture-sensor-csi2.json": {
+    "op": "single-capture",
+    "path": "/usr/lib/camera/com.qti.sensormodule.sunny_imx01f_csi2.bin",
+    "base_sha256": "42851f1e78ea7c806acbc23c186047748298ccbf2254a6214b17fe9b7abac664",
+    "variant": "sensor"
+  },
+  "recipes/capture-native.json": {
+    "op": "single-capture",
+    "path": "/usr/lib/camera/instasettings.config",
+    "base_sha256": "5a28a4a6b0e0e16e9d26cd98421764b2ed4148237d1cf3b13b3ed211651836d0",
+    "variant": "native"
+  },
+  "recipes/capture-linked.json": {
+    "op": "single-capture",
+    "path": "/usr/lib/camera/instasettings.config",
+    "base_sha256": "5a28a4a6b0e0e16e9d26cd98421764b2ed4148237d1cf3b13b3ed211651836d0",
+    "variant": "linked"
+  },
+  "recipes/capture-buffers.json": {
+    "op": "single-capture",
+    "path": "/usr/lib/libins_mediad_ibus.so",
+    "base_sha256": "e8488ee69bbbe87a82dea7b10b5fb07d9081db60466730b3d882cb4b0db96dbc",
+    "variant": "buffers"
+  },
+  "recipes/fisheye-render.json": {
+    "op": "fisheye-render",
+    "path": "/usr/lib/camera/components/com.insta.node.render.so",
+    "base_sha256": "2151a74fb9335fe7f563bc4cb7d6566bec6221c7ef5ecb7a05614dfdb40c8af1"
+  },
+  "recipes/fisheye-mesh.json": {
+    "op": "fisheye-mesh",
+    "path": "/usr/lib/camera/components/com.insta.node.monoeisv2.so",
+    "base_sha256": "182556bdcc2f2f03a6a5ab90a93cc6022452a763ddd0d30bd7f5f7ca05923e10"
+  },
+  "recipes/capture-chi-native.json": {
+    "op": "set-bytes",
+    "path": "/usr/lib/hw/com.qti.chi.override.so",
+    "base_sha256": "c7a4c9c1088e53ef37dc6a952ce9f95edcf9f7c6d24c1bf50bb55b16749c681b",
+    "writes": [
+      [
+        96,
+        "344e"
+      ],
+      [
+        104,
+        "344e"
+      ],
+      [
+        2020404,
+        "729e0a14"
+      ],
+      [
+        4803936,
+        "885e1453896e08126a0190520a20a07229010a4aa9"
+      ],
+      [
+        4803959,
+        "35a9"
+      ],
+      [
+        4803963,
+        "102949683849"
+      ],
+      [
+        4803971,
+        "34e803092aac61f517"
+      ],
+      [
+        4803991,
+        "4d4e6e"
+      ],
+      [
+        4803996,
+        "885e1453896e08124a02905229010a4a29790712c9"
+      ],
+      [
+        4804019,
+        "35c9"
+      ],
+      [
+        4804023,
+        "102949683869"
+      ],
+      [
+        4804031,
+        "34e803092a9d61f517e6ffff17"
+      ],
+      [
+        4804055,
+        "4d4e6e"
+      ],
+      [
+        4804060,
+        "a8019052081ca0720801144a0879071268"
+      ],
+      [
+        4804079,
+        "35880a80529161f517e9ffff17887a0712a90190520916a0722901084a69"
+      ],
+      [
+        4804111,
+        "35680980528961f517a90190520918a0722901084a69"
+      ],
+      [
+        4804135,
+        "35a80980528361f517ebffff17"
+      ]
+    ]
+  },
+  "recipes/capture-mcrepro.json": {
+    "op": "set-bytes",
+    "path": "/usr/lib/com.qti.feature2.mcreprocrt.so",
+    "base_sha256": "557f34f1f25d572ad28990c6eec1973ad1ecd4a05c0ef4d405cc880c0d58e05f",
+    "writes": [
+      [
+        96,
+        "e77f"
+      ],
+      [
+        104,
+        "e77f"
+      ],
+      [
+        318800,
+        "7ee80014"
+      ],
+      [
+        556704,
+        "680b40f98804"
+      ],
+      [
+        556711,
+        "b4a904"
+      ],
+      [
+        556715,
+        "102a154038aa"
+      ],
+      [
+        556723,
+        "340b1540384a010b4aca03"
+      ],
+      [
+        556735,
+        "35fbffff170a1540384ac1"
+      ],
+      [
+        556747,
+        "514a7d01532a03"
+      ],
+      [
+        556755,
+        "350a014039ea02"
+      ],
+      [
+        556763,
+        "3568a340b909b082522901084a6902"
+      ],
+      [
+        556779,
+        "35088108aa692b4aa9290108ca4a0108ca29010aaaa901"
+      ],
+      [
+        556803,
+        "b5692b4ba94a0109cb4a21"
+      ],
+      [
+        556815,
+        "d12a01"
+      ],
+      [
+        556819,
+        "b50901"
+      ],
+      [
+        556823,
+        "b42a0140f94a0108caaa"
+      ],
+      [
+        556835,
+        "b5086082d2088108aa68230aa92801"
+      ],
+      [
+        556851,
+        "f9882140398717ff1759555646554c4c5f496e"
+      ],
+      [
+        556872,
+        "680b40f96804"
+      ],
+      [
+        556879,
+        "b46904"
+      ],
+      [
+        556883,
+        "102a154038aa"
+      ],
+      [
+        556891,
+        "340b1540386b010a4aab03"
+      ],
+      [
+        556903,
+        "35fbffff170a1540384ac1"
+      ],
+      [
+        556915,
+        "514a7d01530a03"
+      ],
+      [
+        556923,
+        "350a014039ca02"
+      ],
+      [
+        556931,
+        "35086682d208f0c1f2692b4aa9290108ca4a0108ca29010aaae901"
+      ],
+      [
+        556959,
+        "b5692b4ba94a0109cb4a21"
+      ],
+      [
+        556971,
+        "d16a01"
+      ],
+      [
+        556975,
+        "b54901"
+      ],
+      [
+        556979,
+        "b42a0140f94a0108caea"
+      ],
+      [
+        556991,
+        "b508f081d208f0c1f268230aa92801"
+      ],
+      [
+        557007,
+        "f9882140396017ff17b2ffff1759555646554c4c5f496e"
+      ]
+    ]
+  },
+  "recipes/capture-node.json": {
+    "op": "set-bytes",
+    "path": "/usr/lib/camera/components/com.insta.node.monoeisv3.so",
+    "base_sha256": "f9e10ec340853651522803a30acdfad2f8efe468ace7a03c9c2c7172d0f47000",
+    "writes": [
+      [
+        96,
+        "0871"
+      ],
+      [
+        104,
+        "0871"
+      ],
+      [
+        38336,
+        "92360094"
+      ],
+      [
+        48740,
+        "672c0094"
+      ],
+      [
+        55984,
+        "54250094"
+      ],
+      [
+        56612,
+        "b7240094"
+      ],
+      [
+        94208,
+        "ec0314aa03"
+      ],
+      [
+        94215,
+        "14ec0313aa16"
+      ],
+      [
+        94223,
+        "1489f943b93fe101716102"
+      ],
+      [
+        94235,
+        "5489fd43b93f013c710107"
+      ],
+      [
+        94247,
+        "54890144b93f012f71a106"
+      ],
+      [
+        94259,
+        "54895153b93f013c714106"
+      ],
+      [
+        94271,
+        "54895553b93f012f71e105"
+      ],
+      [
+        94283,
+        "54096f8dd269"
+      ],
+      [
+        94290,
+        "a0f2896969b83f09"
+      ],
+      [
+        94299,
+        "714105"
+      ],
+      [
+        94303,
+        "5412"
+      ],
+      [
+        94307,
+        "1489fd43b90aee82523f010a6ba104"
+      ],
+      [
+        94323,
+        "54890144b93f013e714104"
+      ],
+      [
+        94335,
+        "5489f943b93ff1"
+      ],
+      [
+        94343,
+        "71e103"
+      ],
+      [
+        94347,
+        "54895153b90aee82523f010a6b6103"
+      ],
+      [
+        94363,
+        "54895553b93f013e710103"
+      ],
+      [
+        94375,
+        "545f040171c102"
+      ],
+      [
+        94383,
+        "547fc4"
+      ],
+      [
+        94387,
+        "718102"
+      ],
+      [
+        94391,
+        "546102"
+      ],
+      [
+        94395,
+        "b4e90301aa0a"
+      ],
+      [
+        94402,
+        "80520b0880526201231e0b0680526301231e4101231e2118231e0b"
+      ],
+      [
+        94430,
+        "80526001231e"
+      ],
+      [
+        94437,
+        "18221e2005812c6b05"
+      ],
+      [
+        94447,
+        "117f05017163ffff544a05"
+      ],
+      [
+        94459,
+        "115fc5"
+      ],
+      [
+        94463,
+        "71a3feff5447b3ff17"
+      ]
+    ]
+  },
+  "recipes/capture-capture-timing.json": {
+    "op": "installed-set-bytes",
+    "writes": [
+      [
+        1922968,
+        "1f2003d5"
+      ],
+      [
+        2108285,
+        "3d"
+      ]
+    ],
+    "path": "/usr/lib/hw/com.qti.chi.override.so",
+    "base_sha256": "c7a4c9c1088e53ef37dc6a952ce9f95edcf9f7c6d24c1bf50bb55b16749c681b",
+    "installed": {
+      "op": "set-bytes",
+      "path": "/usr/lib/hw/com.qti.chi.override.so",
+      "base_sha256": "c7a4c9c1088e53ef37dc6a952ce9f95edcf9f7c6d24c1bf50bb55b16749c681b",
+      "writes": [
+        [
+          96,
+          "344e"
+        ],
+        [
+          104,
+          "344e"
+        ],
+        [
+          2020404,
+          "729e0a14"
+        ],
+        [
+          4803936,
+          "885e1453896e08126a0190520a20a07229010a4aa9"
+        ],
+        [
+          4803959,
+          "35a9"
+        ],
+        [
+          4803963,
+          "102949683849"
+        ],
+        [
+          4803971,
+          "34e803092aac61f517"
+        ],
+        [
+          4803991,
+          "4d4e6e"
+        ],
+        [
+          4803996,
+          "885e1453896e08124a02905229010a4a29790712c9"
+        ],
+        [
+          4804019,
+          "35c9"
+        ],
+        [
+          4804023,
+          "102949683869"
+        ],
+        [
+          4804031,
+          "34e803092a9d61f517e6ffff17"
+        ],
+        [
+          4804055,
+          "4d4e6e"
+        ],
+        [
+          4804060,
+          "a8019052081ca0720801144a0879071268"
+        ],
+        [
+          4804079,
+          "35880a80529161f517e9ffff17887a0712a90190520916a0722901084a69"
+        ],
+        [
+          4804111,
+          "35680980528961f517a90190520918a0722901084a69"
+        ],
+        [
+          4804135,
+          "35a80980528361f517ebffff17"
+        ]
+      ]
+    },
+    "installed_sha256": "a8284612ede7a86061cf2783f194f9638e5c033a93552d858085dd0c1115cf33"
+  }
+}

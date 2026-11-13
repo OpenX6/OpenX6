@@ -1,0 +1,17 @@
+[Unit]
+Description=Load X6 owner SSH after persistent overlays become visible
+# SSH is the floor: start even if the shared /data or /etc overlay does not
+# mount. A missing host key falls back to a temporary in-memory key.
+Wants=data.mount etc.mount
+After=local-fs.target data.mount etc.mount network.target
+[Service]
+Type=oneshot
+User=root
+Group=root
+UMask=0077
+SELinuxContext=system_u:system_r:unconfined_t:s0-s15:c0.c1023
+TimeoutStartSec=10
+ExecStart=/usr/bin/timeout -s TERM -k 1 8 /usr/local/sbin/x6-owner-late-start
+RemainAfterExit=yes
+[Install]
+WantedBy=multi-user.target

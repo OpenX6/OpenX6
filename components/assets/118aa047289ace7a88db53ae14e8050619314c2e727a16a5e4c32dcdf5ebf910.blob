@@ -1,0 +1,16 @@
+[Unit]
+Description=Owner VR180 settings controller
+Requires=data.mount
+Wants=x6-vr180-prepare.service
+After=data.mount x6-vr180-prepare.service ins_mediad.service ins_gui.service
+ConditionPathExists=/data/x6-owner-features/vr180-v1/enabled
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/x6-vr180-control serve
+Restart=no
+TimeoutStopSec=240
+KillMode=mixed
+StandardOutput=append:/data/x6-owner-features/vr180-v1/control.log
+StandardError=inherit
+[Install]
+WantedBy=multi-user.target

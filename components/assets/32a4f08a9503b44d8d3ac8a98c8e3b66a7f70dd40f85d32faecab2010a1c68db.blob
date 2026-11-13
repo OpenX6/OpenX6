@@ -1,0 +1,16 @@
+[Unit]
+Description=Owner RAW photo noise reduction menu controller
+Requires=data.mount
+Wants=x6-raw-nr-prepare.service
+After=data.mount x6-raw-nr-prepare.service ins_mediad.service ins_gui.service x6-owner-maintenance.service x6-owner-gui-auth.service
+ConditionPathExists=/data/x6-owner-features/raw-nr-v1/enabled
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/x6-raw-nr-control serve
+Restart=no
+TimeoutStopSec=240
+KillMode=mixed
+StandardOutput=append:/data/x6-owner-features/raw-nr-v1/control.log
+StandardError=inherit
+[Install]
+WantedBy=multi-user.target

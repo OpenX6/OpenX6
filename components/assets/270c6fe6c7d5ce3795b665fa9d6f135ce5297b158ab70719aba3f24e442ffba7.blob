@@ -1,0 +1,4 @@
+[Unit]
+# Hold automatic vendor OTA until a reviewed owner maintenance path exists.
+# This does not implement plaintext acceptance or permit rollback.
+ConditionPathExists=/run/x6-owner/vendor-ota-enabled

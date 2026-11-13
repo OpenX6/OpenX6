@@ -1,0 +1,16 @@
+[Unit]
+Description=Owner-authenticated X6 ADB
+Requires=usb.service
+After=usb.service leprop.service pcie.service
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+User=root
+Group=root
+UMask=0077
+ExecStart=/sbin/launch_adbd
+Restart=on-failure
+RestartSec=2
+KillMode=control-group
+[Install]
+WantedBy=multi-user.target

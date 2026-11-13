@@ -1,0 +1,88 @@
+#!/bin/sh
+set -eu
+umask 077
+# SSH is the floor. Two kinds of problem are told apart:
+#  - the root-partition program or the holder key itself is wrong: nothing
+#    trustworthy can be started, stop (exit 73) as before;
+#  - a unit definition or drop-in from a higher-precedence location is not the
+#    known one: do not start that unit, but still start the verified
+#    root-partition program directly as a transient service on the fallback
+#    port, so the owner keeps a way in (exit 74).
+reject() { echo "OWNER_OVERLAY_REFUSED: $*" >&2; exit 73; }
+x6_suspect=''
+suspect() { [ -n "$x6_suspect" ] || x6_suspect=$*; echo "OWNER_UNIT_SUSPECT: $*" >&2; }
+regular_root() {
+    [ ! -L "$1" ] && [ -f "$1" ] || reject "nonregular: $1"
+    x6_meta=$(/bin/stat -c '%u:%g:%a' "$1")
+    case "$x6_meta" in 0:0:600|0:0:644|0:0:700|0:0:755) ;; *) reject "ownership/mode: $1" ;; esac
+}
+digest_is() {
+    regular_root "$1"
+    x6_sum=$(/usr/bin/sha256sum "$1")
+    [ "${x6_sum%% *}" = "$2" ] || reject "digest: $1"
+}
+# Same checks, but a failure marks the unit layer suspect instead of stopping.
+regular_root_suspect() {
+    if [ -L "$1" ] || [ ! -f "$1" ]; then suspect "nonregular: $1"; return 1; fi
+    x6_meta=$(/bin/stat -c '%u:%g:%a' "$1")
+    case "$x6_meta" in 0:0:600|0:0:644|0:0:700|0:0:755) return 0 ;; *) suspect "ownership/mode: $1"; return 1 ;; esac
+}
+digest_is_suspect() {
+    regular_root_suspect "$1" || return 1
+    x6_sum=$(/usr/bin/sha256sum "$1")
+    if [ "${x6_sum%% *}" != "$2" ]; then suspect "digest: $1"; return 1; fi
+    return 0
+}
+# What we would run must be trustworthy before anything else; otherwise stop.
+digest_is /usr/local/sbin/x6-owner-maintenance @SSH_EXECUTABLE_SHA256@
+x6_holder_sha=$(/usr/local/sbin/x6-owner-maintenance --holder-digest) || reject "local holder"
+# Higher-precedence unit definitions/masks and generic/prefix drop-ins need
+# explicit review. Do not silently accept them or count an unknown unit as root.
+for x6_base in /etc/systemd/system.control /run/systemd/system.control /run/systemd/transient /run/systemd/generator.early /etc/systemd/system /etc/systemd/system.attached /run/systemd/system /run/systemd/system.attached /usr/local/lib/systemd/system; do
+    for x6_name in x6-owner-maintenance.service x6-owner-late-start.service; do
+        x6_path=$x6_base/$x6_name
+        if [ -e "$x6_path" ] || [ -L "$x6_path" ]; then
+            if [ "$x6_path" = /etc/systemd/system/x6-owner-maintenance.service ]; then
+                # Known early layout: the shared /etc unit runs a program kept in
+                # /data. Accept it only when every part is the known one.
+                if digest_is_suspect "$x6_path" 57c9b143941ab9903b0ba957195686cc98ec57046bb1f3cea45b206c78fd34a9 \
+                   && digest_is_suspect /data/x6-owner-maintenance/ssh @SSH_EXECUTABLE_SHA256@ \
+                   && regular_root_suspect /data/x6-owner-maintenance/owner.pub \
+                   && regular_root_suspect /lib/systemd/system/x6-owner-maintenance.service.d/10-owner-context.conf; then
+                    x6_public=$(/bin/cat /data/x6-owner-maintenance/owner.pub)
+                    case "$x6_public" in *'
+'*) suspect 'multiple legacy public lines';; esac
+                    read -r x6_type x6_key x6_comment <<EOF
+$x6_public
+EOF
+                    x6_sum=$(printf '%s %s\n' "$x6_type" "$x6_key" | /usr/bin/sha256sum)
+                    [ "${x6_sum%% *}" = "$x6_holder_sha" ] || suspect 'legacy holder differs'
+                fi
+            else
+                suspect "override: $x6_path"
+            fi
+        fi
+    done
+    for x6_name in service.d x6-.service.d x6-owner-.service.d x6-owner-maintenance.service.d x6-owner-late-start.service.d; do
+        for x6_conf in "$x6_base/$x6_name"/*.conf; do
+            if [ -e "$x6_conf" ] || [ -L "$x6_conf" ]; then suspect "drop-in: $x6_conf"; fi
+        done
+    done
+done
+# Host-key directory problems are handled by the program itself: it serves
+# this boot on a temporary key and never touches the persistent identity.
+if [ -L /data/x6-owner-ssh ]; then echo 'OWNER_HOSTKEY_WARNING: symlink host-key directory; temporary key expected' >&2; fi
+if [ -n "$x6_suspect" ]; then
+    echo "OWNER_OVERLAY_REFUSED: $x6_suspect" >&2
+    # The suspicious unit is not started. The verified program is, directly.
+    /usr/bin/systemd-run --unit=x6-owner-maintenance-fallback \
+        -p KillMode=control-group -p Restart=on-failure -p RestartSec=3 -p UMask=0077 \
+        -p SELinuxContext=system_u:system_r:unconfined_t:s0-s15:c0.c1023 \
+        /usr/local/sbin/x6-owner-maintenance --listen :2223 --host-key /data/x6-owner-ssh/host_ed25519 \
+        || reject 'fallback start failed'
+    echo OWNER_FALLBACK_REQUESTED
+    exit 74
+fi
+/bin/systemctl daemon-reload
+/bin/systemctl --no-block start x6-owner-maintenance.service
+echo OWNER_START_REQUESTED

@@ -1,0 +1,11 @@
+#!/usr/bin/python3 -B
+"""Entry point for x6-pureshot-processor (the unit runs `python3 -B /usr/local/sbin/x6-pureshot-processor`). The
+firmware installs the daemon modules, the ps2native converter and the batch tool in /usr/lib/x6-pureshot (this slot's
+root fs, so code always matches the slot it boots); the daemon's state stays in /data/x6-owner-features/pureshot-v1.
+PYTHONDONTWRITEBYTECODE: never try to write .pyc beside the read-only modules."""
+import os, sys
+os.environ.setdefault('PYTHONDONTWRITEBYTECODE', '1')
+sys.dont_write_bytecode = True
+sys.path.insert(0, '/usr/lib/x6-pureshot')
+import processor
+raise SystemExit(processor.main())

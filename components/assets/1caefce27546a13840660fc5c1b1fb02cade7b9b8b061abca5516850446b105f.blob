@@ -1,0 +1,6 @@
+[Unit]
+# OpenX6 rescue level: this root channel steps aside only when the
+# boot-loop breaker explicitly entered rescue; absence of the marker
+# (breaker never ran or failed) keeps it starting. Owner SSH is never gated.
+After=x6-boot-guard.service
+ConditionPathExists=!/run/x6-boot/rescue

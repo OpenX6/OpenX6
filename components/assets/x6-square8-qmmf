@@ -1,0 +1,46 @@
+#!/bin/sh
+# Apply the format admission to this QMMF invocation only. Preserve the
+# native/linked IQ file chosen by x6-mod-stereo-select in the parent namespace.
+set -eu
+# Use the correction only in this private recorder mount namespace.
+if [ "$(readlink /proc/self/ns/mnt)" != "$(readlink /proc/1/ns/mnt)" ]; then
+    ae=/usr/lib/camera/components/com.insta.stats.aec.so
+    if /usr/bin/python3 -B - "$ae" <<'PYAE'
+import hashlib,os,sys,tempfile
+from pathlib import Path
+src=Path(sys.argv[1])
+data=bytearray(src.read_bytes())
+if hashlib.sha256(data).hexdigest()!='e8c22f20f0a6476c0750914a89908e58d48fa6a5cdc830317b55ab2e5c9c7dac': sys.exit(1)
+for i,h in [(152, 'a007000000000000a007000000000000'), (216, 'ec1aae0000000000'), (437976, 'a6590214'), (101544, '52a20314'), (437980, 'd5590214'), (101572, '9ba20314'), (1213806, '0000600340b91f04007168020054ea0240b90bc083525f010b6b81010054ea2e46295f010b6b210100540bb082525f010b6b800000540b6682525f010b6b610000542a008052020000140a0080528b5700b06a5920b846a6fd171f2003d51f2003d51f2003d51f2003d51f2003d51f2003d51f2003d51f2003d51f2003d51f2003d5e1c741b9c10100359f060071880100547801003559010035bf56007101010054e9cf41b93f090071a10000548b5700b0695974b84900003461008052a05dfc171f0400712805005409008052ea0240b90bc083525f010b6b21040054ea2e46290c6682525f010c6ba1030054ea0640b97f010c6b400100547f013e71010300540b8087524a010b4b4aa100115f4101716802005449008052110000140bc083524c010b4b8ca100119f410171690100540b2083524c010b4b8ca100119f410171c90000540b0083524c010b4b8ca100119f41017148000054290080528b5700b06b210091695920b8e8c3069101a6fd171f2003d51f2003d51f2003d51f2003d51f2003d51f2003d51f2003d51f2003d51f2003d51f2003d51f2003d51f2003d51f2003d51f2003d51f2003d51f2003d51f2003d51f2003d51f2003d51f2003d5070440b99f0600712803005418030035f902003509f440393f05007181020054e95341b9490200358b5700b06b210091695974b8ea5741b93f010a6b810100543f09007181000054bf56007101010054050000143f050071a1000054bf5e00716100005469008052e95301b94b5dfc17')]:
+    block=bytes.fromhex(h)
+    data[i:i+len(block)]=block
+if hashlib.sha256(data).hexdigest()!='0637cc68b40b47a39be19bdd768b940828ce7fd3ca0766738cf61b02124b08cf': sys.exit(1)
+cache=Path('/run/x6-pano10k-ae')
+cache.mkdir(mode=0o700,exist_ok=True)
+with tempfile.NamedTemporaryFile(dir=cache,delete=False) as out:
+    out.write(data)
+    os.fchmod(out.fileno(),0o755)
+    os.setxattr(out.fileno(),'security.selinux',os.getxattr(src,'security.selinux'))
+os.replace(out.name,cache/'aec.so')
+PYAE
+    then
+        if mount --bind /run/x6-pano10k-ae/aec.so "$ae"; then
+            mount -o remount,bind,ro "$ae" || umount "$ae"
+        fi
+    else
+        logger -t x6-ae "Base library mismatch or preparation failure; using original AE"
+    fi
+fi
+conf=/usr/lib/camera/instasettings.config
+case "$(sha256sum "$conf" | cut -d' ' -f1)" in
+5a28a4a6b0e0e16e9d26cd98421764b2ed4148237d1cf3b13b3ed211651836d0) kind=native ;;
+89ecd12c1e542678cf27cf58b11a06238cdbf6e99fc2af0dd9291d65a8dc2d8b) kind=linked ;;
+*) exec /usr/bin/qmmf-server ;;
+esac
+if [ "$(readlink /proc/self/ns/mnt)" != "$(readlink /proc/1/ns/mnt)" ]; then
+    source=/usr/lib/camera/x6-square8-$kind.config
+    if mount --bind "$source" "$conf"; then
+        mount -o remount,bind,ro "$conf" || umount "$conf"
+    fi
+fi
+exec /usr/bin/qmmf-server

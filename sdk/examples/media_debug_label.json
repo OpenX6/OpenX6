@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "media_debug_label",
+  "target": "/usr/bin/ins_mediad",
+  "base_sha256": "95eca63e20c111e49160bdef896d85bfe7939726af997e0ebc70ba4761cd8f9a",
+  "requires": [],
+  "conflicts": [],
+  "edits": [
+    {
+      "offset": 9209184,
+      "before": "696e73",
+      "after": "6f7836"
+    }
+  ]
+}

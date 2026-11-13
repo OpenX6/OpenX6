@@ -1,0 +1,6 @@
+[Unit]
+# OpenX6 boot-loop breaker: this feature layer loads only when the breaker
+# counted this boot and allowed features. Owner SSH is never gated.
+Wants=x6-boot-guard.service
+After=x6-boot-guard.service
+ConditionPathExists=/run/x6-boot/features-allowed

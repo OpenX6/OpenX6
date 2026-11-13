@@ -1,0 +1,15 @@
+{
+  "schema": "openx6.choice.v1",
+  "id": "field_checklist",
+  "title": "Field checklist",
+  "setting": {
+    "id": "rig",
+    "label": "Camera setup",
+    "default": "tripod",
+    "options": [
+      {"id": "tripod", "label": "Tripod", "note": "Check the horizon and lock the legs"},
+      {"id": "handheld", "label": "Handheld", "note": "Check the wrist strap"},
+      {"id": "vehicle", "label": "Vehicle", "note": "Check the mount and safety tether"}
+    ]
+  }
+}

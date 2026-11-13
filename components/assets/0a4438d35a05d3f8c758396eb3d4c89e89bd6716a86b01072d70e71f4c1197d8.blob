@@ -1,0 +1,24 @@
+[Unit]
+Description=Initialize only first-use settings and bind local X6 identity
+# SSH reachability: these settings run even when the feature seed is skipped
+# or failed; the program checks /run/x6-boot/features-allowed itself.
+Wants=data.mount etc.mount
+Wants=x6-firstboot-seed.service ins_config.service
+After=data.mount etc.mount x6-firstboot-seed.service ins_config.service ins_ibusd.service x6-owner-gui-auth.service
+Before=x6-raw-nr-control.service
+StartLimitIntervalSec=0
+[Service]
+Type=oneshot
+User=root
+UMask=0077
+ExecStart=/usr/local/sbin/x6-firstboot settings
+ExecStartPost=/bin/systemctl --no-block start x6-raw-nr-control.service
+TimeoutStartSec=180
+Restart=on-failure
+RestartSec=15
+RemainAfterExit=yes
+StandardOutput=journal
+StandardError=journal
+SELinuxContext=system_u:system_r:unconfined_t:s0-s15:c0.c1023
+[Install]
+WantedBy=multi-user.target

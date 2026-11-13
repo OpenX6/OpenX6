@@ -1,0 +1,15 @@
+[Unit]
+Description=X6 owner factory command authorization
+After=local-fs.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+User=root
+Group=root
+UMask=0077
+ExecStart=/usr/local/sbin/x6-owner-usb serve-auth
+Restart=on-failure
+RestartSec=2
+KillMode=control-group
+[Install]
+WantedBy=multi-user.target

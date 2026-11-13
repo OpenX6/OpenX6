@@ -1,0 +1,21 @@
+.DS_Store
+__pycache__/
+.venv/
+OpenX6 Build/
+OpenX6 Holder/
+*.candidate
+*.bin
+*.img
+*.zip
+/private/
+/work/
+/deliverables/
+/builds/
+OpenX6 SD Build/
+OpenX6 Material/
+*.key
+*.pem
+*.ilgx
+*.insv
+*.dng
+*.log

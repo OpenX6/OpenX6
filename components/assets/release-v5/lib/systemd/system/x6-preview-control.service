@@ -1,0 +1,12 @@
+[Unit]
+Description=OpenX6 x6-preview-control
+Requires=x6-runtime-prepare.service
+After=x6-runtime-prepare.service ins_gui.service ins_mediad.service
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/x6-preview-control
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=12
+StandardOutput=null
+StandardError=null

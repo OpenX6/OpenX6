@@ -1,0 +1,312 @@
+#!/usr/bin/python3
+"""USB storage coordinator; no formatting, flashing, or root-access changes."""
+import os,sys,json,time,hashlib,subprocess,glob,re,signal
+from pathlib import Path
+B=Path('/data/x6-owner-features/ssd-v1'); R=Path('/run/x6-ssd'); M=Path('/mnt/quickreader')
+CONFIG=Path('/ins/etc/storaged.json'); A=Path('/usr/share/openx6/ssd'); ORIG_UDEV=A/'automountquickreader.original.sh'
+class Refuse(RuntimeError):pass
+def run(args,timeout=20,check=True):
+ p=subprocess.run(args,stdout=subprocess.PIPE,stderr=subprocess.PIPE,timeout=timeout,text=True)
+ if check and p.returncode:raise Refuse(f'{args[0]} rc={p.returncode}: {p.stderr[-300:]}')
+ return p.stdout.strip()
+def command(j):
+ d=json.loads(run(['timeout','-k','1','8','ins_bll_cli',json.dumps(j)],10))
+ if d.get('ret')!='ok':raise Refuse(str(d)[:300])
+ return d.get('data',{})
+def media():return command({'cmd':'share_state','action':'get','type':'media'})
+def idle():
+ try:
+  m=media();return m['record']['record_status']=='RecordIdle' and m['capture']['capture_status']=='CaptureIdle'
+ except Exception:return False
+def pref():return command({'cmd':'config','action':'get_general','key':'kStorageLocation'})
+def select(name):return command({'cmd':'config','action':'set_general','key':'kStorageLocation','value':{'storage_location':name}})
+def atom(path,data):
+ temp=path.with_suffix('.next');fd=os.open(temp,os.O_WRONLY|os.O_CREAT|os.O_TRUNC|os.O_NOFOLLOW,0o600)
+ with os.fdopen(fd,'w') as f:f.write(data);f.flush();os.fsync(f.fileno())
+ os.replace(temp,path)
+def log(msg):
+ text=time.strftime('%FT%T')+' '+msg
+ print(text,flush=True)
+ try:atom(R/'last-event',text+'\n')
+ except OSError:pass
+def mounts():
+ return [line.split() for line in Path('/proc/self/mountinfo').read_text().splitlines()]
+def mounted(path):return [m for m in mounts() if m[4]==str(path)]
+def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+def usb(block):
+ p=Path('/sys/class/block')/block
+ if not re.fullmatch(r'sd[a-z]+[0-9]*',block) or not p.exists():return None
+ p=p.resolve();mass=False
+ for cur in (p,*p.parents):
+  cl=cur/'bInterfaceClass'
+  if cl.exists():mass=mass or cl.read_text().strip()=='08'
+  if (cur/'idVendor').exists() and (cur/'idProduct').exists():
+   if not mass or '/usb' not in str(cur):return None
+   return dict(path=str(cur),vid=(cur/'idVendor').read_text().strip().lower(),pid=(cur/'idProduct').read_text().strip().lower())
+ return None
+def inventory():
+ disks=[]
+ for pp in sorted(Path('/sys/class/block').glob('sd*')):
+  if (pp/'partition').exists():continue
+  info=usb(pp.name)
+  if not info:continue
+  info['disk']=pp.name;info['diskseq']=(pp/'diskseq').read_text().strip();info['boot']=Path('/proc/sys/kernel/random/boot_id').read_text().strip()
+  if info['vid']=='2e1a':info['route']='native_candidate';disks.append(info);continue
+  parts=sorted(x for x in pp.resolve().glob(pp.name+'*') if (x/'partition').exists())
+  nodes=parts or [pp];candidates=[]
+  for part in nodes:
+   dev='/dev/'+part.name
+   if (part/'ro').exists() and (part/'ro').read_text().strip()!='0':continue
+   if (pp/'ro').read_text().strip()!='0':continue
+   out=run(['blkid',dev],check=False)
+   if 'TYPE="exfat"' not in out:continue
+   u=re.search(r'UUID="([^"]+)"',out)
+   if not u:continue
+   major=(part/'dev').read_text().strip()
+   foreign=[m for m in mounts() if m[2]==major and m[4]!=str(M)]
+   if foreign:continue
+   candidates.append(dict(dev=dev,uuid=u.group(1),major=major))
+  if len(candidates)==1:info.update(candidates[0]);info['route']='ssd'
+  else:info['route']='unsupported'
+  disks.append(info)
+ return disks[0] if len(disks)==1 else None
+
+def protect_mount():
+ # Read-only empty lower layer prevents writing into RAM after disappearance.
+ if not mounted(M):run(['mount','-t','tmpfs','-o','ro,nosuid,nodev,noexec,size=4096,mode=0555','openx6-ssd-guard',str(M)])
+
+def config_for(dev):
+ d=json.loads((A/'storaged.original.json').read_text());q=next(x for x in d['device_info']['devices'] if x['device_type']=='kQuickReader');q['path']=dev;q['mount_point']=str(M);return json.dumps(d,indent=2)+'\n'
+def config_replace(dev,boot=False):
+ if not boot:run(['systemctl','stop','ins_storaged'])
+ if mounted(CONFIG):
+  if not os.path.samefile(R/'storaged.json',CONFIG):raise Refuse('foreign storage config bind')
+  run(['umount',str(CONFIG)])
+ atom(R/'storaged.json',config_for(dev));run(['mount','--bind',str(R/'storaged.json'),str(CONFIG)]);run(['mount','-o','remount,bind,ro',str(CONFIG)])
+ if not boot:run(['systemctl','start','ins_storaged'])
+def update_overlay():run(['ins_ibus_cli','--run','call-method','kCamera','kConfig','Access','AccessUpdateConfigOverlay','kStorageLocation'],check=False)
+def unset_active():
+ try:(R/'active').unlink()
+ except FileNotFoundError:pass
+
+def fallback_target():
+ try:target=(B/'previous.pref').read_text()
+ except OSError:target='kExternalSDCard'
+ if target not in ('kExternalSDCard','kInternalStorage'):target='kExternalSDCard'
+ st=command({'cmd':'share_state','action':'get','type':'storaged'})
+ if target=='kExternalSDCard' and st.get('sd',{}).get('status_code')!='Success':target='kInternalStorage'
+ return target
+
+def unmount_owned(info):
+ restart=False
+ try:
+  for m in reversed(mounted(M)):
+   if m[2]!=info.get('major'):continue
+   try:run(['umount',str(M)])
+   except Refuse:
+    # The native media service retains MISC/dcf_management.db after a recording.
+    # Only quiesce its known holder, while idle, and always restart audio with it.
+    pid=run(['systemctl','show','ins_mediad','-p','MainPID','--value'])
+    held=False
+    if pid.isdigit() and int(pid)>0:
+     for fd in Path('/proc',pid,'fd').glob('*'):
+      try:held=held or os.readlink(fd)==str(M/'MISC/dcf_management.db')
+      except OSError:pass
+    if not held or not idle():raise
+    restart=True;run(['systemctl','stop','pulseaudio','ins_mediad'])
+    run(['umount',str(M)])
+  if any(m[2]==info.get('major') for m in mounted(M)):raise Refuse('SSD mount still busy')
+ finally:
+  if restart:run(['systemctl','start','ins_mediad','pulseaudio'],timeout=30)
+
+def detach(previous):
+ if previous and previous.get('route')=='ssd':
+  if not idle():
+   st=command({'cmd':'share_state','action':'get','type':'storaged'})
+   if st.get('currently_used_device')=='QuickReader':
+    command({'cmd':'media','action':'record_stop'})
+    for _ in range(8):
+     if idle():break
+     time.sleep(1)
+   if not idle():raise Refuse('busy during detach; defer')
+  select(fallback_target())
+  config_replace('/dev/openx6-ssd-absent')
+  unmount_owned(previous)
+  unset_active();update_overlay()
+ elif previous and previous.get('route')=='native_candidate':
+  if not idle():raise Refuse('native device busy')
+  config_replace('/dev/openx6-ssd-absent');unset_active()
+ protect_mount()
+
+def activate(info):
+ if not idle():raise Refuse('capture or recording busy; postpone attachment')
+ if inventory()!=info:raise Refuse('attachment changed')
+ if info['route']=='native_candidate':
+  unset_active();config_replace('/dev/'+info['disk']+'1');update_overlay();return
+ if info['route']!='ssd':raise Refuse('unsupported filesystem/layout; no automatic formatting')
+ if any(m[m.index('-')+1]!='tmpfs' for m in mounted(M)):raise Refuse('mount occupied')
+ protect_mount()
+ run(['mount','-t','exfat','-o','uid=0,gid=1015,umask=000,nodev,noexec,nosuid,errors=continue',info['dev'],str(M)])
+ try:
+  if inventory()!=info or not mounted(M) or mounted(M)[-1][2]!=info['major']:raise Refuse('mounted identity mismatch')
+  # Enable bypass only after a verified filesystem is in place.
+  atom(R/'active','1');config_replace(info['dev']);update_overlay()
+  for _ in range(15):
+   st=command({'cmd':'share_state','action':'get','type':'storaged'})
+   if st.get('quickreader',{}).get('status_code')=='Success':break
+   time.sleep(.3)
+  else:raise Refuse('storage did not become ready')
+ except Exception:
+  config_replace('/dev/openx6-ssd-absent');unset_active();run(['umount',str(M)]);raise
+ # Do not silently override a user's Internal/SD preference.
+
+
+def prepare():
+ R.mkdir(mode=0o700,exist_ok=True);os.chmod(R,0o700)
+ for n in ['stop','restored','state.json','prepared']:
+  try:(R/n).unlink()
+  except FileNotFoundError:pass
+ B.mkdir(mode=0o700,parents=True,exist_ok=True)
+ h=json.loads((A/'hooks.json').read_text())
+ for x in h:
+  target=Path('/usr/bin')/x['name'];assert sha(target)==x['new'];assert not mounted(target)
+ assert sha(CONFIG)==sha(A/'storaged.original.json');assert not mounted(CONFIG)
+ if mounted(M):raise Refuse('existing mount; safely unmount before installation')
+ applied=[]
+ try:
+  unset_active();atom(R/'selected','\0');protect_mount();config_replace('/dev/openx6-ssd-absent',boot=True);atom(R/'prepared','1')
+ except Exception:
+  if mounted(CONFIG):run(['umount',str(CONFIG)])
+  for t in reversed(applied):run(['umount',t])
+  if mounted(M) and mounted(M)[-1][mounted(M)[-1].index('-')+2]=='openx6-ssd-guard':run(['umount',str(M)])
+  raise
+
+def read_byte(path):
+ fd=os.open(path,os.O_RDONLY|os.O_NONBLOCK|os.O_NOFOLLOW)
+ try:
+  import stat
+  st=os.fstat(fd)
+  if not stat.S_ISREG(st.st_mode) or st.st_nlink!=1 or st.st_uid!=0:raise Refuse('invalid request file')
+  data=os.read(fd,2)
+  if data not in (b'\0',b'\1'):raise Refuse('invalid switch value')
+  return data[0]
+ finally:os.close(fd)
+def saved_choice():
+ try:return read_byte(B/'use_ssd.pref')
+ except (OSError,Refuse):return 0
+
+def process_requests(info):
+ try:
+  v=read_byte(R/'request')
+ except FileNotFoundError:v=None
+ except (OSError,Refuse):
+  try:(R/'request').unlink()
+  except FileNotFoundError:pass
+  v=None
+ if v is not None:
+  (R/'request').unlink()
+  try:
+   if not idle():raise Refuse('storage changes require idle')
+   if v:
+    if not info or info.get('route')!='ssd' or inventory()!=info or not healthy(info):raise Refuse('SSD unavailable')
+    previous=pref().get('storage_location')
+    if previous in ('kInternalStorage','kExternalSDCard'):atom(B/'previous.pref',previous)
+    select('kQuickTransfer')
+   else:
+    try:previous=(B/'previous.pref').read_text()
+    except OSError:previous='kExternalSDCard'
+    if previous not in ('kInternalStorage','kExternalSDCard'):previous='kExternalSDCard'
+    st=command({'cmd':'share_state','action':'get','type':'storaged'})
+    if previous=='kExternalSDCard' and st.get('sd',{}).get('status_code')!='Success':previous='kInternalStorage'
+    select(previous)
+   atom(B/'use_ssd.pref',chr(v));log('storage switch '+str(v))
+  except Exception as e:log('switch rejected: '+str(e))
+ st=command({'cmd':'share_state','action':'get','type':'storaged'})
+ # A remembered SSD choice must not leave a camera without its disk unusable.
+ # Keep the SSD preference for reattachment; only move the effective target.
+ if info is None and st.get('currently_used_device')=='QuickReader' and idle():
+  select(fallback_target());st=command({'cmd':'share_state','action':'get','type':'storaged'})
+ on=bool(info and info.get('route')=='ssd' and healthy(info) and st.get('currently_used_device')=='QuickReader')
+ value=chr(int(on))
+ if not (R/'selected').exists() or (R/'selected').read_text()!=value:atom(R/'selected',value)
+ # Honor a later manual choice of Internal/SD; never repeatedly force SSD.
+ if info and info.get('route')=='ssd' and healthy(info) and saved_choice()!=int(on):atom(B/'use_ssd.pref',value)
+
+# Flush the SSD once it has been quiet after writes (owner request 2026-11-04). The kernel (6.1 exFAT) marks the
+# volume dirty on any change and clears the flag only on sync/unmount, so a pull or power loss after a recording
+# left it "not properly unmounted". Never flush while it is being written (a recording keeps the counter moving);
+# no ins_bll_cli calls; the flush's own write just restarts the quiet timer and the flag is then clear.
+QUIET_S=5.0
+def _syncfs(path):
+ import ctypes
+ fd=os.open(str(path),os.O_RDONLY|os.O_DIRECTORY)
+ try:
+  libc=ctypes.CDLL(None,use_errno=True)
+  if libc.syncfs(fd)!=0:raise OSError(ctypes.get_errno(),'syncfs failed')
+ finally:os.close(fd)
+def volume_dirty(dev):
+ # exFAT boot sector VolumeFlags (offset 106), bit 1 = VolumeDirty; read via the block device's page cache, which the
+ # mounted filesystem's boot-sector buffer shares, so this is the kernel's current flag
+ with open(dev,'rb') as f:return bool(int.from_bytes(f.read(512)[106:108],'little')&2)
+def sectors_written(disk):return int(Path('/sys/block',disk,'stat').read_text().split()[6])
+class Flusher:
+ def __init__(s,clock=time.monotonic,dirty=volume_dirty,written=sectors_written,flush=lambda:_syncfs(M)):
+  s.clock,s.dirty,s.written,s.flush=clock,dirty,written,flush;s.last=None;s.since=None
+ def tick(s,info):
+  """Returns True when it flushed. info = the active, healthy attachment (or None)."""
+  if not info or info.get('route')!='ssd':
+   s.last=s.since=None;return False
+  w=s.written(info['disk']);now=s.clock()
+  if w!=s.last:
+   s.last=w;s.since=now;return False
+  if now-s.since<QUIET_S or not s.dirty(info['dev']):return False
+  s.flush();s.since=now;return True
+
+def healthy(info):
+ if not info or info.get('route')!='ssd':return True
+ try:return mounted(M)[-1][2]==info['major'] and (R/'active').read_bytes()==b'1' and str(info['dev']) in (R/'storaged.json').read_text()
+ except (OSError,IndexError):return False
+
+def loop():
+ try:previous=json.loads((R/'state.json').read_text())
+ except (OSError,ValueError):previous=None
+ last_error=None;flusher=Flusher();flush_error=None
+ while not (R/'stop').exists():
+  try:
+   current=inventory()
+   if current!=previous or not healthy(previous):
+    if previous:detach(previous);previous=None;atom(R/'state.json','null\n')
+    if current and current.get('route') in ('ssd','native_candidate'):
+     atom(R/'state.json',json.dumps(current)+'\n') # recovery intent before mounting
+     activate(current);previous=current;log('active '+current['route'])
+     if current['route']=='ssd' and saved_choice():select('kQuickTransfer')
+   process_requests(previous)
+   last_error=None
+  except Exception as e:
+   if str(e)!=last_error:log('deferred: '+str(e));last_error=str(e)
+  try:
+   if flusher.tick(previous if previous and previous.get('route')=='ssd' and healthy(previous) else None):print(time.strftime('%FT%T')+' flushed ssd',flush=True)
+   flush_error=None
+  except Exception as e:
+   if str(e)!=flush_error:log('flush skipped: '+str(e));flush_error=str(e)
+  time.sleep(1)
+
+def udev(name):
+ # SSD add/remove never runs the vendor's Quick Reader automount script.
+ i=usb(name);native=i and i['vid']=='2e1a'
+ if native:
+  os.execv('/bin/sh',['/bin/sh',str(ORIG_UDEV),name])
+ # For disappeared native media use recorded routing, not a stale device name.
+ if os.environ.get('ACTION')=='remove':
+  try:s=json.loads((R/'state.json').read_text())
+  except Exception:s=None
+  if s and s.get('route')=='native_candidate' and re.fullmatch(re.escape(s['disk'])+r'[0-9]*',name):os.execv('/bin/sh',['/bin/sh',str(ORIG_UDEV),name])
+
+if __name__=='__main__':
+ if len(sys.argv)<2:raise SystemExit(64)
+ mode=sys.argv[1]
+ if mode=='inventory':print(json.dumps(inventory(),indent=2))
+ elif mode=='prepare':prepare()
+ elif mode=='run':loop()
+ elif mode=='udev' and len(sys.argv)==3:udev(sys.argv[2])
+ else:raise SystemExit(64)

@@ -1,0 +1,15 @@
+[Unit]
+Description=OpenX6 external SSD guarded storage preparation
+DefaultDependencies=no
+Requires=data.mount etc.mount
+After=data.mount etc.mount ins_shm_init.service
+Before=ins_config.service ins_storaged.service ins_bla.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/sbin/x6-ssd-coordinator prepare
+RemainAfterExit=yes
+TimeoutStartSec=30
+
+[Install]
+WantedBy=ins_phase2.target

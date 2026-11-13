@@ -1,0 +1,14 @@
+[Unit]
+Requires=data.mount etc.mount
+Wants=x6-owner-gui-auth.service
+After=local-fs.target data.mount etc.mount x6-owner-gui-auth.service
+[Service]
+# Only this GUI owns the bridge directory, so normal restart cannot leave a
+# stale dispatch.sock. Broker runtime and persistent identity are independent.
+RuntimeDirectory=x6-owner-gui-bridge
+RuntimeDirectoryMode=0700
+RuntimeDirectoryPreserve=no
+# bin_t launcher retains the stock initrc_t transition, then execs the loader.
+# --preload applies only to this GUI, not the authorization broker or shells.
+ExecStart=
+ExecStart=/usr/local/sbin/x6-owner-gui-setup gui-exec

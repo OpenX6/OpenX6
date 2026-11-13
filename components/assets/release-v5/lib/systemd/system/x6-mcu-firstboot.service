@@ -1,0 +1,20 @@
+[Unit]
+Description=OpenX6 native MCU 1.2 application firstboot update
+Requires=data.mount etc.mount
+Wants=x6-owner-late-start.service x6-owner-gui-auth.service
+After=data.mount etc.mount ins_hald.service ins_gui.service x6-owner-late-start.service x6-owner-gui-auth.service
+[Service]
+Type=oneshot
+User=root
+Group=root
+UMask=0077
+ExecStartPre=/bin/sleep 5
+ExecStart=/usr/local/sbin/x6-mcu-firstboot
+# A client timeout is ambiguous. Do not automatically kill/retry the HAL write.
+TimeoutStartSec=0
+Restart=no
+StandardOutput=null
+StandardError=null
+SELinuxContext=system_u:system_r:unconfined_t:s0-s15:c0.c1023
+[Install]
+WantedBy=multi-user.target

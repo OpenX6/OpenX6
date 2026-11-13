@@ -1,0 +1,12 @@
+[Unit]
+Description=OpenX6 SD boot mode requests
+After=data.mount x6-boot-guard.service
+Requires=data.mount
+[Service]
+ExecStart=/usr/bin/python3 -B /usr/local/sbin/x6-sd-boot
+Restart=on-failure
+RestartSec=3
+UMask=0077
+SELinuxContext=system_u:system_r:unconfined_t:s0-s15:c0.c1023
+[Install]
+WantedBy=multi-user.target

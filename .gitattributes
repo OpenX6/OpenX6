@@ -1,0 +1,5 @@
+release/desktop-SHA256SUMS text eol=lf
+desktop-runtime/windows/native/Launcher/runtime.sha256 text eol=lf
+desktop-runtime/windows/native/Native/*.py -text whitespace=trailing-space,space-before-tab,cr-at-eol
+desktop-runtime/windows/native/GUI/*.cs -text whitespace=trailing-space,space-before-tab,cr-at-eol
+desktop-runtime/windows/native/build_gui.cmd text eol=crlf

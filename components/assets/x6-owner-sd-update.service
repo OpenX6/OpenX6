@@ -1,0 +1,19 @@
+[Unit]
+Description=OpenX6 SD update and same-release repair coordinator
+After=local-fs.target data.mount etc.mount
+RequiresMountsFor=/data
+StartLimitIntervalSec=300
+StartLimitBurst=3
+[Service]
+Type=simple
+User=root
+UMask=0077
+ExecStart=/usr/local/sbin/x6-owner-update-check coordinate
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=10
+StandardOutput=journal
+StandardError=journal
+SELinuxContext=system_u:system_r:unconfined_t:s0-s15:c0.c1023
+[Install]
+WantedBy=multi-user.target

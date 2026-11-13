@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "demo_revision",
+  "target": "example",
+  "base_sha256": "99e02b3b7c0d3d6a766a907f2c2c3ebd163f25d67b7520dbf00dfd447490b334",
+  "requires": [],
+  "conflicts": [],
+  "edits": [
+    {
+      "offset": 13,
+      "before": "31",
+      "after": "32"
+    }
+  ]
+}

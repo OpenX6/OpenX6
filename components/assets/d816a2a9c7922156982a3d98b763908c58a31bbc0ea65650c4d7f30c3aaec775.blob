@@ -1,0 +1,16 @@
+[Unit]
+Description=Prepare verified RAW photo noise reduction preference
+DefaultDependencies=no
+Requires=data.mount etc.mount
+After=data.mount etc.mount x6-vr180-prepare.service
+Before=qmmf-server.service ins_mediad.service ins_gui.service
+ConditionPathExists=/data/x6-owner-features/raw-nr-v1/enabled
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/x6-raw-nr-control prepare
+RemainAfterExit=yes
+TimeoutStartSec=45
+StandardOutput=append:/data/x6-owner-features/raw-nr-v1/prepare.log
+StandardError=inherit
+[Install]
+WantedBy=multi-user.target

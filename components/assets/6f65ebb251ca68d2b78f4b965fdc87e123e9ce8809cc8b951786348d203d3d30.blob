@@ -1,0 +1,5 @@
+[Unit]
+# Wants, not Requires: the GUI and the authenticated GUI root channel must
+# start even if runtime preparation fails or the boot-loop breaker skips it.
+Wants=x6-runtime-prepare.service
+After=x6-runtime-prepare.service

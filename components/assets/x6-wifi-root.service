@@ -1,0 +1,20 @@
+[Unit]
+Description=X6 hotspot command interface
+After=local-fs.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=root
+Group=root
+RuntimeDirectory=x6-wifi-root
+RuntimeDirectoryMode=0700
+SELinuxContext=system_u:system_r:unconfined_t:s0-s15:c0.c1023
+ExecStart=/usr/local/sbin/x6-wifi-root
+Restart=on-failure
+RestartSec=3
+KillMode=control-group
+TimeoutStopSec=3
+
+[Install]
+WantedBy=ins_phase3.target

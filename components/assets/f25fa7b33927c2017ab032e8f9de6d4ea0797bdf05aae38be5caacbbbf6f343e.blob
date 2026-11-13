@@ -1,0 +1,4 @@
+[Service]
+Environment=X6_OWNER_USB_INIT_ONLY=1
+ExecStart=
+ExecStart=/sbin/start_usb init n

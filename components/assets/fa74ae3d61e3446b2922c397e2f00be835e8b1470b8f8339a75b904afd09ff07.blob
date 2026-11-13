@@ -1,0 +1,5 @@
+[Unit]
+# Wants, not Requires: a failed or skipped SSD preparation leaves stock
+# storage and must never keep this core service from starting.
+Wants=x6-ssd-prepare.service
+After=x6-ssd-prepare.service

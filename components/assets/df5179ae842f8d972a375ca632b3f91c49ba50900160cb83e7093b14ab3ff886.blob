@@ -1,0 +1,23 @@
+[Unit]
+Description=Owner-authenticated X6 GUI TLS and authorization broker
+Requires=data.mount etc.mount
+After=local-fs.target data.mount etc.mount
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+User=root
+Group=root
+UMask=0077
+RuntimeDirectory=x6-owner-gui
+RuntimeDirectoryMode=0700
+RuntimeDirectoryPreserve=no
+SELinuxContext=system_u:system_r:unconfined_t:s0-s15:c0.c1023
+ExecStartPre=/usr/local/sbin/x6-owner-gui-setup broker-prepare
+ExecStart=/usr/local/sbin/x6-owner-gui-auth --listen=192.168.42.1:56444
+Restart=on-failure
+RestartSec=3
+TimeoutStartSec=45
+TimeoutStopSec=3
+KillMode=control-group
+[Install]
+WantedBy=multi-user.target

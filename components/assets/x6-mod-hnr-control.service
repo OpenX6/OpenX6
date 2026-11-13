@@ -1,0 +1,15 @@
+[Unit]
+Description=OpenX6 hnr control
+Requires=data.mount
+After=x6-mod-controls-prepare.service ins_mediad.service ins_gui.service
+ConditionPathExists=/run/x6-mod-controls/ready
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/x6-mod-hnr-control
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=100
+StandardOutput=journal
+StandardError=inherit
+[Install]
+WantedBy=multi-user.target

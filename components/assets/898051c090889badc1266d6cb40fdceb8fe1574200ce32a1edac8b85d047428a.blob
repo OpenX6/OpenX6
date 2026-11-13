@@ -1,0 +1,4 @@
+[Unit]
+# No automatic slot success before owner-authenticated post-reboot validation.
+# No component of this candidate creates this root-owned /run marker.
+ConditionPathExists=/run/x6-owner/validated-boot

@@ -1,0 +1,16 @@
+[Unit]
+Description=Single-lens HEVC custom recording bitrate
+Wants=x6-boot-guard.service
+After=x6-boot-guard.service ins_mediad.service data.mount
+ConditionPathExists=/run/x6-boot/features-allowed
+ConditionPathExists=/dev/video33
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 -B /usr/local/sbin/x6-single-rate.py --watch
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=4
+
+[Install]
+WantedBy=ins_phase3.target

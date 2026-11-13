@@ -1,0 +1,18 @@
+[Unit]
+Description=Initialize verified X6 owner features without replacing device identity
+DefaultDependencies=no
+Requires=data.mount etc.mount
+After=data.mount etc.mount
+Before=x6-vr180-prepare.service x6-raw-nr-prepare.service x6-owner-maintenance.service x6-owner-late-start.service x6-owner-gui-late-start.service
+[Service]
+Type=oneshot
+User=root
+UMask=0077
+ExecStart=/usr/local/sbin/x6-firstboot prepare
+TimeoutStartSec=300
+RemainAfterExit=yes
+StandardOutput=journal
+StandardError=journal
+SELinuxContext=system_u:system_r:unconfined_t:s0-s15:c0.c1023
+[Install]
+WantedBy=multi-user.target
