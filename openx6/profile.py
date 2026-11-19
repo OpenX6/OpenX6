@@ -21,6 +21,9 @@ TARGETS['/usr/local/sbin/x6-wifi-root']='wifi-root'
 TARGETS['/usr/lib/x6-freeframe-square8-pool.so']='square8'
 GENERATED={'/etc/nginx/conf.d/fileops.conf',PROFILE_PATH,'/usr/local/sbin/x6-owner-late-start','/ins/etc/x6_owner_patch_manifest.json','/usr/share/x6-firstboot-seed/delta.bin','/usr/share/x6-firstboot-seed/manifest.json'}
 
+TARGETS['/usr/local/sbin/openx6-zebra']='zebra'
+GENERATED.update({'/usr/share/x5-raw-video/runtime.tar','/usr/share/x5-raw-video/pins.json'})
+
 def load_profile(root):
  root=Path(root)
  with regular(root/'profile.json') as f:p=json.load(f)

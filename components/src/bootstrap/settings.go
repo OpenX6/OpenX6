@@ -30,7 +30,7 @@ func (e Engine) BootstrapWithoutFeatures(io ConfigIO) error {
 
 // featureLayer prepares the owner feature namespace best-effort. The native
 // settings that keep the camera reachable over SSH (Wi-Fi always on, no auto
-// power-off, activated) must not depend on it: a failed or skipped feature
+// power-off) must not depend on it: a failed or skipped feature
 // seed is reported and the settings still proceed. The feature seed unit
 // reports its own failure separately.
 func (e Engine) featureLayer(allowed bool) {
@@ -105,7 +105,6 @@ type setting struct {
 var initialSettings = []setting{
 	{"kSystemAutoShutdown", "auto_power_off_time", json.RawMessage(`0`)},
 	{"kNetdConfig", "wifi_enable_strategy", json.RawMessage(`"kAlwaysOn"`)},
-	{"kDeviceActiveTime", "is_active", json.RawMessage(`true`)},
 }
 
 type configJournal struct {
@@ -143,7 +142,7 @@ func InitializeSettings(io ConfigIO, pin string, checkpoint func(string) error) 
 	if err != nil {
 		return err
 	}
-	j := configJournal{Version: 1, Seed: pin, Original: map[string]map[string]json.RawMessage{}}
+	j := configJournal{Version: 2, Seed: pin, Original: map[string]map[string]json.RawMessage{}}
 	if len(raw) > 0 {
 		if len(raw) > 65536 {
 			return errors.New("config journal too large")
@@ -151,7 +150,20 @@ func InitializeSettings(io ConfigIO, pin string, checkpoint func(string) error) 
 		if err = json.Unmarshal(raw, &j); err != nil {
 			return err
 		}
-		if j.Version != 1 || j.Seed != pin || len(j.Original) != 3 {
+		// A version 1 journal may still be in progress after an update.
+		// Its activation snapshot is historical and is never applied.
+		expected := len(initialSettings)
+		switch j.Version {
+		case 1:
+			if !json.Valid(j.Original["kDeviceActiveTime"]["is_active"]) {
+				return errors.New("incomplete legacy originals")
+			}
+			expected++
+		case 2:
+		default:
+			return errors.New("unknown config journal version")
+		}
+		if j.Seed != pin || len(j.Original) != expected {
 			return errors.New("unknown config initialization journal")
 		}
 		for _, s := range initialSettings {

@@ -4,6 +4,8 @@ Open-source mods for the Insta360 X6
 
 > **You can install OpenX6 for the first time only on an X6 currently running stock 0.8.825 or 0.8.827.** Keep the camera on its early firmware until you install OpenX6. Use the official 1.2.36 download only as a build input on your computer. **Do not copy the official Insta360 firmware package to the SD card.**
 >
+> For a new camera, follow the [official X6 activation instructions](https://onlinemanual.insta360.com/x6/en-us/camera/first-use/download-activation). If the app requires a firmware update to activate, stop before accepting the update if you want to keep first-install compatibility.
+>
 > **After installing OpenX6, do not install official firmware through the Insta360 app or from an SD card.** There is currently no known reliable way to reinstall OpenX6 after returning to stock firmware. Use a compatible OpenX6 SD package for future updates.
 >
 > OpenX6 is an independent third-party project with no affiliation to Insta360. Flashing modified firmware can leave the camera unable to start and can cause loss of recordings or settings. Back up your footage and any existing Holder directory before installation. The software is provided as is, subject to the warranty and liability terms of the [project license](LICENSE) and applicable law.
@@ -12,9 +14,28 @@ Use OpenX6 Desktop to build and verify an SD update with the built-in features o
 
 [中文使用说明](README.zh.md) · [Module author guide](sdk/README.md)
 
-[![OpenX6 1.0 launch poster with video modes, bitrate, panoramic RAW photos and SSD recording](docs/images/openx6-launch.png)](docs/images/openx6-launch.png)
+[![OpenX6 1.1 RAW Video recording formats](docs/images/openx6-launch.png)](docs/images/openx6-launch.png)
 
-The [component source audit](release/component-review.md) covers all 743 inputs. The checkout supplies 691 entries and generates 52 from the verified official image.
+[![OpenX6 1.0 launch poster](docs/images/openx6-launch-1.0.png)](docs/images/openx6-launch-1.0.png)
+
+The [component source audit](release/component-review.md) covers all 931 inputs. The checkout supplies 876 entries and generates 55 from the verified official image.
+
+## RAW Video in 1.1
+
+Connect a compatible external SSD, open **360 → RAW Video**, and tap the frame-rate control. Choose **30 Single Lens** for 7680 × 7680 lossless RAW10 at 30 fps. Switch between front and back with the lens button before recording. For both lenses, select **30, 50 or 60 fps**. Each lens records 3840 × 3840 with compression specific to its frame rate.
+
+Both lenses deliver 14-bit Bayer samples (0–16,383). The frame rate determines how finely the file preserves those values.
+
+| Lenses recorded | Per-lens format | Compression and precision | Estimated total sustained write |
+| --- | --- | --- | ---: |
+| One (front or back) | 7680 × 7680 · 30 fps | 10-bit Bayer input, lossless at every code value. | 870 MB/s |
+| Both | 3840 × 3840 · 30 fps | Lossless. All 16,384 possible input values decode exactly. | 731 MB/s |
+| Both | 3840 × 3840 · 50 fps | Lossy. Quantization steps range from 4 to 128 codes below 13,472. Maximum error is 64 codes. | 690 MB/s |
+| Both | 3840 × 3840 · 60 fps | Lossy. Steps range from 8 to 512 codes below 13,472. Maximum error is 256 codes. Smooth sky gradients can show banding. | 626 MB/s |
+
+At 50 and 60 fps, every input code from 13,472 to 16,383 is preserved exactly. Among the dual-lens modes, 30 fps retains the most detail in tone. The write figures are the camera’s initial estimates in decimal MB/s. Actual throughput varies with the scene, so allow headroom when choosing a drive.
+
+Copy the **whole take folder** for editing. The `.x6b` contains Bayer frames. Audio, exposure, timing, motion and calibration are stored alongside it. Single-lens 8K takes require a desktop decoder with **X6S8B02** support. Detailed or noisy scenes can exceed a drive’s sustained write speed and drop frames.
 
 ## New recording modes
 
@@ -56,7 +77,7 @@ The Mac and Windows desktop tools build these capture modes from the official X6
 - **External SSD recording** for photos and video over 10 Gbps USB-C.
 - **20× faster intervals.** At 1/100 s, 65 Fast RAW shots on SSD had a median start-to-start interval of **0.556 s**. The comparison uses one **11.296 s** interval between two native captures on SSD, including a 3 s timer after the first capture finished.
 
-Camera Info displays `1.2.36 OpenX6 1.0`. **Stats Overlay** shows actual bitrate, encoder input-buffer return time, frame timestamp gaps and temperature. Tap the temperature row for sensor readings. Proxy recording and live preview can be switched off independently. The SD preparation panel reports verification and copy progress. Maintenance reinstalls replace the nine managed programs and preserve the camera’s enrolled Holder and settings.
+Camera Info displays `1.2.36 OpenX6 1.1`. **Stats Overlay** shows actual bitrate, encoder input-buffer return time, frame timestamp gaps and temperature. Tap the temperature row for sensor readings. Proxy recording and live preview can be switched off independently. The SD preparation panel reports verification and copy progress. Maintenance reinstalls replace the nine managed programs and preserve the camera’s enrolled Holder and settings.
 
 **Choosing a recording bitrate.** Start with **Max**. It selects a preset for your recording mode and color profile, tuned for the highest bitrate that proved reasonably stable in testing. In **Stats Overlay**, **Return** is how long the encoder holds an input buffer. A sustained rise signals a backlog. **Gaps** counts missing frame intervals in the timestamps. Check both while recording, especially if you set **Custom** above Max. If Gaps keeps climbing in your scene, lower the bitrate.
 

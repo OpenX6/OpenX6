@@ -160,7 +160,7 @@ def generate_sources(root,stock,owner_path,out,go,clang,lld,predecessors=(),auto
  (out/'mod-runtime-tests.log').write_bytes(check.stdout+check.stderr)
  require(check.returncode==0,'Generated runtime reconstruction/lifecycle rejected; see mod-runtime-tests.log')
 
- for package in ['mod-stereo','mod-hnr','mod-vnr','proxy-control','mod-prepare','stats']:
+ for package in ['mod-stereo','mod-hnr','mod-vnr','proxy-control','mod-prepare','stats','zebra']:
   name=next(k for k,v in TARGETS.items() if v==package);put(name,compile_go(name.lstrip('/'),package))
  save(out/'mod-controls-build.json',dict(variants=variants,gui_single_seed=True,preferences='preserve other settings; retire hnr/spatial choices to native=0; fresh stereo=0 proxy_disabled=1'))
  # No libc/sysroot downloads: this bridge uses declared vendor/process imports
@@ -222,6 +222,10 @@ def generate_sources(root,stock,owner_path,out,go,clang,lld,predecessors=(),auto
  if menus:
   save(out/'menu-build.json',dict(target=name,base_sha256=sha(standard),output_sha256=sha(seed_files[name]),
        modules=[m['id'] for m in menus],capture_controls=True))
+ from .live_exposure import patch as show_exposure
+ from .zebra import patch as highlight_warning
+ exposed = show_exposure(seed_files[name],build/'native/live-exposure',clang,lld)
+ seed_files[name] = highlight_warning(exposed,build/'native/zebra',clang,lld,sha(exposed))
  def setup_source(gui):
   values={name:dict(SHA=sha(gui if name==GUI else base(name)),Mode=mode) for name,mode in GUI_CHECKS.items()}
   text='package main\n\nvar expectedFiles = map[string]fileSpec{\n'
@@ -236,6 +240,24 @@ def generate_sources(root,stock,owner_path,out,go,clang,lld,predecessors=(),auto
  # Compile the feature variant from the SAME module path, changing only pinned
  # GUI bytes. This keeps the seed compact and does not encode a build location.
  checks_feature=setup_source(seed_files['vr180-v1/gui']);seed_files['vr180-v1/setup']=compile_go('feature/gui-setup','gui-setup')
+ import runpy
+ rawsrc=root/'src/native/raw-video'
+ runtime=runpy.run_path(str(rawsrc/'build_runtime.py'))['build'](rawsrc,zig,strip,base('/usr/lib/com.qti.feature2.rtmcx.so'))
+ path='/usr/share/x5-raw-video/'
+ put(path+'runtime.tar',runtime)
+ recipe=json.loads(base(path+'ui-recipe.json'))
+ inputgui=seed_files['vr180-v1/gui']
+ from .raw_menu import bind_recipe
+ recipe = bind_recipe(recipe,inputgui)
+ put(path+'ui-recipe.json',canonical(recipe))
+ require(sha(inputgui)==recipe['pin'] and len(inputgui)==recipe['end'],'RAW GUI base mismatch')
+ rawgui=bytearray(inputgui)
+ for off,was,now in recipe['edits']:
+  before=bytes.fromhex(was);require(rawgui[off:off+len(before)]==before,'RAW GUI hook mismatch')
+  rawgui[off:off+len(before)]=bytes.fromhex(now)
+ setup=seed_files['vr180-v1/setup']; require(setup.count(recipe['pin'].encode())==1,'RAW startup GUI pin missing')
+ pins=dict(gui=sha(rawgui),base_setup=sha(setup),setup=sha(setup.replace(recipe['pin'].encode(),sha(rawgui).encode())),recipe=sha(base(path+'ui-recipe.json')),runtime=sha(runtime))
+ put(path+'pins.json',canonical(pins))
  shutil.copyfile(build/'gui-setup/expected.go',out/'gui-setup-feature-expected.go');setup_source(base(GUI))
  expected='package main\nvar payloads = []payload{\n'
  for key,path,label,mode in [('gui',GUI,'bin_t','0755'),('setup',SETUP,'bin_t','0755'),('sync.so','/usr/lib/hw/com.qti.chi.override.so','lib_t','0644')]:

@@ -18,7 +18,10 @@ TIFF_LE = b'II*\x00'
 T_WIDTH, T_HEIGHT, T_BPS, T_COMPRESSION = 256, 257, 258, 259
 T_STRIP_OFFSETS, T_ROWS_PER_STRIP, T_STRIP_COUNTS, T_PHOTOMETRIC = 273, 278, 279, 262
 T_WHITELEVEL = 50717
-TYPE_SIZE = {1: 1, 2: 1, 3: 2, 4: 4, 5: 8, 7: 1, 9: 4, 10: 8, 11: 4, 12: 8, 16: 8}
+# Only these fields are consumed by the 120 MP geometry check.
+IFD_COUNTS = {T_WIDTH: 1, T_HEIGHT: 1, T_BPS: 1, T_COMPRESSION: 1,
+              T_STRIP_OFFSETS: C.DNG_STRIPS, T_STRIP_COUNTS: C.DNG_STRIPS,
+              T_ROWS_PER_STRIP: 1, T_WHITELEVEL: 1}
 # Mean-check row sampling: take SAMPLE_RUN consecutive rows every SAMPLE_PERIOD. The run must span a full
 # 4-row quad cycle so all four colours (G1,B,R,G2) are measured -- a single stride like y%8 lands on one
 # band only and silently drops R/G2. ~970 rows sampled. NOTE: a global mean catches global errors (whole
@@ -40,11 +43,16 @@ def _read_ifd0(f):
     """Return (tags, whitelevel_value_file_offset). tags[tag] = (type, count, value_or_offset, raw_bytes)."""
     f.seek(0)
     hdr = f.read(8)
-    if hdr[:4] != TIFF_LE:
+    if len(hdr) != 8 or hdr[:4] != TIFF_LE:
         raise DngError('not little-endian TIFF')
     off = struct.unpack_from('<I', hdr, 4)[0]
+    size = f.seek(0, 2)
+    if off < 8 or off + 2 > size:
+        raise DngError('IFD not yet available')
     f.seek(off)
     n = struct.unpack('<H', f.read(2))[0]
+    if off + 2 + 12 * n > size:
+        raise DngError('truncated IFD')
     ent = f.read(12 * n)
     if len(ent) != 12 * n:
         raise DngError('truncated IFD')
@@ -52,12 +60,21 @@ def _read_ifd0(f):
     wl_off = None
     for k in range(n):
         tag, typ, cnt, val = struct.unpack_from('<HHII', ent, 12 * k)
-        nbytes = TYPE_SIZE.get(typ, 1) * cnt
+        if tag not in IFD_COUNTS:
+            continue
+        if tag in tags or cnt != IFD_COUNTS[tag] or typ not in (3, 4):
+            raise DngError('unexpected geometry field %d' % tag)
+        nbytes = cnt * (2 if typ == 3 else 4)
         val_field_off = off + 2 + 12 * k + 8
         if nbytes <= 4:
             raw = ent[12 * k + 8:12 * k + 8 + nbytes]
         else:
-            here = f.tell(); f.seek(val); raw = f.read(nbytes); f.seek(here)
+            if val < 8 or val + nbytes > size:
+                raise DngError('truncated geometry field')
+            f.seek(val)
+            raw = f.read(nbytes)
+            if len(raw) != nbytes:
+                raise DngError('truncated geometry field')
         tags[tag] = (typ, cnt, val, raw)
         if tag == T_WHITELEVEL:
             wl_off = val_field_off

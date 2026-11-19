@@ -1,0 +1,194 @@
+{
+  "30": {
+    "CAM0": {
+      "sensor": "imx01f",
+      "sensor_mode_index": 0,
+      "descriptor_sha256": "18988e5aa58c11daa021f0d564ccc30e0d2ad4cd7479be9ff45e286c58396606",
+      "analog_roi_register_xyxy_inclusive": [
+        0,
+        256,
+        8191,
+        7935
+      ],
+      "binning_xy": [
+        2,
+        2
+      ],
+      "digital_crop_after_binning_xywh": [
+        128,
+        0,
+        3840,
+        3840
+      ],
+      "bayer_output_wh": [
+        3840,
+        3840
+      ],
+      "sensor_bits": 14,
+      "nominal_frame_length_lines": 8800,
+      "descriptor_max_fps": 29.97003,
+      "line_length_pck": 10880,
+      "line_period_ns": 3791.6666628749995,
+      "rolling_shutter_first_to_last_row_ns": 14556208
+    },
+    "CAM1": {
+      "sensor": "imx01f_csi2",
+      "sensor_mode_index": 0,
+      "descriptor_sha256": "0eee4bcb3c8498f2362c0ca186d00874f607f85abb744e3f4bec00b5161b990b",
+      "analog_roi_register_xyxy_inclusive": [
+        0,
+        256,
+        8191,
+        7935
+      ],
+      "binning_xy": [
+        2,
+        2
+      ],
+      "digital_crop_after_binning_xywh": [
+        128,
+        0,
+        3840,
+        3840
+      ],
+      "bayer_output_wh": [
+        3840,
+        3840
+      ],
+      "sensor_bits": 14,
+      "nominal_frame_length_lines": 8792,
+      "descriptor_max_fps": 29.9973,
+      "line_length_pck": 10880,
+      "line_period_ns": 3791.6666973791675,
+      "rolling_shutter_first_to_last_row_ns": 14556208
+    }
+  },
+  "50": {
+    "CAM0": {
+      "sensor": "imx01f",
+      "sensor_mode_index": 14,
+      "descriptor_sha256": "18988e5aa58c11daa021f0d564ccc30e0d2ad4cd7479be9ff45e286c58396606",
+      "analog_roi_register_xyxy_inclusive": [
+        0,
+        256,
+        8191,
+        7935
+      ],
+      "binning_xy": [
+        2,
+        2
+      ],
+      "digital_crop_after_binning_xywh": [
+        128,
+        0,
+        3840,
+        3840
+      ],
+      "bayer_output_wh": [
+        3840,
+        3840
+      ],
+      "sensor_bits": 14,
+      "nominal_frame_length_lines": 5000,
+      "descriptor_max_fps": 50.0,
+      "line_length_pck": 10880,
+      "line_period_ns": 4000.0,
+      "rolling_shutter_first_to_last_row_ns": 15356000
+    },
+    "CAM1": {
+      "sensor": "imx01f_csi2",
+      "sensor_mode_index": 14,
+      "descriptor_sha256": "0eee4bcb3c8498f2362c0ca186d00874f607f85abb744e3f4bec00b5161b990b",
+      "analog_roi_register_xyxy_inclusive": [
+        0,
+        256,
+        8191,
+        7935
+      ],
+      "binning_xy": [
+        2,
+        2
+      ],
+      "digital_crop_after_binning_xywh": [
+        128,
+        0,
+        3840,
+        3840
+      ],
+      "bayer_output_wh": [
+        3840,
+        3840
+      ],
+      "sensor_bits": 14,
+      "nominal_frame_length_lines": 4992,
+      "descriptor_max_fps": 50.080128,
+      "line_length_pck": 10880,
+      "line_period_ns": 4000.000016384,
+      "rolling_shutter_first_to_last_row_ns": 15356000
+    }
+  },
+  "60": {
+    "CAM0": {
+      "sensor": "imx01f",
+      "sensor_mode_index": 13,
+      "descriptor_sha256": "18988e5aa58c11daa021f0d564ccc30e0d2ad4cd7479be9ff45e286c58396606",
+      "analog_roi_register_xyxy_inclusive": [
+        0,
+        256,
+        8191,
+        7935
+      ],
+      "binning_xy": [
+        2,
+        2
+      ],
+      "digital_crop_after_binning_xywh": [
+        128,
+        0,
+        3840,
+        3840
+      ],
+      "bayer_output_wh": [
+        3840,
+        3840
+      ],
+      "sensor_bits": 14,
+      "nominal_frame_length_lines": 4400,
+      "descriptor_max_fps": 59.94006,
+      "line_length_pck": 10880,
+      "line_period_ns": 3791.6666628749995,
+      "rolling_shutter_first_to_last_row_ns": 14556208
+    },
+    "CAM1": {
+      "sensor": "imx01f_csi2",
+      "sensor_mode_index": 13,
+      "descriptor_sha256": "0eee4bcb3c8498f2362c0ca186d00874f607f85abb744e3f4bec00b5161b990b",
+      "analog_roi_register_xyxy_inclusive": [
+        0,
+        256,
+        8191,
+        7935
+      ],
+      "binning_xy": [
+        2,
+        2
+      ],
+      "digital_crop_after_binning_xywh": [
+        128,
+        0,
+        3840,
+        3840
+      ],
+      "bayer_output_wh": [
+        3840,
+        3840
+      ],
+      "sensor_bits": 14,
+      "nominal_frame_length_lines": 4392,
+      "descriptor_max_fps": 60.04924,
+      "line_length_pck": 10880,
+      "line_period_ns": 3791.6666904783333,
+      "rolling_shutter_first_to_last_row_ns": 14556208
+    }
+  }
+}

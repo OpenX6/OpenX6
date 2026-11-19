@@ -1,0 +1,10 @@
+[Unit]
+Description=RAW Video control
+After=x5-raw-prepare.service
+ConditionPathExists=/run/x5-raw-mode/boot-ready
+
+[Service]
+ExecStart=/usr/bin/python3 /run/x5-raw-mode/controller.py
+Restart=on-failure
+RestartSec=2
+UMask=0077

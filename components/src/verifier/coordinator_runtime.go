@@ -132,49 +132,47 @@ func holderReady(cfg SDPolicy) bool {
 	}
 	return true
 }
+
+// Successful installation needs a working owner command channel, not an
+// unchanged feature GUI. Slot, release and device identity are checked by Step.
 func localRootReady(cfg SDPolicy) bool {
-	if !holderReady(cfg) {
+	return completionRootReady(cfg, holderReady(cfg), localCommand, os.ReadFile, fileDigest, processMatches)
+}
+func completionRootReady(cfg SDPolicy, enrolled bool, command func(int, ...string) ([]byte, error), read func(string) ([]byte, error), digest func(string) (string, error), matches func(int, string, SDPolicy) bool) bool {
+	if !enrolled {
 		return false
 	}
-	for unit, path := range map[string]string{"x6-owner-maintenance.service": "/usr/local/sbin/x6-owner-maintenance", "x6-owner-gui-auth.service": "/usr/local/sbin/x6-owner-gui-auth", "ins_gui.service": "/usr/bin/ins_gui"} {
-		b, e := localCommand(4, "/bin/systemctl", "show", unit, "-p", "MainPID", "--value")
-		if e != nil {
-			return false
-		}
-		pid, e := strconv.Atoi(strings.TrimSpace(string(b)))
-		if e != nil || pid < 2 {
-			return false
-		}
-		st, e := os.ReadFile(fmt.Sprintf("/proc/%d/status", pid))
-		if e != nil {
-			return false
-		}
-		uidOK := false
-		for _, line := range strings.Split(string(st), "\n") {
-			if strings.HasPrefix(line, "Uid:") {
-				f := strings.Fields(line)
-				uidOK = len(f) == 5 && f[1] == "0" && f[2] == "0" && f[3] == "0" && f[4] == "0"
-			}
-		}
-		if !uidOK {
-			return false
-		}
-		if !processMatches(pid, path, cfg) {
-			return false
-		}
-	}
-	var tables [][]byte
-	for _, path := range []string{"/proc/net/tcp", "/proc/net/tcp6"} {
-		b, e := os.ReadFile(path)
-		if e != nil && !os.IsNotExist(e) {
-			return false
-		}
-		tables = append(tables, b)
-	}
-	if !ownerPortsListening(tables...) {
+	const helper = "/usr/local/sbin/x6-owner-maintenance"
+	b, e := command(4, "/bin/systemctl", "show", "x6-owner-maintenance.service", "-p", "MainPID", "--value")
+	if e != nil {
 		return false
 	}
-	return true
+	pid, e := strconv.Atoi(strings.TrimSpace(string(b)))
+	if e != nil || pid < 2 {
+		return false
+	}
+	status, e := read(fmt.Sprintf("/proc/%d/status", pid))
+	if e != nil {
+		return false
+	}
+	root := false
+	for _, line := range strings.Split(string(status), "\n") {
+		if strings.HasPrefix(line, "Uid:") {
+			f := strings.Fields(line)
+			root = len(f) == 5 && f[1] == "0" && f[2] == "0" && f[3] == "0" && f[4] == "0"
+		}
+	}
+	if !root || !matches(pid, helper, cfg) {
+		return false
+	}
+	h, e := digest(helper)
+	if e != nil || !member(h, cfg.Files[helper]) {
+		return false
+	}
+	// The existing probe pins the device host key, checks root uid, and verifies
+	// acceptance of the installed owner public key without exporting a secret.
+	_, e = command(6, helper, "--probe-root", "--listen", "127.0.0.1:2222")
+	return e == nil
 }
 func identityDigest() (string, error) {
 	h := sha256.New()

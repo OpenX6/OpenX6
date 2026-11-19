@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"os"
 	"strings"
 	"syscall"
@@ -107,9 +106,10 @@ func (c *SDCoordinator) startRepair(o SDObservation) (string, error) {
 	return "repair-armed", nil
 }
 
-// Only an authenticated duplicate of the same candidate may be replaced
-// when a user copies the visible file back alongside our consumed card copy.
-func matchingConsumed(path string, repair bool, digest string, pub []byte, p policy) (os.FileInfo, error) {
+// A validated consumed firmware can be replaced at the later consume step,
+// after the new input was verified and staged. No deletion happens here.
+// This applies to healthy upgrades as well as failed-service repair.
+func validatedConsumed(path string, pub []byte, p policy) (os.FileInfo, error) {
 	fd, err := syscall.Open(path, syscall.O_RDONLY|syscall.O_NOFOLLOW|syscall.O_NONBLOCK, 0)
 	if os.IsNotExist(err) {
 		return nil, nil
@@ -123,11 +123,11 @@ func matchingConsumed(path string, repair bool, digest string, pub []byte, p pol
 	if err != nil {
 		return nil, err
 	}
-	if !repair || !st.Mode().IsRegular() {
+	if !st.Mode().IsRegular() {
 		return nil, fail("ambiguous SD packages")
 	}
-	m, _, _, err := inspectCard(f, pub, p)
-	if err != nil || fmt.Sprintf("%x", m.Digest) != digest {
+	_, _, _, err = inspectCard(f, pub, p)
+	if err != nil {
 		return nil, fail("conflicting consumed package")
 	}
 	return st, nil

@@ -94,10 +94,15 @@ def main():
     plist['NSLocalNetworkUsageDescription'] = (
         'OpenX6 connects to your X6 Wi-Fi when you choose Unpack on my X6 '
         'to receive verified modules, or when you choose to deploy a signed build to the camera SD card.')
-    info.write_bytes(plistlib.dumps(plist))
+
     sys.path.insert(0, str(ROOT/'desktop-runtime/update'))
     from build_identity import stamp
     flags = stamp(app/'Contents/Resources')
+    from build_identity import identity
+    version = identity()['version']
+    plist['CFBundleShortVersionString'] = version.removesuffix('.0') if version.endswith('.0') else version
+    plist['CFBundleVersion'] = version
+    info.write_bytes(plistlib.dumps(plist))
     subprocess.run(['go', 'build', '-trimpath', '-buildvcs=false', '-ldflags', flags,
                     '-o', app/'Contents/MacOS/openx6-update', './cmd'],
                    cwd=ROOT/'desktop-runtime/update', check=True,

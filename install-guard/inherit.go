@@ -63,7 +63,30 @@ func effectiveSource(root string) (string, error) {
 		return "", e
 	}
 	if h == "" {
-		return "", nil
+		// /data survives a return to a stock slot, which has no layout marker.
+		if _, err := os.Lstat(filepath.Join(root, holderDir)); os.IsNotExist(err) {
+			return "", nil
+		} else if err != nil {
+			return "", err
+		}
+		if err := checkDir(filepath.Join(root, holderDir)); err != nil {
+			return "", err
+		}
+		raw, err := bounded(root, holderDir+"/pins.json", 4096)
+		if err != nil {
+			return "", err
+		}
+		var pins map[string]string
+		if json.Unmarshal(raw, &pins) != nil || len(pins) != len(roles) {
+			return "", fmt.Errorf("invalid retained holder pins")
+		}
+		for _, role := range roles {
+			key, err := bounded(root, sourceKey(role, holderDir), 4096)
+			if err != nil || !validKey(role, key) || pins[filepath.Base(role)] != sumBytes(key) {
+				return "", fmt.Errorf("invalid retained holder role: %s", role)
+			}
+		}
+		return holderDir, nil
 	}
 	if h != sumBytes([]byte("1\n")) {
 		return "", fmt.Errorf("unknown holder layout")
@@ -323,6 +346,26 @@ func inherit(root string, c Config, e Evidence, verifyOnly bool) error {
 			}
 		case "first-install":
 			b = c.InitialKeys[role]
+			// A supported stock slot may also retain public roles in its root.
+			// Preserve them before publishing the persistent holder directory.
+			if layout == "" {
+				h, x := checkedHash(root, role, true)
+				if x != nil {
+					return x
+				}
+				if h != "" {
+					b, err = bounded(root, role, 4096)
+					if err != nil || h != e.Source.Preserved[role] || sumBytes(b) != h {
+						return fmt.Errorf("stock role changed: %s", role)
+					}
+				}
+			}
+			if layout == holderDir {
+				b, err = bounded(root, sourceKey(role, layout), 4096)
+				if err != nil || sumBytes(b) != e.Source.Preserved[role] {
+					return fmt.Errorf("retained holder changed: %s", role)
+				}
+			}
 			if len(b) == 0 {
 				return fmt.Errorf("missing enrollment key")
 			}
@@ -349,6 +392,15 @@ func inherit(root string, c Config, e Evidence, verifyOnly bool) error {
 	}
 	if err = publish(root, holderDir, keys, verifyOnly); err != nil {
 		return err
+	}
+	if mode == "first-install" {
+		plan, x := stockRestore(root, c, e.Source)
+		if x != nil {
+			return x
+		}
+		if plan != nil {
+			return publishStockRestore(root, c, e.Source, plan, verifyOnly)
+		}
 	}
 	if pred != nil && (pred.Modified || pred.Seed != c.TargetSeed) {
 		return publishTransition(root, c.TargetSeed, pred, verifyOnly)

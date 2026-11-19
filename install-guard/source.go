@@ -15,6 +15,7 @@ import (
 type SourceRule struct{ Version, OTASHA256, Mode string }
 type SourceEvidence struct {
 	Version, OTASHA256, OwnerPublicSHA256 string
+	RetainedHolder                        bool
 	Preserved                             map[string]string
 }
 
@@ -50,7 +51,7 @@ func validateSource(c Config, e Evidence) error {
 	if len(c.OwnerTrust) != 4 {
 		return fmt.Errorf("missing owner trust policy")
 	}
-	dynamic := c.TargetSeed != "" && mode == "maintenance"
+	dynamic := c.TargetSeed != "" && (mode == "maintenance" || (mode == "first-install" && s.RetainedHolder))
 	for path, want := range c.OwnerTrust {
 		if dynamic {
 			want = s.Preserved[path]
@@ -158,6 +159,7 @@ func collectSource(root string) (SourceEvidence, error) {
 	if err != nil {
 		return s, err
 	}
+	s.RetainedHolder = layout == holderDir
 	paths := append([]string{}, preservedPaths...)
 	paths = append(paths, "adb_keys")
 	for _, p := range paths {

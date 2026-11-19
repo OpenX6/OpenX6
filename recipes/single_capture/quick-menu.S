@@ -70,4 +70,4 @@ rate_unit:
  ldp x19,x30,[sp],#16
  b set_subtitle
 unit_label: .asciz "Mbps"
-version_label: .asciz "1.2.36 OpenX6 1.0"
+version_label: .asciz "1.2.36 OpenX6 1.1"

@@ -642,6 +642,9 @@ func (e Engine) Run() error {
 			return err
 		}
 	}
+	if handled, x := e.restoreStock(m, blob); handled || x != nil {
+		return x
+	}
 	stage := "data/.x6-firstboot-stage-" + e.Pin
 	if _, err = os.Lstat(e.path(featurePath)); err == nil {
 		if _, x := os.Lstat(e.path(featurePath + "/complete.json")); os.IsNotExist(x) {
@@ -670,10 +673,7 @@ func (e Engine) Run() error {
 	return e.install(m, blob, stage)
 }
 
-// install stages every payload, then publishes: by one rename when nothing
-// exists at the destination, otherwise by merging into what another component
-// created there (only its own directories are ever moved).
-func (e Engine) install(m Manifest, blob []byte, stage string) error {
+func (e Engine) stagePayloads(m Manifest, blob []byte, stage string) error {
 	var err error
 	// Check all source bytes before any feature output is created.
 	for _, v := range m.Entries {
@@ -751,6 +751,17 @@ func (e Engine) install(m Manifest, blob []byte, stage string) error {
 			return err
 		}
 	}
+	return nil
+}
+
+// install stages every payload, then publishes: by one rename when nothing
+// exists at the destination, otherwise by merging into what another component
+// created there (only its own directories are ever moved).
+func (e Engine) install(m Manifest, blob []byte, stage string) error {
+	if err := e.stagePayloads(m, blob, stage); err != nil {
+		return err
+	}
+	var err error
 	// Defaults are written only into unpublished staging, never over saved choices.
 	for _, rel := range []string{"vr180-v1/sync", "raw-nr-v1/level", "vr180-v1/enabled", "raw-nr-v1/enabled"} {
 		b := []byte{defaults[rel]}

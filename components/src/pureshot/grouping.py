@@ -73,9 +73,11 @@ def group_id(volkey, first_name):
     return int.from_bytes(h[:4], 'little')
 
 
-def enumerate_volume(volroot, volkey, storage, stem_of=lambda n: n[:-4]):
+def enumerate_volume(volroot, volkey, storage, stem_of=lambda n: n[:-4], keep_scanning=None):
     """Scan DCIM/Camera* on a volume, classify each DNG (pending/done/other/bad) via a cheap tail read, and
     return a frame list ready for group_frames. Skips the work dir and dotfiles."""
+    if keep_scanning and not keep_scanning():
+        return None
     frames = []
     dcim = os.path.join(volroot, 'DCIM')
     try:
@@ -91,6 +93,8 @@ def enumerate_volume(volroot, volkey, storage, stem_of=lambda n: n[:-4]):
         for name in names:
             if name.startswith('.') or not name.lower().endswith('.dng'):
                 continue
+            if keep_scanning and not keep_scanning():
+                return None
             path = os.path.join(fdir, name)
             try:
                 st = os.lstat(path)

@@ -201,6 +201,25 @@ func validate(c Config, e Evidence, phase string, s *Snapshot) error {
 	return nil
 }
 func collectPrograms(root string, c Config, e *Evidence) error {
+	if isHash(c.TargetSeed) && sourceMode(c, e.Source) == "first-install" {
+		// Normalize enrollment evidence before and after publishing initial keys.
+		for _, role := range roles {
+			if e.Source.Preserved[role] == "" {
+				e.Source.Preserved[role] = sumBytes(c.InitialKeys[role])
+			}
+		}
+		e.Source.RetainedHolder = true
+		e.Source.OwnerPublicSHA256 = e.Source.Preserved["ins/etc/x6_owner_update_ed25519.pub"]
+		plan, err := stockRestore(root, c, e.Source)
+		if err != nil {
+			return err
+		}
+		if plan != nil {
+			raw, _ := json.Marshal(plan)
+			e.Source.Preserved["stock-reinstall-plan"] = sumBytes(raw)
+		}
+		return nil
+	}
 	if c.TargetSeed != "" && sourceMode(c, e.Source) == "maintenance" {
 		pr, err := sourceLayout(root, c, *e)
 		if err != nil {
@@ -268,10 +287,10 @@ func collect(c Config, phase string) (Evidence, error) {
 	if h, ok := e.Source.Preserved["data/x6-owner-gui/server_ed25519.pub"]; ok {
 		e.PublicSHA256 = h
 	}
-	if err = validateSource(c, e); err != nil {
+	if err = collectPrograms("/", c, &e); err != nil {
 		return e, err
 	}
-	if err = collectPrograms("/", c, &e); err != nil {
+	if err = validateSource(c, e); err != nil {
 		return e, err
 	}
 	dir := "/dev/block/bootdevice/by-name"

@@ -3,7 +3,7 @@ from .gui_payload import linked_text
 import struct
 from .common import require
 
-LABEL='1.2.36 OpenX6 1.0'
+LABEL='1.2.36 OpenX6 1.1'
 SYMBOLS=dict(version_update_next=0x87d478,version_init_next=0x8cd0a4,row_class=0x715c318,
              new_object=0x4db3b0,group_add=0x58b350,quick_title=0x70d8ac8,localize=0x4e8aa0,
              set_title=0x963270,new_slot=0x4e1830,ew_signal=0x4e1880,quick_page=0x7134bb8,

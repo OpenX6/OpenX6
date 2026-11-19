@@ -1,0 +1,11 @@
+[Unit]
+Description=Prepare RAW Video
+After=data.mount etc.mount x6-runtime-prepare.service x6-owner-gui-auth.service x6-vr180-prepare.service openx6-zebra.service
+Before=ins_gui.service
+ConditionPathExists=/run/x6-boot/features-allowed
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/share/x5-raw-video/prepare.py
+RemainAfterExit=yes
+UMask=0077

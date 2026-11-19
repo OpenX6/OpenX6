@@ -14,8 +14,8 @@ var featurePaths = []string{
 }
 
 func checkFeatureFilesAt(root string, sets []map[string]string) (map[string]string, error) {
-	if len(sets) == 0 || len(sets) > 17 {
-		return nil, fmt.Errorf("missing/excess feature layouts")
+	if len(sets) == 0 {
+		return nil, fmt.Errorf("missing feature layouts")
 	}
 	actual := map[string]string{}
 	for _, p := range featurePaths {

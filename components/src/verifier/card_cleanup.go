@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
+	"syscall"
 )
 
 // shouldRemoveConsumedInput says whether the card copy the coordinator itself
@@ -45,4 +47,36 @@ func removeConsumedCardInput(f *os.File, path string) error {
 	_ = d.Sync()
 	d.Close()
 	return nil
+}
+
+// Completion cleanup must not depend on the input picker selecting the hidden
+// name. A fresh visible update can coexist with the completed predecessor.
+func cleanupConsumedCompleted(path string, state SDState, cleaned string, pub []byte, p policy) error {
+	if state.Phase != "completed" || !validID(state.Digest) || cleaned != state.Digest {
+		return fail("completion not confirmed")
+	}
+	fd, e := syscall.Open(path, syscall.O_RDONLY|syscall.O_CLOEXEC|syscall.O_NOFOLLOW|syscall.O_NONBLOCK, 0)
+	if os.IsNotExist(e) {
+		return nil
+	}
+	if e != nil {
+		return e
+	}
+	f := os.NewFile(uintptr(fd), path)
+	defer f.Close()
+	st, e := f.Stat()
+	if e != nil {
+		return e
+	}
+	if !st.Mode().IsRegular() {
+		return fail("unsafe consumed input")
+	}
+	m, _, _, e := inspectCard(f, pub, p)
+	if e != nil {
+		return e
+	}
+	if fmt.Sprintf("%x", m.Digest) != state.Digest {
+		return nil
+	}
+	return removeConsumedCardInput(f, path)
 }

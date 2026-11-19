@@ -1,0 +1,16 @@
+[Unit]
+Description=Live exposure readout
+After=x6-vr180-prepare.service x6-boot-guard.service data.mount
+Wants=x6-boot-guard.service
+ConditionPathExists=/run/x6-boot/features-allowed
+
+
+
+[Service]
+ExecStart=/usr/bin/python3 /usr/local/sbin/x6-live-exposure.py
+Restart=on-failure
+RestartSec=3
+UMask=0022
+
+[Install]
+WantedBy=ins_phase3.target

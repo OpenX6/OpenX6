@@ -224,6 +224,10 @@ class Processor(object):
         self.job = self._load_job()
         self.groups = []            # cached, list of (volkey, volroot, storage, groupdict, gid)
         self._groups_ts = -1e9      # rescan throttle only (NOT the published gen)
+        self._page_visible = False
+        self._mounted_groups = None
+        self._resume_queue = bool(self.job.get('running'))
+        self._queue_path = os.path.join(run_dir, 'selected-queue.json')
         self._gen = 0               # published groups 'gen' = a CONTENT version (see _publish_groups)
         self._gen_sig = None
         self._req_seq = self.job.get('last_req_seq', 0)
@@ -322,6 +326,9 @@ class Processor(object):
             # that read their slice of groups-all; an earlier GUI that still sends OP_PAGE gets a no-op.
             self.job['window_off'] = 0
         self.job['selection'] = sorted(sel)
+        if self.job['running'] and op in (C.OP_START, C.OP_SELECT, C.OP_DESELECT,
+                                           C.OP_SELECT_ALL, C.OP_SELECT_NONE):
+            self._save_queue()
         # clear the request file (consume it)
         try:
             os.unlink(self._req_path())
@@ -330,7 +337,40 @@ class Processor(object):
         self._save_job()
 
     # ---- enumeration/grouping ----
-    def rescan(self, force=False):
+    def _save_queue(self):
+        selected = set(self.job['selection'])
+        try:
+            offset = os.stat(frame._done_log(self.data_root)).st_size
+        except FileNotFoundError:
+            offset = 0
+        durable.write_json(self._queue_path, {'done_offset': offset,
+                           'groups': [g for g in self.groups if g[4] in selected]})
+
+    def _restore_queue(self):
+        # /run survives a service restart within this boot. The commit log is authoritative
+        # for frames completed since the queue was saved. Recovery runs before this method.
+        queue = durable.read_json(self._queue_path)
+        if not queue:
+            return                  # older installation: reload from the page on its next visit
+        self.groups = queue['groups']
+        committed = set()
+        try:
+            with open(frame._done_log(self.data_root), 'rb') as log:
+                log.seek(queue['done_offset'])
+                for line in log:
+                    fields = line.decode('utf-8').split('\t')
+                    if len(fields) >= 3:
+                        committed.add((fields[0], fields[1]))
+        except FileNotFoundError:
+            pass
+        for volkey, _, _, group, _ in self.groups:
+            for member in group['members']:
+                if member['kind'] == 'pending' and (volkey, member['rel']) in committed:
+                    member['kind'] = 'done'
+                    group['done'] += 1
+                    group['pending'] -= 1
+
+    def rescan(self, force=False, keep_scanning=None):
         now = self.clock()
         every = RESCAN_RUNNING if self.job.get('running') else RESCAN_IDLE
         if not force and (now - self._groups_ts) < every:
@@ -346,7 +386,11 @@ class Processor(object):
         for v in self.list_volumes():
             if hold and self.gates.usb_blocks(v['volroot']):
                 continue
-            frames = grouping.enumerate_volume(v['volroot'], v['volkey'], v['storage'])
+            frames = grouping.enumerate_volume(v['volroot'], v['volkey'], v['storage'],
+                                               keep_scanning=keep_scanning)
+            if frames is None:                 # closed mid-scan: keep the last complete list
+                self._page_visible = False
+                return
             for fr in frames:                       # a frame the job gave up on counts as failed, not still to do
                 if fr.get('kind') == 'pending' and self._excluded_key(v['volkey'], fr['rel']) in excl:
                     fr['kind'] = 'bad'
@@ -361,6 +405,8 @@ class Processor(object):
         # newest group first (by last member mtime)
         allg.sort(key=lambda t: t[3]['members'][-1]['mtime'] if t[3]['members'] else 0, reverse=True)
         self.groups = allg
+        if self.job.get('running'):
+            self._save_queue()
         self.job['window_off'] = 0                          # no shared window (see OP_PAGE)
 
     def _set_kind(self, fr, kind):
@@ -416,6 +462,8 @@ class Processor(object):
         for volkey, volroot, sto, g, gid in self.groups:
             if gid not in sel:
                 continue
+            if self._mounted_groups is not None and (volkey, volroot) not in self._mounted_groups:
+                continue
             if volroot in self.gates.blocked:
                 continue
             for m in g['members']:
@@ -429,8 +477,9 @@ class Processor(object):
 
     # ---- one iteration ----
     def step(self):
-        self.handle_request(self._read_request())
+        request = self._read_request()
         present = self.list_volumes()
+        self._mounted_groups = {(v['volkey'], v['volroot']) for v in present}
         # recovery before any new work, on every present volume with a pending J -- but never while the daemon's own
         # frames are in flight (their J's are live by design), and not on internal/SD while a USB host may be
         # exporting them (usb_hold): recovery reads and may write the volume; it runs after the hold
@@ -440,7 +489,19 @@ class Processor(object):
                     continue
                 if journal.has_j(self.data_root, v['volkey']) or list(journal.iter_xj(v['volroot'])):
                     frame.recover_volume(self._frame_ctx(), v['volkey'], v['volroot'])
-        self.rescan()
+        if self._resume_queue:
+            self._restore_queue()
+            self._resume_queue = False
+        visible = preview.page_open(self.run_dir)
+        entering = visible and not self._page_visible
+        self._page_visible = visible
+        if visible:
+            self.rescan(force=entering, keep_scanning=lambda: preview.page_open(self.run_dir))
+        self.handle_request(request)
+        if not visible and not request and not self.job['running'] and not self._inflight():
+            self._pause_wanted = False
+            self.gates.reap_idle()
+            return None
         did = None
         if self.job['running'] and not self.job['error']:
             did = self._advance()

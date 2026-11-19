@@ -1,4 +1,4 @@
-# OpenX6 Desktop — First release / 首发说明
+# OpenX6 Desktop
 
 ## English
 
@@ -7,6 +7,29 @@
 > **After installing OpenX6, do not install official firmware through the Insta360 app or from an SD card.** There is currently no known reliable way to reinstall OpenX6 after returning to stock firmware. Use a compatible OpenX6 SD package for future updates.
 
 The Mac and Windows desktop tools build these capture modes from the official X6 1.2.36 package.
+
+### RAW Video
+
+In the 360 shooting menu, select **RAW Video** and connect an external SSD. The format picker offers 3840 × 3840 per lens at 30, 50 or 60 fps with both lenses, and 7680 × 7680 lossless RAW10 at 30 fps from the selected front or back lens. In the latter mode the preview stops during recording. Setting shutter or ISO to Auto lets that value follow the light while a manually set value stays fixed. Each take stores its Bayer video in an `.x6b` file, with audio and separate timing, exposure, calibration and motion files for desktop processing.
+
+Both lenses deliver 14-bit Bayer samples (0–16,383). The frame rate determines how finely the file preserves those values.
+
+| Lenses recorded | Per-lens format | Compression and precision | Estimated total sustained write |
+| --- | --- | --- | ---: |
+| One (front or back) | 7680 × 7680 · 30 fps | 10-bit Bayer input, lossless at every code value. | 870 MB/s |
+| Both | 3840 × 3840 · 30 fps | Lossless. All 16,384 possible input values decode exactly. | 731 MB/s |
+| Both | 3840 × 3840 · 50 fps | Lossy. Quantization steps range from 4 to 128 codes below 13,472. Maximum error is 64 codes. | 690 MB/s |
+| Both | 3840 × 3840 · 60 fps | Lossy. Steps range from 8 to 512 codes below 13,472. Maximum error is 256 codes. Smooth sky gradients can show banding. | 626 MB/s |
+
+At 50 and 60 fps, every input code from 13,472 to 16,383 is preserved exactly. Among the dual-lens modes, 30 fps retains the most detail in tone. The write figures are the camera’s initial estimates in decimal MB/s. Actual throughput varies with the scene, so allow headroom when choosing a drive.
+
+RAW Video now prepares its capture pipeline automatically when selected and restores the previous shooting settings on exit. Single-lens 8K RAW uses X6S8B02 lossless compression; desktop decoders must support this format. Storage throughput still limits recording in complex scenes. If audio finalization fails, the camera preserves valid RAW video and records the stop reason and audio error alongside the take.
+
+**Exposure tools.** Enable **Show Shutter & ISO** in Mod Settings to see the current values during automatic exposure. The highlight warning marks clipping in the preview.
+
+**SD updates.** After a successful installation, the camera can clean up the consumed package and accept another update, including a reinstall of the same version. Existing settings and Holder keys carry over.
+
+**Known SD update issue.** If another process is using the card during preparation, the update can stop before flashing and the progress panel can disappear. Automatic retry may then stall. This release retains that behavior. After confirming the camera has returned to idle, retry with a spare empty card containing only the intended OpenX6 firmware. Formatting is optional and does not guarantee success. A package installed through the native update path may leave a hidden archive on the card.
 
 ### Panoramic video
 
@@ -37,7 +60,7 @@ Single-lens FreeFrame records **up to 7680 × 7680 at 30 fps in 10-bit iLog**.
 
 Crop modes and single-lens modes above 4K use the sensor’s small pixels. Expect more visible noise, especially in shadows or low light.
 
-**Custom bitrate in 5K Crop and 6K Crop.** In the November 10 card package these two FreeFrame modes can retain the 245 Mbps encoder target when you select a higher Custom value.
+**Custom bitrate in 5K Crop and 6K Crop.** Both FreeFrame Crop modes apply Custom targets above 245 Mbps. Actual bitrate varies with the scene.
 
 The original 6K square mode remains separately selectable at **6016 × 6016**. For square 8K30, turn on **Disable Video Proxy**. With the full-rate proxy, the camera exhausted recording buffers during a test. The HEVC encoder now requests output buffers of at least 24 MiB for 7296 × 7296 and 28 MiB for 7680 × 7680. In 7680 × 7680 FreeFrame, it uses eight input slots when the driver reports a minimum of seven and the original count is sixteen. Long-recording performance with this change still awaits camera testing.
 
@@ -91,7 +114,7 @@ At a manual **1/100 s** on internal storage, four photos gave three capture-star
 
 ### Storage, audio and camera settings
 
-Camera Info displays `1.2.36 OpenX6 1.0`. Single-lens video supports iLog and spatial audio. Wi-Fi idle timeout can be set to always on, 2, 5 or 10 minutes. The SD update screen shows verification and copy progress. Compatible reinstalls retain the camera’s settings and Holder keys. The unified update includes the MCU 1.2.0 application and skips that write when it is already current.
+Camera Info displays `1.2.36 OpenX6 1.1`. Single-lens video supports iLog and spatial audio. Wi-Fi idle timeout can be set to always on, 2, 5 or 10 minutes. The SD update screen shows verification and copy progress. Compatible reinstalls retain the camera’s settings and Holder keys. The unified update includes the MCU 1.2.0 application and skips that write when it is already current.
 
 ### Check your camera first
 
@@ -133,6 +156,29 @@ For the full installation steps, see [the user guide](README.md).
 
 Mac 和 Windows 桌面工具均以官方 X6 1.2.36 包为输入，构建包含下列拍摄档位的卡刷包。
 
+### RAW Video
+
+连接外置 SSD 后，在 360 拍摄菜单选择 **RAW Video**。双眼档每眼 3840 × 3840，可选 30、50 或 60 fps。单眼档可选前镜头或后镜头，以 7680 × 7680、30 fps 无损记录 RAW10，开录后停止取景。快门和 ISO 可分别设为自动或手动，选自动的项目会在录制中跟随光线。每条素材的 Bayer 视频存为 `.x6b`，同目录保存音频、帧时间、曝光、标定和运动数据，供桌面后期使用。
+
+双眼三档都读取 14-bit Bayer，每个像素的输入码值范围为 0–16383。帧率决定文件能保留多细的色阶。
+
+| 镜头 | 每眼规格 | 压缩与精度 | 参考持续写速（整机合计） |
+| --- | --- | --- | ---: |
+| 单眼（前或后） | 7680 × 7680 · 30 fps | 10-bit Bayer 输入，全码值无损。 | 870 MB/s |
+| 双眼 | 3840 × 3840 · 30 fps | 无损。输入的 16384 个可能码值都能逐值还原。 | 731 MB/s |
+| 双眼 | 3840 × 3840 · 50 fps | 有损。低于 13472 时按亮度分段，量化步长为 4 至 128 个码值，最大误差 64。 | 690 MB/s |
+| 双眼 | 3840 × 3840 · 60 fps | 有损。低于 13472 时按亮度分段，量化步长为 8 至 512 个码值，最大误差 256。天空等平滑渐变更容易出现色阶。 | 626 MB/s |
+
+50 和 60 fps 都完整保留 13472–16383 的每一个输入码值。双眼录制时，如果后期要大幅调整天空等渐变区域，30 fps 保留的色阶最完整。表中为相机的初始写速估算，按十进制 MB/s 计算；实际数据量随场景变化，选盘时应为持续写入留出余量。
+
+选 **30 Single Lens** 后，可用取景页镜头按钮选择录制的一眼。进入 RAW Video 时自动准备，退出时恢复原拍摄设置。后期请复制整条文件夹，单眼 8K 解码器需支持 X6S8B02。暗场或复杂场景可能超过盘的持续写速。若音频收尾失败，完整的 RAW 图像仍可独立封装，素材目录会记录停录原因及音频错误。
+
+**曝光辅助。** 在 Mod Settings 打开 **Show Shutter & ISO**，自动曝光时也能看到当前快门和 ISO。开启高光报警后，取景页会标出达到裁切阈值的区域。
+
+**SD 卡更新。** 安装成功后，相机会清理上次已用的安装包，可继续更新或重装同版本，并保留已有设置和 Holder 密钥。
+
+**已知 SD 更新问题。** 准备阶段若有其他进程占卡，更新可能在刷写前停止，进度框随之消失，后续自动重试也可能停住。本版保留此行为。确认相机已回到空闲状态后，可用一张仅放目标 OpenX6 固件的空备用卡重试；格式化为可选操作，不能保证解决。走原生更新路径的包可能在卡上保留隐藏归档。
+
 ### 全景录像
 
 | 菜单档位 | 双眼合计宽 × 高 | 标称帧率 |
@@ -162,7 +208,7 @@ Mac 和 Windows 桌面工具均以官方 X6 1.2.36 包为输入，构建包含�
 
 各 Crop 档和超过 4K 的单镜头档位都使用传感器的小像素。阴影和暗光处的噪点会更明显，这是这些读出模式的正常表现。
 
-**5K Crop 和 6K Crop 的 Custom 码率。** 在 11 月 10 日卡包中，这两个 FreeFrame 档位选用高于 245 Mbps 的自定义值时，编码器可能仍沿用 245 Mbps 的目标。
+**5K Crop 和 6K Crop 的 Custom 码率。** 这两个 FreeFrame 档位均支持高于 245 Mbps 的 Custom 目标，实际码率随场景变化。
 
 原厂方形 6K 仍可单独选择，实际尺寸为 **6016 × 6016**。方形 8K30 建议开启 **Disable Video Proxy**，保留全帧率代理时实测出现过录像缓冲耗尽。HEVC 编码器现为 7296 × 7296 和 7680 × 7680 分别申请至少 24 MiB 和 28 MiB 的输出缓冲。7680 × 7680 FreeFrame 在驱动报告最少需要 7 个输入槽、原配置为 16 槽时使用 8 槽。这项改动的长录表现仍待实机验证。
 
@@ -216,7 +262,7 @@ iLog 录像的锐度菜单新增 **Extra Low** 和 **Minimal**。在 **Mod Setti
 
 ### 存储、音频与机身设置
 
-Camera Info 显示 `1.2.36 OpenX6 1.0`。单镜头视频支持 iLog 和空间音频。Wi-Fi 空闲超时可选常开、2、5 或 10 分钟。SD 更新界面显示校验与复制进度，兼容版本重装保留原有设置和 Holder 密钥。统一更新包含 MCU 1.2.0 应用，已是该版本时自动跳过写入。
+Camera Info 显示 `1.2.36 OpenX6 1.1`。单镜头视频支持 iLog 和空间音频。Wi-Fi 空闲超时可选常开、2、5 或 10 分钟。SD 更新界面显示校验与复制进度，兼容版本重装保留原有设置和 Holder 密钥。统一更新包含 MCU 1.2.0 应用，已是该版本时自动跳过写入。
 
 ### 先看机身当前版本
 

@@ -1,0 +1,35 @@
+{
+  "30": {
+    "CAM0": {
+      "sensor": "imx01f",
+      "sensor_mode_index": 5,
+      "descriptor_sha256": "18988e5aa58c11daa021f0d564ccc30e0d2ad4cd7479be9ff45e286c58396606",
+      "analog_roi_register_xyxy_inclusive": [
+        0,
+        256,
+        8191,
+        7935
+      ],
+      "binning_xy": [
+        1,
+        1
+      ],
+      "digital_crop_after_binning_xywh": [
+        256,
+        0,
+        7680,
+        7680
+      ],
+      "bayer_output_wh": [
+        7680,
+        7680
+      ],
+      "sensor_bits": 10,
+      "nominal_frame_length_lines": 8342,
+      "descriptor_max_fps": 29.968832,
+      "line_length_pck": 11632,
+      "line_period_ns": 4000.000055296001,
+      "rolling_shutter_first_to_last_row_ns": 30716000
+    }
+  }
+}

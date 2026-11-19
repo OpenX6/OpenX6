@@ -59,6 +59,24 @@ def set_period(fd, value):
     ioctl(fd, 0xc0cc5616, 204, bytes(buf))
 
 
+# CAPTURE reports coded HEVC dimensions. For these two FreeFrame profiles
+# the encoder pads to its coding grid; OUTPUT reports the visible input.
+CROP_CODED_SIZES = {(4912, 4912): (4928, 4928), (6000, 3968): (6016, 3968)}
+
+
+def matches_main(fd, visible, shoot_mode):
+    fmt = ioctl(fd, 0xc0d05604, 208, struct.pack('=I', CAPTURE))
+    coded = struct.unpack_from('=II', fmt, 8)
+    if fmt[16:20] != b'HEVC':
+        return False
+    if coded == visible:
+        return True
+    if shoot_mode != 'kFreeFrameVideo' or CROP_CODED_SIZES.get(visible) != coded:
+        return False
+    source = ioctl(fd, 0xc0d05604, 208, struct.pack('=I', OUTPUT))
+    return struct.unpack_from('=II', source, 8) == visible
+
+
 def apply(change=True):
     mode = api('config', 'get_general', key='kMediaMode')
     if mode['lens_mode'] != 'kSATAngle' or mode['shoot_mode'] not in ('kNormalVideo', 'kFreeFrameVideo'):
@@ -97,8 +115,7 @@ def apply(change=True):
             except FileNotFoundError:
                 continue
             try:
-                fmt = ioctl(fd, 0xc0d05604, 208, struct.pack('=I', CAPTURE))
-                if struct.unpack_from('=II', fmt, 8) != dims or fmt[16:20] != b'HEVC':
+                if not matches_main(fd, dims, mode['shoot_mode']):
                     continue
                 if control(fd,0x9909cf) != CEILING*1000000 or control(fd,0x9909d7) != 1 or control(fd,0x9909ce) != 1:
                     continue

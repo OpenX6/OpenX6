@@ -23,7 +23,7 @@ func TestCombinedFreshResumeVersusExistingSettings(t *testing.T) {
 		if err := f.e.Bootstrap(m); err != nil {
 			t.Fatal(err)
 		}
-		if string(m.data["kDeviceActiveTime"]["is_active"]) != "true" {
+		if string(m.data["kNetdConfig"]["wifi_enable_strategy"]) != `"kAlwaysOn"` || string(m.data["kDeviceActiveTime"]["is_active"]) != "false" {
 			t.Fatal("fresh configuration not resumed")
 		}
 		untouched(t, f.e)
@@ -112,7 +112,7 @@ func TestSettingsResumeAndPreserve(t *testing.T) {
 			}
 			var j configJournal
 			json.Unmarshal(m.journal, &j)
-			if !j.Complete || string(j.Original["kDeviceActiveTime"]["is_active"]) != "false" {
+			if !j.Complete || j.Version != 2 || j.Original["kDeviceActiveTime"] != nil || string(j.Original["kSystemAutoShutdown"]["auto_power_off_time"]) != "180" {
 				t.Fatal("original snapshot lost")
 			}
 			m.data["kSystemAutoShutdown"]["auto_power_off_time"] = json.RawMessage(`300`)
@@ -152,5 +152,50 @@ func TestSettingsReject(t *testing.T) {
 				t.Fatal("accepted failure")
 			}
 		})
+	}
+}
+
+// New installs need no activation object. Previous installers journaled it;
+// the actual camera may have been officially activated since that snapshot.
+func TestStockActivationIsUntouched(t *testing.T) {
+	f := fixture(t)
+	for _, state := range []string{"false", "true", "missing"} {
+		for _, journal := range []string{"fresh", "legacy-pending", "legacy-complete"} {
+			t.Run(state+"/"+journal, func(t *testing.T) {
+				m := configFixture()
+				if journal != "fresh" {
+					old := configJournal{Version: 1, Seed: f.e.Pin, Complete: journal == "legacy-complete", Original: m.data}
+					m.journal, _ = json.Marshal(old)
+				}
+				if state == "missing" {
+					delete(m.data, "kDeviceActiveTime")
+				} else {
+					m.data["kDeviceActiveTime"]["is_active"] = json.RawMessage(state)
+					m.data["kDeviceActiveTime"]["active_time"] = json.RawMessage("1234")
+				}
+				before, _ := json.Marshal(m.data["kDeviceActiveTime"])
+				if err := InitializeSettings(m, f.e.Pin, nil); err != nil {
+					t.Fatal(err)
+				}
+				after, _ := json.Marshal(m.data["kDeviceActiveTime"])
+				if string(before) != string(after) {
+					t.Fatal("activation state changed")
+				}
+				var receipt configJournal
+				if err := json.Unmarshal(m.journal, &receipt); err != nil || !receipt.Complete {
+					t.Fatal("settings initialization did not finish")
+				}
+			})
+		}
+	}
+	n := NativeConfig{Call: func([]byte) ([]byte, error) {
+		t.Fatal("activation reached the native configuration service")
+		return nil, nil
+	}}
+	if _, err := n.Get("kDeviceActiveTime"); err == nil {
+		t.Fatal("activation read permitted")
+	}
+	if err := n.Set("kDeviceActiveTime", nil); err == nil {
+		t.Fatal("activation write permitted")
 	}
 }

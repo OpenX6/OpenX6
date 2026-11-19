@@ -1,0 +1,17 @@
+[Unit]
+Description=10 Hz highlight warning for the LCD preview
+After=data.mount etc.mount x6-boot-guard.service x6-owner-gui-auth.service x6-vr180-prepare.service
+Before=ins_gui.service
+ConditionPathExists=/run/x6-boot/features-allowed
+
+[Service]
+Type=simple
+RuntimeDirectory=openx6-clip
+RuntimeDirectoryMode=0700
+ExecStart=/usr/local/sbin/openx6-zebra
+Restart=on-failure
+RestartSec=2
+UMask=0077
+
+[Install]
+WantedBy=ins_phase3.target

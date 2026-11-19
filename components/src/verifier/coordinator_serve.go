@@ -52,8 +52,14 @@ const (
 	consumedCardPath = "/mnt/sdcard/.x6-owner-package.bin"
 )
 
-func openCardPackage(allowDuplicate bool) (f *os.File, path string, err error) {
-	for _, p := range []string{cardInputPath, consumedCardPath} {
+func openCardPackage() (f *os.File, path string, err error) {
+	return openCardPackageAt(cardInputPath, consumedCardPath)
+}
+
+// Prefer an explicit input. Its consumed predecessor is validated separately
+// before replacement; merely finding two names is not an installation failure.
+func openCardPackageAt(visible, hidden string) (f *os.File, path string, err error) {
+	for _, p := range []string{visible, hidden} {
 		s, e := os.Lstat(p)
 		if os.IsNotExist(e) {
 			continue
@@ -65,11 +71,9 @@ func openCardPackage(allowDuplicate bool) (f *os.File, path string, err error) {
 			return nil, "", fail("unsafe SD entry")
 		}
 		if path != "" {
-			if allowDuplicate {
-				continue
-			} // Verified against visible input before use.
-			return nil, "", fail("ambiguous SD packages")
+			continue
 		}
+
 		path = p
 	}
 	if path == "" {
@@ -82,10 +86,13 @@ func openCardPackage(allowDuplicate bool) (f *os.File, path string, err error) {
 	return os.NewFile(uintptr(fd), path), path, nil
 }
 func consumeCardName(f *os.File, path string, duplicate os.FileInfo) error {
-	if path == consumedCardPath {
+	return consumeCardNameAt(f, path, duplicate, cardInputPath, consumedCardPath)
+}
+func consumeCardNameAt(f *os.File, path string, duplicate os.FileInfo, visible, hidden string) error {
+	if path == hidden {
 		return nil
 	}
-	if path != cardInputPath {
+	if path != visible {
 		return fail("unexpected source name")
 	}
 	a, e := f.Stat()
@@ -96,7 +103,7 @@ func consumeCardName(f *os.File, path string, duplicate os.FileInfo) error {
 	if e != nil || !os.SameFile(a, b) {
 		return fail("card source replaced")
 	}
-	dest := consumedCardPath
+	dest := hidden
 	if target, err := os.Lstat(dest); !os.IsNotExist(err) && (err != nil || duplicate == nil || !os.SameFile(duplicate, target)) {
 		return fail("card consumed name occupied")
 	}
@@ -288,7 +295,7 @@ func runCoordinator() error {
 		enrolled := ie == nil && validID(identity) && holderReady(cfg)
 		o := SDObservation{Boot: boot, Slot: slot, CurrentRelease: id, Presence: presence, Card: card, Identity: identity, InstallAllowed: cfg.AutomaticEnabled, NativeIdle: c.State.Native && otaHeld() && mediaIdle()}
 		failureReady := failure.observed(time.Now(), stoppedOnCamera())
-		f, path, e := openCardPackage(failureReady)
+		f, path, e := openCardPackage()
 		if e != nil {
 			fmt.Println("SD package unavailable or ambiguous")
 			continue
@@ -359,7 +366,12 @@ func runCoordinator() error {
 				enrolled && noUSBExport() == nil
 			var duplicate os.FileInfo
 			if path == cardInputPath {
-				duplicate, e = matchingConsumed(consumedCardPath, o.Repair, o.PackageDigest, pub, p)
+				if !c.State.Native && c.State.Phase == "completed" && cleanedDigest == c.State.Digest && card == c.State.Card {
+					if err := cleanupConsumedCompleted(consumedCardPath, c.State, cleanedDigest, pub, p); err != nil {
+						fmt.Printf("Completed card input retained: %v\n", err)
+					}
+				}
+				duplicate, e = validatedConsumed(consumedCardPath, pub, p)
 				if e != nil {
 					f.Close()
 					fmt.Println("conflicting SD inputs")

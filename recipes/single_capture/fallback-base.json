@@ -1,6 +1,6 @@
 {
   "base_bytes": 118861992,
-  "fallback_sha256": "30990f0e9f3ab8f1379eb3834a589ecc6ad60106365f0fc0fc73f04e5c7b2dad",
+  "fallback_sha256": "046f1f89a4fe75a54dbffeb395e3eef3b18f85f144f0d55db618c74c7a2573fc",
   "restore": [
     [
       236,
@@ -136,7 +136,7 @@
     ]
   ],
   "stock_confirmation": {
-    "sha256": "bdd46b13626e0300f3df23c6e8e1c115bf0d33e8e670a144309989564f16ac72",
+    "sha256": "0cc646858a1413a02768345dc346377ef91070488c030459135a97b0bb53d9fa",
     "previous_bytes": 118871103,
     "restore": [
       [

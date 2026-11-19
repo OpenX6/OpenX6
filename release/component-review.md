@@ -1,6 +1,6 @@
 # Component inventory
 
-The signed 1.2.36 profile covers 743 inputs. The builder verifies 691 files from the checkout, including vendored dependencies and two synthetic encoder statistics fixtures. It derives the other 52 from the official system image. Every input has an expected SHA-256.
+The signed 1.2.36 profile covers 931 inputs. The builder verifies 876 files from the checkout, including vendored dependencies and two synthetic encoder statistics fixtures. It derives the other 55 from the official system image. Every input has an expected SHA-256.
 
 ### 16K Fast RAW
 
@@ -10,7 +10,7 @@ On a reference shot, archived native-engine tests of the working matrix and shad
 
 ### Checking the media service
 
-The [media recipe](../openx6/mediad_recipe.py) lists the SHA-256 of each intermediate executable. It compiles the [C and AArch64 hooks](../recipes/mediad/) in order, including older hooks whose bytes remain in the final file. The builder rejects the first mismatching layer. With no third-party media module selected, the expected SHA-256 of `/usr/bin/ins_mediad` inside the candidate is `95eca63e20c111e49160bdef896d85bfe7939726af997e0ebc70ba4761cd8f9a`. A selected media module applies after this check and records its own output digest in `release-inputs.json`.
+The [media recipe](../openx6/mediad_recipe.py) lists the SHA-256 of each intermediate executable. It compiles the [C and AArch64 hooks](../recipes/mediad/) in order, including older hooks whose bytes remain in the final file. The builder rejects the first mismatching layer. With no third-party media module selected, the expected SHA-256 of `/usr/bin/ins_mediad` inside the candidate is `dbc3ef7b694bd45719a3eb750586b762f794f55aa8d379a4786bba56c8848ea5`. A selected media module applies after this check and records its own output digest in `release-inputs.json`.
 
 ### Checking the camera HAL
 
