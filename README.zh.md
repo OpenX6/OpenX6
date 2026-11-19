@@ -95,7 +95,6 @@ iLog 录像的锐度菜单新增 **Extra Low** 和 **Minimal**。在 **Mod Setti
 
 **Fisheye 鱼眼预览，显示传感器采集的原生鱼眼画面。** 普通全景录像的左下角视角菜单可选 Native、Linear 或 Fisheye。单镜头 FreeFrame 显示当前镜头的画面，普通全景录像可切换前后镜头，分别检查构图。开录和停录时，鱼眼取景跟随当前档位。Flat 和 FreeFrame 中的 **Disable Flat Mode Mirror** 只控制前镜头的机身取景，录制文件保留原方向。
 
-<img src="docs/images/panoramic-view-fish.png" width="240" alt="全景录像的实际鱼眼取景画面，左下角显示 FISH 图标">
 
 兼容命令服务监听相机热点，连入该热点的客户端可以提交 root shell 命令。随附客户端会核对相机身份、序列号和连接授权。桌面机内解包工具独立检查出厂固件版本。[Wi-Fi 命令客户端](sdk/wifi-command/README.md)
 

@@ -93,7 +93,6 @@ After installing this update, the camera asks you to confirm twice before handin
 
 **Fisheye preview, showing what the sensor captured natively.** The lower-left view menu offers Native, Linear and Fisheye in regular panoramic video. FreeFrame shows the selected lens. In regular panoramic video, you can switch between the front and rear lenses to frame each view. Fisheye framing follows the selected mode when recording starts or stops. In Flat and FreeFrame, **Disable Flat Mode Mirror** changes only the front-lens preview. The recorded video keeps its original orientation.
 
-<img src="docs/images/panoramic-view-fish.png" width="240" alt="Live panoramic viewfinder with the FISH icon and the circular fisheye image">
 
 The legacy command service listens on the camera hotspot. A client on that hotspot can submit shell commands as root. The supplied client checks the camera identity, serial and connection authorization. The module exporter retains its separate factory-version check. [Wi-Fi command client](sdk/wifi-command/README.en.md)
 
