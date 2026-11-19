@@ -437,14 +437,28 @@ func Ready(executable string) error {
 	if !semver.MatchString(Version) {
 		return errors.New("invalid running desktop version")
 	}
+	// A successful first launch already selected this version. Do not repeat
+	// complete bundle verification on every later GUI startup.
+	if marker, err := os.ReadFile(filepath.Join(dir, Version, "ready")); err == nil && string(marker) == Version {
+		return nil
+	}
 	target := binary(dir, Version)
 	same, e := os.Stat(target)
 	if e != nil {
 		return nil
 	}
 	current, e := os.Stat(executable)
-	if e != nil || !os.SameFile(current, same) {
+	if e != nil || !current.Mode().IsRegular() || !same.Mode().IsRegular() {
 		return nil
+	}
+	if !os.SameFile(current, same) {
+		matches, err := matchingReadyBundle(target, executable)
+		if err != nil {
+			return err
+		}
+		if !matches {
+			return nil
+		}
 	}
 	if _, e = os.Stat(filepath.Join(dir, Version, "archive.sha256")); e != nil {
 		return e

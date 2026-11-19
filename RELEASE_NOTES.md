@@ -297,3 +297,7 @@ OpenX6 核心采用 **GPL-3.0-only**，模块 SDK 和随附示例采用 **Apache
 详细操作见[中文使用说明](README.zh.md)。
 
 Thanks to derrickyau9 and the contributors who documented the Luna Ultra. 感谢 derrickyau9 和贡献者公开相关研究。[Upstream research / 上游研究](https://github.com/derrickyau9/insta360-luna-ultra-reverse-engineering)
+
+**Mac automatic update fix.** The app now confirms a successful update when macOS opens it from an App Translocation path. Reopening the original app then launches the updated version. Existing Holder identity, module cache and language preference are preserved.
+
+**Mac 自动更新修正。** 修复 macOS 从隔离路径打开新版后未完成更新收尾的问题。重新打开原入口会进入已更新的版本，已有 Holder 身份、模块缓存和语言偏好保持不变。
