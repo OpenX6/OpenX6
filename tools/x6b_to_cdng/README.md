@@ -20,7 +20,7 @@ Values removed by the camera's 50/60 fps quantization cannot be recovered.
 
 ## Install
 
-Use 64-bit **Python 3.11–3.13**. With Git installed, fetch only the tool folder:
+Use 64-bit **Python 3.11–3.13**. On macOS/Linux, with Git installed:
 
 ```sh
 git clone --depth 1 --filter=blob:none --sparse https://github.com/OpenX6/OpenX6.git
@@ -29,7 +29,17 @@ git sparse-checkout set tools/x6b_to_cdng
 cd tools/x6b_to_cdng
 ```
 
-This also avoids unrelated firmware-source filenames that Windows reserves.
+On Windows, some unrelated firmware source filenames are reserved by the OS.
+Export just this tool without checking out the firmware tree (PowerShell):
+
+```powershell
+git clone --depth 1 --no-checkout https://github.com/OpenX6/OpenX6.git
+cd OpenX6
+git archive --format=zip --output=converter-source.zip HEAD tools/x6b_to_cdng
+Expand-Archive converter-source.zip -DestinationPath .
+cd tools/x6b_to_cdng
+```
+
 Alternatively, extract just `tools/x6b_to_cdng` from the repository ZIP. The entire
 tool folder, including both JSON files, is needed. Run the following in that folder.
 

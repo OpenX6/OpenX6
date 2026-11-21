@@ -16,7 +16,7 @@
 
 ## 安装及运行
 
-安装 64 位 **Python 3.11–3.13**。已安装 Git 时，可以只取工具目录：
+安装 64 位 **Python 3.11–3.13**。Mac／Linux 已安装 Git 时，可以只取工具目录：
 
 ```sh
 git clone --depth 1 --filter=blob:none --sparse https://github.com/OpenX6/OpenX6.git
@@ -25,7 +25,17 @@ git sparse-checkout set tools/x6b_to_cdng
 cd tools/x6b_to_cdng
 ```
 
-这样也能避开仓库里与本工具无关、但 Windows 不接受的固件源文件名。
+Windows 不接受仓库内部分无关的固件源文件名，请只导出本工具、不检出固件树
+（PowerShell）：
+
+```powershell
+git clone --depth 1 --no-checkout https://github.com/OpenX6/OpenX6.git
+cd OpenX6
+git archive --format=zip --output=converter-source.zip HEAD tools/x6b_to_cdng
+Expand-Archive converter-source.zip -DestinationPath .
+cd tools/x6b_to_cdng
+```
+
 或者下载仓库 ZIP，只提取其中的 `tools/x6b_to_cdng` 文件夹。请保留该目录的全部内容，
 包括两个 JSON 文件。下面的命令均在这个工具目录内执行。
 

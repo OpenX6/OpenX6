@@ -19,8 +19,20 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+        if: runner.os != 'Windows'
         with:
           sparse-checkout: tools/x6b_to_cdng
+      - name: Export converter source without a Windows firmware checkout
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          git init .
+          git remote add origin https://github.com/${{ github.repository }}.git
+          git fetch --depth 1 origin ${{ github.sha }}
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          git archive --format=zip --output=converter-source.zip FETCH_HEAD tools/x6b_to_cdng
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Expand-Archive converter-source.zip -DestinationPath .
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
