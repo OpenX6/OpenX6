@@ -37,6 +37,8 @@ At 50 and 60 fps, every input code from 13,472 to 16,383 is preserved exactly. A
 
 Copy the **whole take folder** for editing. The `.x6b` contains Bayer frames. Audio, exposure, timing, motion and calibration are stored alongside it. Single-lens 8K takes require a desktop decoder with **X6S8B02** support. Detailed or noisy scenes can exceed a drive’s sustained write speed and drop frames.
 
+Convert recordings with the source-only [X6B → CinemaDNG tool](tools/x6b_to_cdng/README.md). It supports the RAW formats released in 1.1 and copies audio and metadata alongside the DNG sequences.
+
 ## New recording modes
 
 | Panoramic video | Combined width × height | Nominal frame rate |

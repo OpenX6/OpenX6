@@ -1,0 +1,26 @@
+{
+  "synthetic-X6M50ABC.x6b.gz": {
+    "fps": 50,
+    "magic": "X6M50ABC",
+    "request": 100,
+    "sha256": "8db5178cf632ef0185af5b3351e6263520972d094cf93a4a569055304f3c3e49"
+  },
+  "synthetic-X6QBLK05.x6b.gz": {
+    "fps": 60,
+    "magic": "X6QBLK05",
+    "request": 100,
+    "sha256": "34e6503aedc60b5f5080d4c2a2ff93d922d8246f008464a0046373d7941b59c1"
+  },
+  "synthetic-X6M50AB2.x6b.gz": {
+    "fps": 50,
+    "magic": "X6M50AB2",
+    "request": 100,
+    "sha256": "5222a9514619ebe1701dcb1c2dfdb7f366b89f574d1df1117be454aecf08072c"
+  },
+  "synthetic-X6QBLK0B.x6b.gz": {
+    "fps": 60,
+    "magic": "X6QBLK0B",
+    "request": 100,
+    "sha256": "53059b5fe3c047fcb2dc38e6cb954275c35ad39be7a70785e3a7c4875e5e892b"
+  }
+}
