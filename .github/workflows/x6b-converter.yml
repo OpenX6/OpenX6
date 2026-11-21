@@ -13,11 +13,14 @@ permissions:
 jobs:
   test:
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout: tools/x6b_to_cdng
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
