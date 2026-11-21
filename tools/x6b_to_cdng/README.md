@@ -35,7 +35,7 @@ Export just this tool without checking out the firmware tree (PowerShell):
 ```powershell
 git clone --depth 1 --no-checkout https://github.com/OpenX6/OpenX6.git
 cd OpenX6
-git archive --format=zip --output=converter-source.zip HEAD tools/x6b_to_cdng
+git archive --format=zip --output=converter-source.zip --prefix=tools/x6b_to_cdng/ HEAD:tools/x6b_to_cdng
 Expand-Archive converter-source.zip -DestinationPath .
 cd tools/x6b_to_cdng
 ```

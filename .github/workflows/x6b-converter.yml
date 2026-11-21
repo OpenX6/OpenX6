@@ -30,7 +30,7 @@ jobs:
           git remote add origin https://github.com/${{ github.repository }}.git
           git fetch --depth 1 origin ${{ github.sha }}
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          git archive --format=zip --output=converter-source.zip FETCH_HEAD tools/x6b_to_cdng
+          git archive --format=zip --output=converter-source.zip --prefix=tools/x6b_to_cdng/ FETCH_HEAD:tools/x6b_to_cdng
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           Expand-Archive converter-source.zip -DestinationPath .
       - uses: actions/setup-python@v5

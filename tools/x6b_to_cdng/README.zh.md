@@ -31,7 +31,7 @@ Windows 不接受仓库内部分无关的固件源文件名，请只导出本工
 ```powershell
 git clone --depth 1 --no-checkout https://github.com/OpenX6/OpenX6.git
 cd OpenX6
-git archive --format=zip --output=converter-source.zip HEAD tools/x6b_to_cdng
+git archive --format=zip --output=converter-source.zip --prefix=tools/x6b_to_cdng/ HEAD:tools/x6b_to_cdng
 Expand-Archive converter-source.zip -DestinationPath .
 cd tools/x6b_to_cdng
 ```
