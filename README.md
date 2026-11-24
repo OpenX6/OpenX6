@@ -4,7 +4,7 @@ Open-source mods for the Insta360 X6
 
 > **You can install OpenX6 for the first time only on an X6 currently running stock 0.8.825 or 0.8.827.** Keep the camera on its early firmware until you install OpenX6. Use the official 1.2.36 download only as a build input on your computer. **Do not copy the official Insta360 firmware package to the SD card.**
 >
-> For a new camera, follow the [official X6 activation instructions](https://onlinemanual.insta360.com/x6/en-us/camera/first-use/download-activation). If the app requires a firmware update to activate, stop before accepting the update if you want to keep first-install compatibility.
+> For a new camera, follow the [official X6 activation instructions](https://onlinemanual.insta360.com/x6/en-us/camera/first-use/download-activation). If the app requires a firmware update to activate, stop before accepting the update if you want to keep first-install compatibility. You can also activate after installing OpenX6.
 >
 > **After installing OpenX6, do not install official firmware through the Insta360 app or from an SD card.** There is currently no known reliable way to reinstall OpenX6 after returning to stock firmware. Use a compatible OpenX6 SD package for future updates.
 >
